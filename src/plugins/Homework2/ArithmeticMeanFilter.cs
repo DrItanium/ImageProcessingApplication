@@ -18,9 +18,7 @@ namespace CS555.Homework2
 		[Filter("Arithmetic Mean Filter")]		
 			public class ArithmeticMeanFilter : SpatialFilter 
 		{
-			public ArithmeticMeanFilter(string name) : base(name) 
-			{
-			}
+			public ArithmeticMeanFilter(string name) : base(name) { }
       protected override string InputFormAddition { get { return string.Empty; } }
       protected override Hashtable TranslateData_Impl(Hashtable input) { return input; }
 			protected override byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable values)
@@ -36,12 +34,13 @@ namespace CS555.Homework2
 					int wX = x + s;
 					if(wX < 0 || wX >= width)
 						continue;
+					byte[] iX = input[wX];
 					for(int t = -b; t < b; t++)
 					{
 						int wY = y + t;
 						if(wY < 0 || wY >= height)
 							continue;
-						total += input[wX][wY];
+						total += iX[wY];
 						count++; //this will probably brighten the image
 					}
 				}
