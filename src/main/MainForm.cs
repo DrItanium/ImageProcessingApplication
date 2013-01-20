@@ -20,7 +20,7 @@ using Libraries.Starlight;
 using Libraries.Tycho;
 using msg = Libraries.Messaging;
 
-namespace ImagingProcessingApplication
+namespace ImageProcessingApplication
 {
 	public partial class MainForm : Form, IFilterCallback
 	{

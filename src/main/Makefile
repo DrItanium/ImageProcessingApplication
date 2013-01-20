@@ -4,8 +4,9 @@ thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)
 cmd_compiler := dmcs
-sources := *.cs 
+sources := *.cs Properties/*.cs
 def_mono := -d:MONO_NET
+bin_dir := ../../bin
 libs := -lib:../lib/Frameworks/Plugin/ \
         -lib:../lib/Libraries/Collections/ \
         -lib:../lib/Libraries/Extensions/ \
@@ -37,11 +38,11 @@ debug: $(sources)
 	$(cmd_compiler) -debug $(def_mono) $(cmd_out) $(libs) $(cmd_libraries) $(cmd_icons) $(sources)
 
 install: build
-	cp $(name) ../../../../bin/	
+	cp $(name) $(bin_dir)
 
 install-debug: debug
-	cp $(name) ../../../../bin/
-	cp $(db_name) ../../../../bin/
+	cp $(name) $(bin_dir)
+	cp $(db_name) $(bin_dir) 
 
 clean: 
 	-rm -f $(name) $(db_name) 

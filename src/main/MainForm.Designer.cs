@@ -31,8 +31,8 @@
 #if !MONO_NET
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 #endif
-						this.source = new CS555.HomeworkForm.ImageDisplayPanel();
-						this.result= new CS555.HomeworkForm.ImageDisplayPanel();
+						this.source = new ImageProcessingApplication.ImageDisplayPanel();
+						this.result= new ImageProcessingApplication.ImageDisplayPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -220,7 +220,7 @@
         }
 
         #endregion
-				private CS555.HomeworkForm.ImageDisplayPanel source, result;
+				private ImageProcessingApplication.ImageDisplayPanel source, result;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
