@@ -9,6 +9,7 @@ operation := $(root)/Operation
 parsing := $(root)/Parsing
 starlight := $(root)/Starlight
 tycho := $(root)/Tycho
+plugin := $(root)/../Frameworks/Plugin/
 
 install:
 	cd $(extensions) && $(MAKE) install

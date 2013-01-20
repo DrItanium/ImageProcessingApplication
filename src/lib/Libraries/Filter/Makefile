@@ -1,5 +1,5 @@
-.RECIPEPREFIX = >
-name := Libraries.Filter.dll 
+name := Libraries.Filter.dll
+db_name := $(name).mdb
 thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)
@@ -29,10 +29,19 @@ options := -r:Libraries.Collections.dll \
 			  -win32res:Resources/FilterdialogForm.resx
 result := $(name)
 
-build: $(sources)
-> $(cmd_compiler) -optimize $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
-debug: $(sources)
-> $(cmd_compiler) -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
-.PHONY : clean
-clean: 
-> -rm -f *.dll *.mdb
+build: 
+	$(cmd_compiler) -optimize $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
+
+debug: 
+	$(cmd_compiler) -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
+
+install: build
+	cp $(name) ../../../../bin/
+
+install-debug: debug
+	cp $(name) ../../../../bin/
+	cp $(db_name) ../../../../bin/
+
+clean:
+	-rm -f $(name) $(db_name)
+

@@ -7,9 +7,9 @@ cmd_compiler := dmcs
 sources := *.cs 
 lib_dir := -lib:../Extensions/
 options := -r:Libraries.Extensions.dll
-build: $(sources)
+build: 
 	dmcs -optimize $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
-debug: $(sources)
+debug: 
 	dmcs -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
 
 install: build

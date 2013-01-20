@@ -1,4 +1,5 @@
-name := Libraries.LexicalAnalysis.dll 
+name := Libraries.LexicalAnalysis.dll
+db_name := $(name).mdb
 thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)
@@ -11,6 +12,14 @@ build: $(sources)
 	dmcs -optimize $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
 debug: $(sources)
 	dmcs -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
-.PHONY: clean
+
+install: build
+	cp $(name) ../../../../bin/
+
+install-debug: debug
+	cp $(name) ../../../../bin/
+	cp $(db_name) ../../../../bin/
+
 clean:
-	-rm -f *.dll *.mdb
+	-rm -f $(name) $(db_name)
+

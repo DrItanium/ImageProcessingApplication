@@ -1,4 +1,5 @@
-name := Libraries.Operation.dll 
+name := Libraries.Operation.dll
+db_name := $(name).mdb
 thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)
@@ -9,6 +10,14 @@ build: $(sources)
 	dmcs -optimize $(cmd_library) $(cmd_out) $(sources)
 debug: $(sources)
 	dmcs -debug $(cmd_library) $(cmd_out) $(sources)
-.PHONY: clean
+
+install: build
+	cp $(name) ../../../../bin/
+
+install-debug: debug
+	cp $(name) ../../../../bin/
+	cp $(db_name) ../../../../bin/
+
 clean:
-	-rm -f *.dll *.mdb
+	-rm -f $(name) $(db_name)
+

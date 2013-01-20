@@ -1,5 +1,5 @@
-.RECIPEPREFIX = >
-name := Libraries.Tycho.dll 
+name := Libraries.Tycho.dll
+db_name := $(name).mdb
 thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)
@@ -9,10 +9,19 @@ lib_dir := -lib:../LexicalAnalysis/ -lib:../Collections/ -lib:../Extensions/
 options := -r:Libraries.Collections.dll -r:Libraries.LexicalAnalysis.dll -r:Libraries.Extensions.dll
 result := $(name)
 
-build: $(sources)
-> dmcs -optimize $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
-debug: $(sources)
-> dmcs -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
-.PHONY : clean
-clean: 
-> -rm -f *.dll *.mdb
+build: 
+	dmcs -optimize $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
+debug: 
+	dmcs -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
+
+install: build
+	cp $(name) ../../../../bin/
+
+install-debug: debug
+	cp $(name) ../../../../bin/
+	cp $(db_name) ../../../../bin/
+
+clean:
+	-rm -f $(name) $(db_name)
+
+
