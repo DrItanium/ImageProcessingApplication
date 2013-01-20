@@ -12,6 +12,10 @@ using System.Threading;
 using System.ComponentModel;
 using System.Collections;
 
+/* This filter takes in two images. One that the operation is going to be
+ * applied to and the other that is used to match the original's histogram
+ * against. 
+ */
 
 namespace CS555.Homework1
 {
@@ -29,8 +33,8 @@ namespace CS555.Homework1
     public override Hashtable TranslateData(Hashtable source)
     {
       //nothing to do
-      Console.WriteLine("Typeof source[\"otherImage\"] = {0}", 
-          source["otherImage"].GetType());
+      //Console.WriteLine("Typeof source[\"otherImage\"] = {0}", 
+      //    source["otherImage"].GetType());
       return source;
     }
     public override byte[][] Transform(Hashtable source)
@@ -43,8 +47,10 @@ namespace CS555.Homework1
       Histogram cloneHisto = new Histogram(aImage);
       Histogram refHisto = new Histogram(oImage);
 			byte[] g = new byte[256];
-			for(int i = 0; i < 256; i++)
+			for(int i = 0; i < 256; i++) 
+			{
 				g[i] = (byte)Math.Round(Compute(255, i, refHisto));
+			}
 			//bind s of cloneHisto to G which maps to z
 			byte[] s = cloneHisto.GlobalEqualizedIntensity;
 			byte[] result = new byte[256];
@@ -57,15 +63,17 @@ namespace CS555.Homework1
 				int index = ClosestValue(curr, g);
 				//this ensures that each value will map to the proper element in the
 				//other image
-				result[j] = refHisto.GlobalEqualizedIntensity[ClosestValue(g[index], refHisto.GlobalEqualizedIntensity)];
+				result[j] = refHisto.GlobalEqualizedIntensity[ClosestValue(g[index], 
+						refHisto.GlobalEqualizedIntensity)];
 			}
 			//then apply result to the given image 
 			for(int i = 0; i < aWidth; i++)
 			{
-        var q = new byte[aHeight];
+				byte[] aSlice = aImage[i];
+        byte[] q = new byte[aHeight];
 				for(int j = 0; j < aHeight; j++)
 				{
-					q[j] = result[aImage[i][j]];
+					q[j] = result[aSlice[j]];
 				}
         cImage[i] = q;
 			}
