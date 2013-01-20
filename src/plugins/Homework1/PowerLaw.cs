@@ -22,16 +22,18 @@ namespace CS555.Homework1
       if(source == null)
         return null;
       byte[][] input = (byte[][])source["image"];
-      double gamma = (double)source["gamma"];
-      double r = (double)source["constant"];
+			byte[] conversion = (byte[])source["conversion-table"];
       byte[][] clone = new byte[input.Length][];
+			int ixl = input[0].Length;
       for(int x = 0; x < input.Length; x++)
       {
-        clone[x] = new byte[input[x].Length];
-        for(int y = 0; y < input[x].Length; y++)
+				byte[] iX = input[x];
+				byte[] q = new byte[ixl];
+        for(int y = 0; y < ixl; y++)
         {
-          clone[x][y] = (byte)(input[x][y] * Math.Pow((double)r, gamma));
+					q[y] = conversion[iX[y]];
         }
+				clone[x] = q;
       }
       return clone;
     }
@@ -39,23 +41,30 @@ namespace CS555.Homework1
     {
       Hashtable output = new Hashtable();
       output["image"] = source["image"];
-      double nX, nY;
-      bool result0 = double.TryParse(source["gamma"].ToString(), out nX);
-      bool result1 = double.TryParse(source["constant"].ToString(), out nY);
+      double gamma, constant;
+      bool result0 = double.TryParse(source["gamma"].ToString(), out gamma);
+      bool result1 = double.TryParse(source["constant"].ToString(), out constant);
       if(result0 && result1)
       {
-
-        if(nX >= 0.0 && nY >= 0.0)
+        if(gamma >= 0.0 && constant >= 0.0)
         {
-          output["gamma"] = nX;
-          output["constant"] = nY;
+					//precompute the results
+					byte[] precomputeTable = new byte[256];
+					double factor = Math.Pow(constant, gamma);
+					precomputeTable[0] = (byte)0;
+					precomputeTable[1] = (byte)factor;
+					for(int i = 2; i < 256; i++) 
+					{
+						precomputeTable[i] = (byte)(i * factor);
+					}
+					output["conversion-table"] = precomputeTable;
           return output;
         }
         else
         {
-          if(nX < 0.0)
+          if(gamma < 0.0)
             MessageBox.Show("Gamma is Less than zero");
-          if(nY < 0.0)
+          if(constant < 0.0)
             MessageBox.Show("Constant is Less Than Zero");
           return null;
         }
