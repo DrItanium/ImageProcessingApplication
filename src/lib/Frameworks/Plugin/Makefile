@@ -1,6 +1,5 @@
 name := Frameworks.Plugin.dll
 db_name := $(name).mdb
-name := Frameworks.Plugin.dll 
 thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)

@@ -1,4 +1,5 @@
-name := CS555.HomeworkForm.exe
+name := ImageProcessingApplication.exe
+db_name := $(name).mdb
 thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)
@@ -28,12 +29,19 @@ cmd_libraries := -r:Libraries.Collections.dll\
 					  -r:System.Windows.Forms.dll\
 					  -r:System.Drawing.dll\
 					  -r:System.Data.dll
-cmd_icons := -win32res:Form1.resx -win32res:Properties/Resources.resx 
+cmd_icons := -win32res:MainForm.resx -win32res:Properties/Resources.resx 
 
 build: $(sources)
-	dmcs -optimize $(def_mono) $(cmd_out) $(libs) $(cmd_libraries) $(cmd_icons) $(sources)
+	$(cmd_compiler) -optimize $(def_mono) $(cmd_out) $(libs) $(cmd_libraries) $(cmd_icons) $(sources)
 debug: $(sources)
-	dmcs -debug $(def_mono) $(cmd_out) $(libs) $(cmd_libraries) $(cmd_icons) $(sources)
-.PHONY: clean
-clean:
-	-rm -f *.dll *.mdb
+	$(cmd_compiler) -debug $(def_mono) $(cmd_out) $(libs) $(cmd_libraries) $(cmd_icons) $(sources)
+
+install: build
+	cp $(name) ../../../../bin/	
+
+install-debug: debug
+	cp $(name) ../../../../bin/
+	cp $(db_name) ../../../../bin/
+
+clean: 
+	-rm -f $(name) $(db_name) 
