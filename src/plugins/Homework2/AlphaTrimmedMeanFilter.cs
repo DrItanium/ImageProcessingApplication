@@ -49,12 +49,13 @@ namespace CS555.Homework2
         int wX = x + s;
         if(wX < 0 || wX >= width)
           continue;
+				byte[] iX = input[wX];
         for(int t = -b; t < b; t++)
         {
           int wY = y + t;
           if(wY < 0 || wY >= height)
             continue;
-          elements.Add(input[wX][wY]);
+          elements.Add(iX[wY]);
         }
       }
       elements.Sort();
@@ -63,7 +64,7 @@ namespace CS555.Homework2
       {
         int removalFactor = (int)(d / 2.0M);
         //crude but effective
-        return (byte)Average(elements.Skip(removalFactor).Reverse().Skip(removalFactor).Reverse());
+        return (byte)Average(elements.Skip(removalFactor).Reverse().Skip(removalFactor));
       }
       catch(DivideByZeroException)
       {
