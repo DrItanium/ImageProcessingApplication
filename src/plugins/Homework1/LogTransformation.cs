@@ -10,6 +10,9 @@ using Libraries.Imaging;
 using Libraries.Filter;
 using System.Collections;
 
+/* This filter performs a logarithm transformation on a given image.
+ *
+ */
 namespace CS555.Homework1
 {
   [Filter("Log Transformation")]
@@ -27,11 +30,22 @@ namespace CS555.Homework1
         byte[][] input = (byte[][])source["image"];
         double constant = (double)source["constant"];
         byte[][] clone = new byte[input.Length][];
+				byte[] valueTable = new byte[255];
+				int ixLength = input[0].Length;
+				for(int i = 0; i < 256; i++) 
+				{
+					valueTable[i] = ComputeValue(constant, i);
+				}
         for(int x = 0; x < input.Length; x++)
         {
-          clone[x] = new byte[input[x].Length];
-          for(int y = 0; y < input[x].Length; y++)
-            clone[x][y] = ComputeValue(constant, input[x][y]); 
+					byte[] iX = input[x];
+					byte[] q = new byte[ixLength];
+          for(int y = 0; y < ixLength; y++) 
+					{
+						q[y] = valueTable[iX[y]];
+					}
+					clone[x] = q;
+						
         }
         return clone;
       }
