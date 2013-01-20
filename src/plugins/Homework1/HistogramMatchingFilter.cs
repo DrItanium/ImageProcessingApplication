@@ -22,30 +22,30 @@ namespace CS555.Homework1
 	[Filter("Histogram Matching")]
 		public class HistogramMatching : Filter 
 	{
-    public override string InputForm
-    {
-      get
-      {
-        return "form new \"Histogram Matching\" \"Text\" imbue label new \"openLabel\" \"Name\" imbue \"Select Image\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue button new \"imageSelector\" \"Name\" imbue \"Open\" \"Text\" imbue 75 23 size \"Size\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return";
-      }
-    }
+		public override string InputForm
+		{
+			get
+			{
+				return "form new \"Histogram Matching\" \"Text\" imbue label new \"openLabel\" \"Name\" imbue \"Select Image\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue button new \"imageSelector\" \"Name\" imbue \"Open\" \"Text\" imbue 75 23 size \"Size\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return";
+			}
+		}
 		public HistogramMatching(string name) : base(name) { }
-    public override Hashtable TranslateData(Hashtable source)
-    {
-      //nothing to do
-      //Console.WriteLine("Typeof source[\"otherImage\"] = {0}", 
-      //    source["otherImage"].GetType());
-      return source;
-    }
-    public override byte[][] Transform(Hashtable source)
-    {
-      byte[][] aImage = (byte[][])source["image"];
-      byte[][] oImage = (byte[][])source["otherImage"];
-      int aWidth = aImage.Length;
-      int aHeight = aImage[0].Length;
-      byte[][] cImage = new byte[aWidth][];
-      Histogram cloneHisto = new Histogram(aImage);
-      Histogram refHisto = new Histogram(oImage);
+		public override Hashtable TranslateData(Hashtable source)
+		{
+			//nothing to do
+			//Console.WriteLine("Typeof source[\"otherImage\"] = {0}", 
+			//    source["otherImage"].GetType());
+			return source;
+		}
+		public override byte[][] Transform(Hashtable source)
+		{
+			byte[][] aImage = (byte[][])source["image"];
+			byte[][] oImage = (byte[][])source["otherImage"];
+			int aWidth = aImage.Length;
+			int aHeight = aImage[0].Length;
+			byte[][] cImage = new byte[aWidth][];
+			Histogram cloneHisto = new Histogram(aImage);
+			Histogram refHisto = new Histogram(oImage);
 			byte[] g = new byte[256];
 			for(int i = 0; i < 256; i++) 
 			{
@@ -70,15 +70,15 @@ namespace CS555.Homework1
 			for(int i = 0; i < aWidth; i++)
 			{
 				byte[] aSlice = aImage[i];
-        byte[] q = new byte[aHeight];
+				byte[] q = new byte[aHeight];
 				for(int j = 0; j < aHeight; j++)
 				{
 					q[j] = result[aSlice[j]];
 				}
-        cImage[i] = q;
+				cImage[i] = q;
 			}
-      return cImage;
-    }
+			return cImage;
+		}
 		///<summary>
 		///Returns the index of the closest, or exact, value in the target array.
 		///</summary>
@@ -87,20 +87,21 @@ namespace CS555.Homework1
 			int max = 0;
 			for(int i = 0; i < elements.Length; i++)
 			{
-				if(elements[i] == value)
-					return i;
-				else if(elements[i] > value) 
+				byte curr = elements[i];
+				if(curr >= value) 
 				{
+					//we've either hit the exact value or
 					//we've gone "too" far and haven't hit a match
-					//which means that any value after this one will be too large as well 
+					//which means that any value after this one will be too large as 
+					//well 
 					return i;
 				}
 				else
 				{
-					if(elements[i] > max)
-						max = elements[i];
+					if(curr > max)
+						max = curr;
 				}
-				
+
 				//otherwise the value is too large...continue
 			}
 			//this means that all values are smaller than the target value
@@ -114,7 +115,6 @@ namespace CS555.Homework1
 				total += z.PK[i];
 			return total * largestValue;
 		}
-
-  }
+	}
 }
 
