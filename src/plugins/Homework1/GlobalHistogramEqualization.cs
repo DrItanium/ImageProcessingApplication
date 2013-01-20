@@ -31,11 +31,15 @@ namespace CS555.Homework1
       else
       {
         byte[][] input = (byte[][])source["image"];
+				//the histogram object automatically creates a pixel intensity
+				//distribution upon creation. It also computes the global equalized
+				//intensity based upon it's frequency in the given image. 
         Histogram h = new Histogram(input);
         for(int x = 0; x < input.Length; x++)
         {
           for(int y = 0; y < input[y].Length; y++)
           {
+						//we just replace the previous pixels with the new ones 
             input[x][y] = Translate(input[x][y], h);
           }
         }
@@ -44,6 +48,8 @@ namespace CS555.Homework1
     }
     private static byte Translate(byte data, Histogram histogram)
     {
+			//retrieve the proper value based on the stored global equalized
+			//intensity in the histogram object
       return histogram.GlobalEqualizedIntensity[data];
     }
   }
