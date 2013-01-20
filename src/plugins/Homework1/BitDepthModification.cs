@@ -10,7 +10,26 @@ using Libraries.Imaging;
 using Libraries.Filter;
 using Frameworks.Plugin;
 using System.Collections;
-
+/* This filter is responsible for changing the bit depth of a given byte image
+ * to a specified bitwidth.
+ *
+ * For instance, if we have an 8-bit and we want a 5-bit image then we convert
+ * all 8-bit values to 5-bit values. The value still remains within a byte.
+ * However, the values stored have been transformed to fit within the specified
+ * bit width. 
+ *
+ * This is done through the use of a translation matrix that consists of 8*256
+ * bytes. It is a multidimensional array instead of a jagged one. Currently,
+ * each instance of this filter has its own copy. 
+ *
+ * The way this translation matrix works is quite simple. Each bit depth
+ * contains 256 entries in the translation matrix. The original intensity is
+ * the index into the set of entries with the value stored at that index being
+ * the 8-bit intensity for the corresponding value at the target bit depth. We
+ * use the concept of duplication to simulate the reduction in representable
+ * values. 
+ *
+ */
 namespace CS555.Homework1
 {
   [Filter("Change Bit Depth")]
@@ -31,9 +50,21 @@ namespace CS555.Homework1
       SetSection(0, 128, 256, (byte)255);
       for(int i = 1; i < 8; i++)
       {
+				//compute the largest value at the corresponding bit depth +1
+				//So at seven bits we return 256 as that's the next largest bit depth
         int power = (int)Math.Pow(2, i + 1);
+				//figure out reduction factor by dividing 256.0 (largest for 8-bits)
+				//by the largest value expressible at the target bit depth (power - 1)
+				//The floor of this computation will be the conversion factor to use 
         int sd = (int)Math.Floor((256.0f / (float)(power - 1)));
+				//figure out how many elements each intensity in the lower bit-depth
+				//will take up in 256 entries. At eight bits there is a one to one
+				//correspondence between values and entries. At seven bits, two eight
+				//bit intensities correspond to the same seven-bit intensity
         int sep = 256 / power;
+				//we populate wider sections with a distributed intensity in the target
+				//bit depth but represented as an 8 bit value.
+				//So at two bits the values are 0, 85, 170, 255 
         for(int j = 0; j < power; j++) //separation areas
           SetSection(i, j * sep, (j + 1) * sep, (byte)(sd * j));
       }
