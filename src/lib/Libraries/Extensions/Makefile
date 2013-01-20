@@ -1,4 +1,4 @@
-name := TheoreticalIndustries.Libraries.Extensions.dll 
+name := Libraries.Extensions.dll 
 thisdir := .
 cmd_library := -t:library
 cmd_out := -out:$(name)
