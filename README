@@ -1,2 +1,17 @@
 This project is a sanitized version of my image processing application from my
 Image Processing class in my CS Masters Program. 
+
+The private version of this program was written back in Fall 2011.
+The core program only contains filters that would not work in another
+application domain. All other filters are defined in separate libraries which
+are loaded dynamically by the core program at runtime only if they are tagged
+with the proper attributes. 
+
+Application domains are used to make it possible to reload plugins without
+having to restart the application. I had to go to some strange lengths to get
+this to work by adding layers of indirection. However, the program is
+relatively stable but if you use it and find bugs then don't hesitate to file
+bug reports. 
+
+I really cleaned up this program for public consumption to make it far less of
+a pain in the ass to compile and use. 
