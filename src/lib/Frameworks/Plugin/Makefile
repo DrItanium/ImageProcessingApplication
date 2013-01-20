@@ -1,6 +1,5 @@
-base_name := Frameworks.Plugin
-lib_name := $(base_name).dll
-db_name := $(base_name).mdb
+name := Frameworks.Plugin.dll
+db_name := $(name).mdb
 name := Frameworks.Plugin.dll 
 thisdir := .
 cmd_library := -t:library
@@ -15,11 +14,11 @@ debug: $(sources)
 	dmcs -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
 
 install: build
-	cp $(lib_name) ../../../bin/	
+	cp $(name) ../../../../bin/	
 
-install-debug: install-debug
-	cp $(lib_name) ../../../bin/
-	cp $(db_name) ../../../bin/
+install-debug: debug
+	cp $(name) ../../../../bin/
+	cp $(db_name) ../../../../bin/
 
 clean: 
-	-rm -f *.dll *.mdb
+	-rm -f $(name) $(db_name) 
