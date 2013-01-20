@@ -26,7 +26,7 @@ options := -r:Libraries.Collections.dll \
 			  -r:System.Windows.Forms.dll \
 			  -r:System.Drawing.dll \
 			  -r:System.Data.dll \
-			  -win32res:FilterdialogForm.resx
+			  -win32res:Resources/FilterdialogForm.resx
 result := $(name)
 
 build: $(sources)
