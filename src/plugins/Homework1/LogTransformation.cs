@@ -30,11 +30,11 @@ namespace CS555.Homework1
         byte[][] input = (byte[][])source["image"];
         double constant = (double)source["constant"];
         byte[][] clone = new byte[input.Length][];
-				byte[] valueTable = new byte[255];
+				byte[] valueTable = new byte[256];
 				int ixLength = input[0].Length;
 				for(int i = 0; i < 256; i++) 
 				{
-					valueTable[i] = ComputeValue(constant, i);
+					valueTable[i] = ComputeValue(constant, (byte)i);
 				}
         for(int x = 0; x < input.Length; x++)
         {
