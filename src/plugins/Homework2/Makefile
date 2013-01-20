@@ -1,4 +1,4 @@
-name := CS555.Homework2.dll 
+name := CS555.Homework2.dll
 db_name := $(name).mdb
 thisdir := .
 cmd_library := -t:library
