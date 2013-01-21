@@ -30,12 +30,13 @@ namespace CS555.Homework2
 				int wX = x + s;
 				if(wX < 0 || wX >= width)
 					continue;
+				byte[] iX = input[wX];
 				for(int t = -b; t < b; t++)
 				{
 					int wY = y + t;
 					if(wY < 0 || wY >= height)
 						continue;
-					total *= input[wX][wY];
+					total *= iX[wY];
 					size++;
 				}
 			}
