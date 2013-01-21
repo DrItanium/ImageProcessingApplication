@@ -30,7 +30,8 @@ namespace CS555.Homework2
 		public override Hashtable TranslateData(Hashtable input)
 		{
 			Hashtable ht = TranslateData_Impl(input);
-			ht["image"] = input["image"];
+			if(ht != input)
+				ht["image"] = input["image"];
 			string maskSize = (string)input["mask"];
 			switch(maskSize)
 			{
