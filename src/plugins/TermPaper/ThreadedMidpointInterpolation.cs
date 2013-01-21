@@ -154,7 +154,7 @@ namespace CS555.TermPaper
 		}
 		public override byte[][] Transform(Hashtable input)
 		{
-			DateTime start = DateTime.Now;
+			//DateTime start = DateTime.Now;
 			//reseed it 
 			if(input == null)
 				return null;
@@ -204,17 +204,20 @@ namespace CS555.TermPaper
 				{
 					int x0 = scaleX[i];
 					int x1 = scaleX[i + 1];
+				  float[] fx0 = imageF[x0];
+					float[] fx1 = imageF[x1];
+					float[] pctX = preComputedTable[i];
 					for(int j = 0; j < nHeight - 3; j+=h0)
 					{
 						int y0 = scaleY[j];
 						int y1 = scaleY[j + 1];
 						//order has been messed up for sometime
 						//should go (x0,y0), (x0,y1), (x1,y1), (x1,y0)
-						float f0 = imageF[x0][y0];
-						float f1 = imageF[x1][y0];
-						float f2 = imageF[x1][y1];
-						float f3 = imageF[x0][y1];
-						float k = preComputedTable[i][j];
+						float f0 = fx0[y0];
+						float f1 = fx1[y0];
+						float f2 = fx1[y1];
+						float f3 = fx0[y1];
+						float k = pctX[j];
 						DivideGrid(resultant, newImage, i, j, w, h, f0, f1, f2, f3, k);
 					}
 
@@ -222,7 +225,7 @@ namespace CS555.TermPaper
 				newImage = null;
 				si = null;
 				imageF = null;
-				Console.WriteLine("Took {0} seconds", DateTime.Now - start);
+				//Console.WriteLine("Took {0} seconds", DateTime.Now - start);
 				return resultant;
 			}
 			else
