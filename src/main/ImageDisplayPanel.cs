@@ -73,8 +73,14 @@ namespace ImageProcessingApplication
 			iWidth = w;
 			iHeight = h;
 		}
-		private void InitComponents() { InitComponents(iWidth, iHeight); }
-		private void InitComponents(int width, int height) { InitComponents(width, height, false); }
+		private void InitComponents() 
+		{ 
+			InitComponents(iWidth, iHeight); 
+		}
+		private void InitComponents(int width, int height) 
+		{ 
+			InitComponents(width, height, false); 
+		}
 		private void InitComponents(int width, int height, bool resizeOnly)
 		{
 			if(resizeOnly)

@@ -92,7 +92,6 @@ namespace ImageProcessingApplication
 				}
 				var result = container.Invoke(m);
 				var array = (byte[][])result.Value;
-				Console.WriteLine("{0} x {1}", array.Length, array[0].Length);
 				resultImage = new Bitmap(array.Length, array[0].Length);
 				for(int i =0 ; i < array.Length; i++)
 				{
