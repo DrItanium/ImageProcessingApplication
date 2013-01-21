@@ -21,23 +21,17 @@ namespace CS555.Homework2
 		public class BitplaneManipulator : Filter
 	{
 		private static byte[][] TranslationMatrix = new byte[256][];
-		private static bool translationMatrixInitialized = false;
-		private static void InitializeBitplaneTranslationMatrix() 
+		static BitplaneManipulator() 
 		{
-			if(!translationMatrixInitialized) 
+			for(int i = 0; i < 256; i++)
 			{
-				for(int i = 0; i < 256; i++)
+				byte[] b = new byte[256];
+				for(int j = 0; j < 256; j++)
 				{
-					byte[] b = new byte[256];
-					for(int j = 0; j < 256; j++)
-					{
-						b[j] = (byte)(j & i);
-					}
-					TranslationMatrix[i] = b;
+					b[j] = (byte)(j & i);
 				}
-				translationMatrixInitialized = true;
+				TranslationMatrix[i] = b;
 			}
-
 		}
 		public override string InputForm
 		{
@@ -46,11 +40,7 @@ namespace CS555.Homework2
 				return "form new \"Bitplane Manipulation\" \"Name\" imbue label new \"Plane 0\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"Plane 1\" \"Text\" imbue 13 32 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"Plane 2\" \"Text\" imbue 13 52 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"Plane 3\" \"Text\" imbue 13 72 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"Plane 4\" \"Text\" imbue 113 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"Plane 5\" \"Text\" imbue 113 32 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"Plane 6\" \"Text\" imbue 113 52 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"Plane 7\" \"Text\" imbue 113 72 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane0\" \"Name\" imbue 80 12 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane1\" \"Name\" imbue 80 32 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane2\" \"Name\" imbue 80 52 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane3\" \"Name\" imbue 80 72 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane4\" \"Name\" imbue 187 12 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane5\" \"Name\" imbue 187 32 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane6\" \"Name\" imbue 187 52 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue checkbox new \"plane7\" \"Name\" imbue 187 72 point \"Location\" imbue 13 13 size \"Size\" imbue \"Controls.Add\" imbue return";
 			}
 		}
-		public BitplaneManipulator(string name) : base(name) 
-		{ 
-			//make sure we have a translation table ready
-			InitializeBitplaneTranslationMatrix();
-		}
+		public BitplaneManipulator(string name) : base(name) { }
 		public override Hashtable TranslateData(Hashtable input)
 		{
 			byte total = 0;
