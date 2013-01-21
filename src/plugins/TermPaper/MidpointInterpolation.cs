@@ -18,7 +18,6 @@ namespace CS555.TermPaper
 		private bool allowSawtooth, allowGauss, allowVariance;
 		private float k;
 		private Random rnd;
-		//    public override string InputForm { get { return string.Format("form new \"{0} Filter\" \"Text\" imbue label new \"labelWidth\" \"Name\" imbue \"Width\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"labelHeight\" \"Name\" imbue \"Height\" \"Text\" imbue 63 13 size \"Size\" imbue 13 32 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"width\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"height\" \"Name\" imbue 80 32 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"sawtooth\" \"Name\" imbue 80 62 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"Allow Sawtooth\" \"Text\" imbue 73 33 size \"Size\" imbue 13 52 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"gauss\" \"Name\" imbue 80 82 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"Disallow Gauss\" \"Text\" imbue 73 33 size \"Size\" imbue 13 82 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"variance\" \"Name\" imbue 80 102 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"Disallow Variance\" \"Text\" imbue 73 33 size \"Size\" imbue 13 102 point \"Location\" imbue \"Controls.Add\" imbue return", Name); } }
 		public override string InputForm { get { return string.Format("form new \"{0} Filter\" \"Text\" imbue label new \"labelWidth\" \"Name\" imbue \"Width\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"labelHeight\" \"Name\" imbue \"Height\" \"Text\" imbue 63 13 size \"Size\" imbue 13 32 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"width\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"height\" \"Name\" imbue 80 32 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"sawtooth\" \"Name\" imbue 85 62 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"Sawtooth\" \"Text\" imbue 83 13 size \"Size\" imbue 13 52 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"gauss\" \"Name\" imbue 85 82 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"No Gauss\" \"Text\" imbue 83 13 size \"Size\" imbue 13 82 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"variance\" \"Name\" imbue 85 102 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"No Variance\" \"Text\" imbue 83 13 size \"Size\" imbue 13 102 point \"Location\" imbue \"Controls.Add\" imbue return", Name); } }
 		public MidpointInterpolationFilter(string name) : base(name) 
 		{
@@ -51,13 +50,6 @@ namespace CS555.TermPaper
 					total1 += Math.Abs(image[startX + i][startY + (j + 1)] - image[startX + i][startY + j]);
 				}
 			}
-			// for(int i = 0; i < (n - 2); i++)
-			// {
-			//   for(int j = 0; j < (n - 1); j++)
-			//   {
-			//     total1 += Math.Abs(image[startX + i][startY + (j + 1)] - image[startX + i][startY + j]);
-			//   }
-			// }	
 			float numerator = total0 + total1;
 			float denominator = 2.0f * (float)(Math.Pow(255, (float)n));
 			return (numerator / denominator);
@@ -116,7 +108,6 @@ namespace CS555.TermPaper
 				//apply the original image values to the given points	
 				float w = si.WidthScalingFactor;
 				float h = si.HeightScalingFactor;
-				Console.WriteLine("w x h: {0} x {1}", w, h);
 				float?[][] newImage = new float?[nWidth][];
 				float[][] displacementTable = new float[nWidth][];
 				float[][] imageF = ToFloatTable(b);
