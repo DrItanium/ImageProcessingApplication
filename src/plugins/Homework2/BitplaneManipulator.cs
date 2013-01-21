@@ -20,6 +20,19 @@ namespace CS555.Homework2
 	[Filter("Manipulate Bitplanes")]
 		public class BitplaneManipulator : Filter
 	{
+		public static readonly byte[][] TranslationMatrix = new byte[256][];
+		static BitplaneManipulator() 
+		{
+			for(int i = 0; i < 256; i++)
+			{
+				byte[] b = new byte[256];
+				for(int j = 0; j < 256; j++)
+				{
+					b[j] = (byte)(j & i);
+				}
+				TranslationMatrix[i] = b;
+			}
+		}
 		public override string InputForm
 		{
 			get
@@ -48,12 +61,7 @@ namespace CS555.Homework2
 			if((bool)input["plane7"])
 				total += 128;
 			//precompute the values 
-			byte[] table = new byte[256];
-			for(int i = 0; i < 256; i++) 
-			{
-				table[i] = (byte)(i & total);
-			}
-			input["translation-table"] = table;
+			input["translation-table"] = TranslationMatrix[total];
 			return input;
 		}
 		public override byte[][] Transform(Hashtable input)
