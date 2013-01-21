@@ -18,6 +18,14 @@ namespace CS555.Homework2
   [Filter("Smoothing Filter")]
     public class SmoothingFilter : SpatialFilter
   {
+		private static int[] square = new int[256];
+		static SmoothingFilter() 
+		{
+			for(int i = 0; i < 256; i++) 
+			{
+				square[i] = i * i;
+			}
+		}
     protected override string InputFormAddition{ get { return string.Empty; } }
     public SmoothingFilter(string name) : base(name) { }
 
@@ -29,8 +37,8 @@ namespace CS555.Homework2
     {
       int height = input[0].Length;
       int width = input.Length;
-      float denominator = 0.0f;
-      float numerator = 0.0f;
+      double denominator = 0.0f;
+      double numerator = 0.0f;
       for(int t = -b; t < b; t++)
       {
         int wY = y + t;
@@ -42,7 +50,7 @@ namespace CS555.Homework2
           if(wX < 0 || wX >= width)
             continue;
           int w = input[wX][wY];
-          numerator += (w * w);
+          numerator += square[w];
           denominator += w;
         }
       }	
