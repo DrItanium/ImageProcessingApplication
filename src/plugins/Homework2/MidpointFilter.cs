@@ -30,12 +30,13 @@ namespace CS555.Homework2
         int wX = x + s;
         if(wX < 0 || wX >= width)
           continue;
+				byte[] iX = input[wX];
         for(int t = -b; t < b; t++)
         {
           int wY = y + t;
           if(wY < 0 || wY >= height)
             continue;
-          byte value = input[wX][wY];
+					byte value = iX[wY];
           max = Math.Max(max, value);
           min = Math.Min(min, value);
         }
