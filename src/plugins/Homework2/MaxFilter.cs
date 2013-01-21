@@ -18,9 +18,7 @@ namespace CS555.Homework2
   [Filter("Max Filter")]		
     public class MaxFilter : SpatialFilter 
   {
-    public MaxFilter(string name) : base(name) 
-    {
-    }
+    public MaxFilter(string name) : base(name) { }
     protected override byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable values)
     {
       int width = input.Length;
@@ -31,12 +29,13 @@ namespace CS555.Homework2
         int wX = x + s;
         if(wX < 0 || wX >= width)
           continue;
+				byte[] iX = input[wX];
         for(int t = -b; t < b; t++)
         {
           int wY = y + t;
           if(wY < 0 || wY >= height)
             continue;
-          max = Math.Max(max, input[wX][wY]);
+          max = Math.Max(max, iX[wY]);
         }
       }
       return max;
