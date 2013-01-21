@@ -40,9 +40,9 @@ namespace CS555.Homework2
 						continue;
 					elements.Add(iX[wY]);
 				}
-				elements.Sort();
-				return elements[elements.Count >> 1];
 			}
+			elements.Sort();
+			return elements[elements.Count >> 1];
 		}
 	}
 }
