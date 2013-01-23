@@ -93,18 +93,26 @@ namespace ImageProcessingApplication
 					}
 					elements[i] = line;
 				}
-				var result = container.Invoke(m);
-				var array = (byte[][])result.Value;
-				resultImage = new Bitmap(array.Length, array[0].Length);
-				Action<int,int,byte> setColorBase = (x,y,c) => resultImage.SetPixel(x,y,colorConversion[c]);
-				for(int i =0 ; i < array.Length; i++)
+				try 
 				{
-					byte[] aX = array[i];
-					Action<int,byte> setColor = (y,c) => setColorBase(i,y,c);
-					for(int j=0; j < aX.Length; j++)
+					var result = container.Invoke(m);
+					var array = (byte[][])result.Value;
+					resultImage = new Bitmap(array.Length, array[0].Length);
+					Action<int,int,byte> setColorBase = (x,y,c) => resultImage.SetPixel(x,y,colorConversion[c]);
+					for(int i =0 ; i < array.Length; i++)
 					{
-						setColor(j, aX[j]);
+						byte[] aX = array[i];
+						Action<int,byte> setColor = (y,c) => setColorBase(i,y,c);
+						for(int j=0; j < aX.Length; j++)
+						{
+							setColor(j, aX[j]);
+						}
 					}
+				} 
+				catch (Exception e) 
+				{
+					Console.WriteLine(e.StackTrace);
+					MessageBox.Show("An error occured during filter execution.\n See console for stack dump");
 				}
 			}
 			else
@@ -275,8 +283,8 @@ namespace ImageProcessingApplication
 		private static byte DesaturateColor(Color c) 
 		{
 			return (byte)(255.0 * (redConversion[c.R] +
-						                 blueConversion[c.B] +
-														 greenConversion[c.G]));
+						blueConversion[c.B] +
+						greenConversion[c.G]));
 		}
 		private void Desaturate(object sender, EventArgs e)
 		{
