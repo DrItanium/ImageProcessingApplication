@@ -109,9 +109,9 @@ namespace ImageProcessingApplication
 						}
 					}
 				} 
-				catch (Exception e) 
+				catch (Exception exception) 
 				{
-					Console.WriteLine(e.StackTrace);
+					Console.WriteLine(exception.StackTrace);
 					MessageBox.Show("An error occured during filter execution.\n See console for stack dump");
 				}
 			}
