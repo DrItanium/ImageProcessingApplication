@@ -20,7 +20,6 @@ namespace Libraries.Filter
         List<Tuple<string, string, Guid>> r = new List<Tuple<string, string, Guid>>();
         foreach(string str in paths)
         {
-          Console.WriteLine("Loading Path {0}", str);
           var guids = FilterLoader.LoadPlugins(str);
           foreach(var guid in guids.Item2)
           {
