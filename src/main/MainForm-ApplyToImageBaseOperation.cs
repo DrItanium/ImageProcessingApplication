@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Reflection;
+using System.IO;
+using System.Globalization;
+using System.Collections;
+using Libraries.Imaging;
+using Libraries.Filter;
+using Frameworks.Plugin;
+using Libraries.LexicalAnalysis;
+using Libraries.Extensions;
+using Libraries.Parsing;
+using Libraries.Starlight;
+using Libraries.Tycho;
+using msg = Libraries.Messaging;
+
+namespace ImageProcessingApplication 
+{
+	public partial class MainForm 
+	{
+		private void ApplyToImageBaseOperation(object sender, EventArgs e, Guid target)
+		{
+			if (srcImage != null)
+			{
+				Hashtable resultant = new Hashtable(); 
+				if(dynamicForms.ContainsKey(target))
+				{
+					dynamicForms[target].ShowDialog();
+					if(!dynamicForms[target].ShouldApply)
+						return; //get out of here if they hit cancel
+					resultant = dynamicForms[target].StorageCells;
+				}
+				msg.Message m = new msg.Message(Guid.NewGuid(), id, target, 
+						msg.MessageOperationType.Execute, resultant);
+				byte[][] elements = new byte[srcImage.Width][];
+				resultant["image"] = elements;
+				Func<int,int,Color> getPixelBase = (x,y) => srcImage.GetPixel(x,y);
+				for(int i =0 ; i < srcImage.Width; i++)
+				{
+					Func<int,Color> getPixel = (x) => getPixelBase(i,x);
+					byte[] line = new byte[srcImage.Height];
+					for(int j = 0; j < srcImage.Height; j++)
+					{
+						line[j] = getPixel(j).R; 
+					}
+					elements[i] = line;
+				}
+				try 
+				{
+					var result = container.Invoke(m);
+					var array = (byte[][])result.Value;
+					resultImage = new Bitmap(array.Length, array[0].Length);
+					Action<int,int,byte> setColorBase = (x,y,c) => resultImage.SetPixel(x,y,colorConversion[c]);
+					for(int i =0 ; i < array.Length; i++)
+					{
+						byte[] aX = array[i];
+						Action<int,byte> setColor = (y,c) => setColorBase(i,y,c);
+						for(int j=0; j < aX.Length; j++)
+						{
+							setColor(j, aX[j]);
+						}
+					}
+				} 
+				catch (Exception exception) 
+				{
+					Console.WriteLine(exception.StackTrace);
+					MessageBox.Show("An error occured during filter execution.\n See console for stack dump");
+				}
+			}
+			else
+			{
+				OpenImage(this, new EventArgs());
+			}
+		}
+
+		Guid IFilterCallback.CurrentFilter
+		{
+			set 
+			{
+				ApplyToImageBaseOperation(this, new EventArgs(), value);
+				RedrawPictures(false, true);
+				if(!result.Visible)
+					result.Visible = true;
+			}
+		}
+		string IFilterCallback.Name { set { } } 
+	}
+}
