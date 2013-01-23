@@ -82,24 +82,28 @@ namespace ImageProcessingApplication
 						msg.MessageOperationType.Execute, resultant);
 				byte[][] elements = new byte[srcImage.Width][];
 				resultant["image"] = elements;
+				Func<int,int,Color> getPixelBase = (x,y) => srcImage.GetPixel(x,y);
 				for(int i =0 ; i < srcImage.Width; i++)
 				{
-					elements[i] = new byte[srcImage.Height];
+					Func<int,Color> getPixel = (x) => getPixelBase(i,x);
+					byte[] line = new byte[srcImage.Height];
 					for(int j = 0; j < srcImage.Height; j++)
 					{
-						elements[i][j] = srcImage.GetPixel(i,j).R;
+						line[j] = getPixel(j).R; 
 					}
+					elements[i] = line;
 				}
 				var result = container.Invoke(m);
 				var array = (byte[][])result.Value;
 				resultImage = new Bitmap(array.Length, array[0].Length);
+				Action<int,int,byte> setColorBase = (x,y,c) => resultImage.SetPixel(x,y,colorConversion[c]);
 				for(int i =0 ; i < array.Length; i++)
 				{
-
-					for(int j=0; j < array[i].Length; j++)
+					byte[] aX = array[i];
+					Action<int,byte> setColor = (y,c) => setColorBase(i,y,c);
+					for(int j=0; j < aX.Length; j++)
 					{
-						byte c = array[i][j];
-						resultImage.SetPixel(i,j, Color.FromArgb(255, c, c, c));
+						setColor(j, aX[j]);
 					}
 				}
 			}
@@ -252,21 +256,42 @@ namespace ImageProcessingApplication
 			}
 		}
 		string IFilterCallback.Name { set { } } 
+		private static double[] redConversion = new double[256];
+		private static double[] blueConversion = new double[256];
+		private static double[] greenConversion = new double[256];
+		private static Color[] colorConversion = new Color[256];
+		static MainForm()
+		{
+			for(int i = 0; i < 256; i++)
+			{
+				byte b = (byte)i;
+				double value = i / 255.0;
+				redConversion[i] = value * 0.3;
+				blueConversion[i] = value * 0.11;
+				greenConversion[i] = value * 0.59;
+				colorConversion[i] = Color.FromArgb(255, b, b, b);
+			}
+		}
+		private static byte DesaturateColor(Color c) 
+		{
+			return (byte)(255.0 * (redConversion[c.R] +
+						                 blueConversion[c.B] +
+														 greenConversion[c.G]));
+		}
 		private void Desaturate(object sender, EventArgs e)
 		{
 			//go through the image and perform desaturation
 			Bitmap clone = srcImage.Clone() as Bitmap;
+			Func<int,int,Color> getPixelBase = (x,y) => clone.GetPixel(x,y);
+			Action<int,int,byte> setPixelBase = (x,y,c) => clone.SetPixel(x,y, 
+					colorConversion[c]);
 			for(int i = 0; i < clone.Width; i++)
 			{
+				Func<int,Color> getPixel = (x) => getPixelBase(i,x);
+				Action<int,byte> setPixel = (x,c) => setPixelBase(i,x,c);
 				for(int j = 0; j < clone.Height; j++)
 				{
-					Color c = clone.GetPixel(i,j);
-					double r = c.R / 255.0;
-					double b = c.B / 255.0;
-					double g = c.G / 255.0;	
-					double total = ((r * 0.3) + (0.59 * g) + (0.11 * b)) * 255.0;
-					byte value = (byte)total;
-					clone.SetPixel(i,j, Color.FromArgb(255, value, value, value));
+					setPixel(j, DesaturateColor(getPixel(j)));
 				}
 			}
 			this.resultImage = clone;
