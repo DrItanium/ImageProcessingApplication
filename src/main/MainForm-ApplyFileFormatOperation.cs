@@ -34,11 +34,11 @@ namespace ImageProcessingApplication
     }
     private bool CanLoad(Guid target) 
     {
-      return (bool)QueryInfo(target, "supports-load").Value;
+      return (bool)QueryInfo(target, "supports-loading").Value;
     }
     private bool CanSave(Guid target)
     {
-      return (bool)QueryInfo(target, "supports-save").Value;
+      return (bool)QueryInfo(target, "supports-saving").Value;
     }
     private bool CanPerformOperation(Guid target, string action) 
     {
