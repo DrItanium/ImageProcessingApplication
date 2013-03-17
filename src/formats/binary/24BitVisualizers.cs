@@ -33,7 +33,7 @@ namespace Formats.Binary
       if(result3 == -1)
       {
         //do a conversion for 16-bits
-        return Conversion.UshortTo565(Convert((byte)result, 
+        return Conversion.UshortTo565(Convert16((byte)result, 
               (byte)result2));
       }
       return GetPixelImpl((byte)result, (byte)result2, (byte)result3);
