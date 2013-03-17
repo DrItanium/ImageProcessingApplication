@@ -17,8 +17,28 @@ namespace FileFormats.StarTrek
   {
     //let's create a standard palette RGB => 332 layout
     static Color[] palette = new Color[256];
+    static byte[] translation3bit = new byte[] 
+    {
+      0,
+      36,
+      73,
+      110,
+      146,
+      183,
+      219,
+      255
+    };
+    static byte[] translation2bit = new byte[]
+    {
+      0,
+      85,
+      171,
+      255,
+    };
+
     static StarTrekJudgementRitesBMPDefaultPaletteConverter()
     {
+      
       for(int i = 0; i < 256; i++)
       {
         //recompute this relative to 8-bits
@@ -26,9 +46,9 @@ namespace FileFormats.StarTrek
         int g = ((byte)(i << 3)) >> 5;
         int b = ((byte)(i << 6)) >> 6;
         palette[i] = Color.FromArgb(255, 
-            (256 / (r + 1)), 
-            (256 / (g + 1)), 
-            (256 / (b + 1)));
+            translation3bit[r],
+            translation3bit[g],
+            translation2bit[b]);
       }
     }
     public override bool SupportsSaving { get { return false; } }
