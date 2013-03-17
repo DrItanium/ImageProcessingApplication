@@ -86,7 +86,6 @@ namespace ImageProcessingApplication
                 srcImage.SetPixel(i, j / 4, Color.FromArgb(line[i+3], line[i], line[i+1], line[i+2]));
               }
             }
-            source.Visible = true;
           }
         }
         catch(Exception ex)
