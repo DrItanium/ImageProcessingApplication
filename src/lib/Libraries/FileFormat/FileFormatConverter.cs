@@ -27,10 +27,4 @@ namespace Libraries.FileFormat
           Process((Hashtable)input.Value));
     }
   }
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-  public sealed class FileFormatAttribute : PluginAttribute
-  {
-    public FileFormatAttribute(string name) : base(name) { }
-  }
-
 }
