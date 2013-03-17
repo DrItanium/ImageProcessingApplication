@@ -1,3 +1,4 @@
 using Frameworks.Plugin;
+using Libraries.Filter;
 
-[assembly: PluginAssembly("Homework 2 Filters")]
+[assembly: FilterAssembly("Homework 2 Filters")]

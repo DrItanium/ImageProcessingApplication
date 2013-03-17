@@ -1,3 +1,4 @@
 using Frameworks.Plugin;
+using Libraries.Filter;
 
-[assembly: PluginAssembly("Term Paper Filters")]
+[assembly: FilterAssembly("Term Paper Filters")]
