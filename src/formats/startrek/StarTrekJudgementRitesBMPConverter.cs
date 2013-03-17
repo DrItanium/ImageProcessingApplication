@@ -28,7 +28,7 @@ namespace FileFormats.StarTrek
         palette[i] = Color.FromArgb(255, 
             (256 / (r + 1)), 
             (256 / (g + 1)), 
-            (256 / (b + 1));
+            (256 / (b + 1)));
       }
     }
     public override bool SupportsSaving { get { return false; } }
