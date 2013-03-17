@@ -1,4 +1,4 @@
-SUBDIRS = lib main plugins formats
+SUBDIRS = lib main filters formats
 
 .PHONY: install install-debug clean subdirs $(SUBDIRS)
 
