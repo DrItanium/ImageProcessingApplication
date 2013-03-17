@@ -61,13 +61,11 @@ namespace Formats.Binary
             (double)width) : 
           (int)Math.Floor((double)width / 
               ((double)length / (double)DivisorFactor));
-        Console.WriteLine("{0}x{1}", width, height);
-        Console.WriteLine("Length = {0}", length);
-        rawImage = new byte[height][];
-        for(int i = 0; i < height; i++)
+        rawImage = new byte[width][];
+        for(int i = 0; i < width; i++)
         {
-          byte[] line = new byte[width * 4];
-          for(int j = 0; j < width * 4; j+=4)
+          byte[] line = new byte[height * 4];
+          for(int j = 0; j < height * 4; j+=4)
           {
             Color result = GetPixel(fs);
             line[j] = result.R;
