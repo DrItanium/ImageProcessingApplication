@@ -22,7 +22,7 @@ namespace Formats.Binary
      * form new
      * "{0}" "Text" imbue
      * label new
-     * "widthLabel" "Width" imbue
+     * "widthLabel" "Name" imbue
      * "Image Width" "Text" imbue
      * 13 12 point "Location" imbue
      * 63 13 size "Size" imbue
@@ -37,7 +37,7 @@ namespace Formats.Binary
     { 
       get 
       { 
-        return string.Format("form new \"{0}\" \"Text\" imbue label new \"widthLabel\" \"Width\" imbue \"Image Width\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue textbox new \"width\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return", Name);
+        return string.Format("form new \"{0}\" \"Text\" imbue label new \"widthLabel\" \"Name\" imbue \"Image Width\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue textbox new \"width\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return", Name);
       } 
     }
     public override string FilterString { get { return "*.*"; } }
