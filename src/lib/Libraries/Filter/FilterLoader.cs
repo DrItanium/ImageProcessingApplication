@@ -9,7 +9,7 @@ using Libraries.Messaging;
 
 namespace Libraries.Filter
 {
-  public class Initiator : MarshalByRefObject, IPluginLoader 
+  public class Initiator : MarshalByRefObject, IPluginLoader<Tuple<string,string,Guid>>
   {
     private Tuple<string, string, Guid>[] boundaryTuples;
     public Tuple<string, string, Guid>[] DesiredPluginInformation { get { return boundaryTuples; } }
