@@ -19,15 +19,16 @@ namespace FileFormats.StarTrek
     static Color[] palette = new Color[256];
     static StarTrekJudgementRitesBMPDefaultPaletteConverter()
     {
-
-      palette[0] = Color.Black;
-      palette[255] = Color.White;
-      for(int i = 1; i < 255; i++)
+      for(int i = 0; i < 256; i++)
       {
+        //recompute this relative to 8-bits
         int r = i >> 5; 
         int g = ((byte)(i << 3)) >> 5;
         int b = ((byte)(i << 6)) >> 6;
-        palette[i] = Color.FromArgb(255, r, g, b);
+        palette[i] = Color.FromArgb(255, 
+            (256 / (r + 1)), 
+            (256 / (g + 1), 
+            (256 / (b + 1));
       }
     }
     public override bool SupportsSaving { get { return false; } }
