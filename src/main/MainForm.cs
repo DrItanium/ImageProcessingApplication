@@ -90,7 +90,9 @@ namespace ImageProcessingApplication
         //use the filter features of openFileDialog to make it seamless where
         //this should go. 
       string path = openFileDialog1.FileName; 
-      int index = openFileDialog1.FilterIndex;
+      //starts at 1....I'm used to that in CLIPS, not C#
+      int index = openFileDialog1.FilterIndex - 1;
+      
       if(index == (fileFormatIndexConversion.Count - 1))
       {
         LoadFile(path); 
@@ -149,7 +151,8 @@ namespace ImageProcessingApplication
     private void SaveFile(object sender, CancelEventArgs e)
     {
         string path = saveFileDialog1.FileName;
-        int index = saveFileDialog1.FilterIndex;
+      //starts at 1....I'm used to that in CLIPS, not C#
+        int index = saveFileDialog1.FilterIndex - 1;
         if(index == fileFormatIndexConversion.Count - 1)
         {
           SaveFile(path);
