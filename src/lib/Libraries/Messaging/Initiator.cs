@@ -8,11 +8,8 @@ using System.Collections.Generic;
 
 namespace Libraries.Messaging
 {
-  public abstract class Initiator : TaggedObject 
+  public abstract class Initiator : MarshalByRefObject 
   {
-    protected TaggedObject(Guid id) : base(id) { }
-    protected TaggedObject() : base(Guid.NewGuid()) { }
-    
     public abstract Message Invoke(Message input);
   }
 }
