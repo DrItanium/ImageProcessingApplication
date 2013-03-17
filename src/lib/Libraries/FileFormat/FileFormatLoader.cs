@@ -9,3 +9,11 @@ using System.Linq;
 using Libraries.Messaging;
 using Frameworks.Plugin;
 
+
+namespace Libraries.FileFormat 
+{
+  public class FileFormatLoader : PluginLoader<FileFormatAttribute, FileFormatAssemblyAttribute>
+  {
+    public FileFormatLoader(string path) : base(path) { }
+  }
+}
