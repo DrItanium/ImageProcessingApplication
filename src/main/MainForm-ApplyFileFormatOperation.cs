@@ -83,7 +83,7 @@ namespace ImageProcessingApplication
               byte[] line = array[i];
               for(int j = 0; j < line.Length; j+=4)
               {
-                srcImage.SetPixel(i, j / 4, Color.FromArgb(line[i+3], line[i], line[i+1], line[i+2]));
+                srcImage.SetPixel(i, j / 4, Color.FromArgb(line[j+3], line[j], line[j+1], line[j+2]));
               }
             }
           }
