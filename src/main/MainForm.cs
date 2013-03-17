@@ -25,7 +25,8 @@ namespace ImageProcessingApplication
   public partial class MainForm : Form, IFilterCallback
   {
     //this list handles both app domains
-    private Dictionary<Guid, DynamicForm> dynamicForms;
+    private Dictionary<Guid, DynamicForm> dynamicFilterForms;
+    private Dictionary<Guid, DynamicForm> dynamicFileFormatForms;
     private Dictionary<string,FilterToolStripMenuItem> addedFilters;
     private List<Guid> fileFormatIndexConversion;
     private FormConstructionLanguage dynamicConstructor;
@@ -47,6 +48,7 @@ namespace ImageProcessingApplication
         "Libraries.Filter.dll",
         "Frameworks.Plugin.dll",
         "Libraries.Collections.dll",
+        "Libraries.FileFormat.dll",
         });
     public MainForm()
     {
@@ -54,11 +56,12 @@ namespace ImageProcessingApplication
       dynamicConstructor = new FormConstructionLanguage();
       pluginDomain = AppDomain.CreateDomain("Plugin Domain");
       id = Guid.NewGuid();
-      dynamicForms = new Dictionary<Guid, DynamicForm>();
+      dynamicFilterForms = new Dictionary<Guid, DynamicForm>();
       addedFilters = new Dictionary<string, FilterToolStripMenuItem>();
       //setup the file format conversion tools
       fileFormatDomain = AppDomain.CreateDomain("File Format Conversion Domain");
       fileFormatIndexConversion = new List<Guid>();
+      dynamicFileFormatForms = new Dictionary<Guid, DynamicForm>();
       InitializeComponent();
       SetupFilters();
       SetupFileFormats();

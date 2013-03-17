@@ -48,7 +48,7 @@ namespace ImageProcessingApplication
 				FilterToolStripMenuItem curr = new FilterToolStripMenuItem(targetGUID, this);
 				//make the form
 				if(form != null && !form.Equals(string.Empty)) 
-					dynamicForms.Add(targetGUID, dynamicConstructor.ConstructForm(form));
+					dynamicFilterForms.Add(targetGUID, dynamicConstructor.ConstructForm(form));
 				curr.Text = name;
 				curr.Name = string.Format("{0}FilterToolStripMenuItem", curr.Text.Replace(" ", "_").ToLower());
 				addedFilters.Add(curr.Name, curr);
@@ -76,7 +76,7 @@ namespace ImageProcessingApplication
 		}
 		private void UnloadFilters()
 		{
-			dynamicForms = new Dictionary<Guid, DynamicForm>();
+			dynamicFilterForms = new Dictionary<Guid, DynamicForm>();
 			filterContainer = null;
 			menuStrip1.SuspendLayout();
 			foreach(var v in addedFilters)
