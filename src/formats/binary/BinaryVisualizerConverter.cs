@@ -15,6 +15,7 @@ namespace Formats.Binary
 {
   public abstract class BinaryVisualConverter : FileFormatConverter
   {
+    public abstract int DivisorFactor { get; }
     public override bool SupportsLoading { get { return true; } }
     public override bool SupportsSaving { get { return false; } }
     /* -- Omnicron script for binary visual converter
@@ -39,6 +40,7 @@ namespace Formats.Binary
         return string.Format("form new \"{0}\" \"Text\" imbue label new \"widthLabel\" \"Width\" imbue \"Image Width\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue textbox new \"width\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return", Name);
       } 
     }
+    public override string FilterString { get { return "*.*"; } }
     protected BinaryVisualConverter(string name) : base(name) { }
 
     public override void Save(Hashtable input) { }
@@ -54,7 +56,7 @@ namespace Formats.Binary
       {
         byte[][] rawImage;
         int width = int.Parse((string)input["width"]);
-        int height = (int)Math.Floor((double)width / ((double)length / (double)GetDivisorFactor()));
+        int height = (int)Math.Floor((double)width / ((double)length / (double)DivisorFactor));
         rawImage = new byte[height][];
         for(int i = 0; i < height; i++)
         {
@@ -74,6 +76,5 @@ namespace Formats.Binary
       }
     }
     protected abstract Color GetPixel(FileStream fs);
-    protected abstract int GetDivisorFactor();
   }
 }
