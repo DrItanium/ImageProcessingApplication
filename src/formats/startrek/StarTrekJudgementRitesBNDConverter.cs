@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
 using System.Text;
@@ -27,7 +28,7 @@ namespace FileFormats.StarTrek
     {
       string path = (string)input["path"];
       //translate the pallette setup to the color pallette
-      using(FileStream fs = new FileStream(path, FileMode.Read)) 
+      using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read)) 
       {
         byte[] buildp = new byte[1024];
         Color[][] rawImage;
@@ -43,9 +44,16 @@ namespace FileFormats.StarTrek
         for(int i = 0; i < 256; i++) 
         {
           //RGBA
-          buildp[i * 4] = fs.ReadByte();
-          buildp[i * 4 + 1] = fs.ReadByte();
-          buildp[i * 4 + 2] = fs.ReadByte();
+          int r = fs.ReadByte();
+          int g = fs.ReadByte();
+          int b = fs.ReadByte();
+          if(r == -1 || g == -1 || b == -1) 
+          {
+            throw new ArgumentException("ERROR: Target file is not a valid BND file");
+          }
+          buildp[i * 4] = (byte)r;
+          buildp[i * 4 + 1] = (byte)g;
+          buildp[i * 4 + 2] = (byte)b;
           buildp[i * 4 + 3] = (byte)0;
         }
 
