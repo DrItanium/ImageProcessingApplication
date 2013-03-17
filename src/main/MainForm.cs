@@ -24,14 +24,17 @@ namespace ImageProcessingApplication
 {
   public partial class MainForm : Form, IFilterCallback
   {
+    //this list handles both app domains
     private Dictionary<Guid, DynamicForm> dynamicForms;
     private Dictionary<string,FilterToolStripMenuItem> addedFilters;
     private List<Guid> fileFormatIndexConversion;
     private FormConstructionLanguage dynamicConstructor;
     private Guid id;
     private System.Drawing.Bitmap srcImage, resultImage;
-    private AppDomain pluginDomain, fileFormatDomain;
+    private AppDomain pluginDomain;
+    private AppDomain fileFormatDomain;
     private IPluginLoader<Tuple<string,string,Guid>> filterContainer;
+    private IPluginLoader<Tuple<string,string,string,Guid>> fileFormatContainer;
     private List<string> blackList = new List<string>(new string[]
         {
         "Libraries.Messaging.dll",
@@ -58,6 +61,7 @@ namespace ImageProcessingApplication
       fileFormatIndexConversion = new List<Guid>();
       InitializeComponent();
       SetupFilters();
+      SetupFileFormats();
     }
     private void OpenImage(object sender, EventArgs e)
     {
