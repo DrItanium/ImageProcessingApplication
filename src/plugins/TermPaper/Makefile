@@ -9,12 +9,12 @@ sources := *.cs
 cmd_include := -r:
 bin_dir := ../../../bin
 lib_dir := ../../lib
-libs := -lib:$(lib_dir)/Libraries/Filter/ \
-		  -lib:$(lib_dir)/Libraries/Imaging/ \
-		  -lib:$(lib_dir)/Libraries/Messaging/ \
-		  -lib:$(lib_dir)/Frameworks/Plugin/ \
-		  -lib:$(lib_dir)/Libraries/Collections/ \
-		  -lib:$(lib_dir)/Libraries/Extensions/
+libs := -lib:$(lib_dir)/Filter/ \
+		  -lib:$(lib_dir)/Imaging/ \
+		  -lib:$(lib_dir)/Messaging/ \
+		  -lib:$(lib_dir)/Plugin/ \
+		  -lib:$(lib_dir)/Collections/ \
+		  -lib:$(lib_dir)/Extensions/
 
 cmd_libraries := -r:Libraries.Filter.dll\
 					  -r:Libraries.Imaging.dll\

@@ -15,10 +15,10 @@ cmd_libraries := -r:Libraries.Filter.dll\
 					  -r:System.Windows.Forms.dll\
 					  -r:System.Drawing.dll\
 					  -r:System.Data.dll
-options := -lib:$(lib_dir)/Libraries/Filter/ \
-			  -lib:$(lib_dir)/Libraries/Imaging/ \
-			  -lib:$(lib_dir)/Libraries/Messaging/ \
-			  -lib:$(lib_dir)/Frameworks/Plugin/ 
+options := -lib:$(lib_dir)/Filter/ \
+			  -lib:$(lib_dir)/Imaging/ \
+			  -lib:$(lib_dir)/Messaging/ \
+			  -lib:$(lib_dir)/Plugin/ 
 build: 
 	dmcs -optimize $(cmd_library) $(cmd_out) $(options) $(cmd_libraries) $(sources)
 debug: 

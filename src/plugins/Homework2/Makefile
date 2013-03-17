@@ -8,10 +8,10 @@ sources := *.cs
 cmd_include := -r:
 bin_dir := ../../../bin
 lib_dir := ../../lib
-libs := -lib:$(lib_dir)/Libraries/Filter/ \
-		  -lib:$(lib_dir)/Libraries/Imaging/ \
-		  -lib:$(lib_dir)/Libraries/Messaging/ \
-		  -lib:$(lib_dir)/Frameworks/Plugin/ 
+libs := -lib:$(lib_dir)/Filter/ \
+		  -lib:$(lib_dir)/Imaging/ \
+		  -lib:$(lib_dir)/Messaging/ \
+		  -lib:$(lib_dir)/Plugin/ 
 cmd_libraries := -r:Libraries.Filter.dll\
 					  -r:Libraries.Imaging.dll\
 					  -r:Frameworks.Plugin.dll\
