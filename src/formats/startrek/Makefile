@@ -15,7 +15,7 @@ cmd_libraries := -r:Libraries.FileFormat.dll\
 					  -r:System.Windows.Forms.dll\
 					  -r:System.Drawing.dll\
 					  -r:System.Data.dll
-options := -lib:$(lib_dir)/Filter/ \
+options := -lib:$(lib_dir)/FileFormat/ \
 			  -lib:$(lib_dir)/Imaging/ \
 			  -lib:$(lib_dir)/Messaging/ \
 			  -lib:$(lib_dir)/Plugin/ 
