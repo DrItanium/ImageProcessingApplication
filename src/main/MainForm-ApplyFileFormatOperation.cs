@@ -80,7 +80,7 @@ namespace ImageProcessingApplication
             srcImage = new Bitmap(array.Length, array[0].Length / 4);
             for(int i = 0; i < array.Length; i++)
             {
-              Color[] line = array[i];
+              byte[] line = array[i];
               for(int j = 0; j < line.Length; j+=4)
               {
                 srcImage.SetPixel(i, j / 4, Color.FromArgb(line[i+3], line[i], line[i+1], line[i+2]));

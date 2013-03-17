@@ -81,7 +81,7 @@ namespace FileFormats.StarTrek
         for(int i = 0; i < width; i++)
         {
           //reuse the tmpLine
-          byte[] line = new Color[height * 4];
+          byte[] line = new byte[height * 4];
           fs.Read(tmpLine,0,height);
           //now we play the conversion game
           for(int j = 0, k = 0; j < height; j++,k+=4)
