@@ -91,7 +91,7 @@ namespace ImageProcessingApplication
         catch(Exception ex)
         {
           Console.WriteLine(ex.StackTrace);
-          MessageBox.Show(string.Format("An error occured during a {0}-file operation.\n See console for stack dump", action));
+          MessageBox.Show(string.Format("An error occured during a {0}-file operation.\nMessage: {1}", action, ex.Message));
         }
       }
       else
