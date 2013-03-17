@@ -42,9 +42,9 @@ namespace Formats.Binary
     }
     public static Color ByteToColor(byte value)
     {
-        byte r = (byte)(result >> 5); 
-        byte g = (byte)(((byte)(result << 3)) >> 5);
-        byte b = (byte)(((byte)(result << 6)) >> 6);
+        byte r = (byte)(value >> 5); 
+        byte g = (byte)(((byte)(value << 3)) >> 5);
+        byte b = (byte)(((byte)(value << 6)) >> 6);
         return Color.FromArgb(255, 
             ThreeBitsAs8Bits(r),
             ThreeBitsAs8Bits(g),
@@ -52,9 +52,9 @@ namespace Formats.Binary
     }
     public static Color UshortTo565(ushort value)
     {
-      byte r = (byte)(result >> 11);
-      byte g = (byte)(((ushort)(result << 5)) >> 10);
-      byte b = (byte)(((ushort)(result << 11)) >> 11);
+      byte r = (byte)(value >> 11);
+      byte g = (byte)(((ushort)(value << 5)) >> 10);
+      byte b = (byte)(((ushort)(value << 11)) >> 11);
       return Color.FromArgb(255,
           As8Bits(r, 5),
           As8Bits(g, 6),
@@ -81,9 +81,8 @@ namespace Formats.Binary
       }
       ushort lower = (ushort)result;
       ushort upper = (ushort)result2;
-      upper *= (ushort)256;
-      ushort value = upper + lower;
-      return Conversion.UshortTo565(upper + lower);
+      upper = (ushort)(upper * (ushort)256);
+      return Conversion.UshortTo565((ushort)(upper + lower));
     }
 
   }
@@ -107,9 +106,8 @@ namespace Formats.Binary
       }
       ushort lower = (ushort)result2;
       ushort upper = (ushort)result;
-      upper *= (ushort)256;
-      ushort value = upper + lower;
-      return Conversion.UshortTo565(upper + lower);
+      upper = (ushort)(upper * (ushort)256);
+      return Conversion.UshortTo565((ushort)(upper + lower));
     }
 
   }
