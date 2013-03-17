@@ -65,7 +65,7 @@ namespace ImageProcessingApplication
 				if(!blackList.Exists((x) => v.Contains(x)))
 					paths.Add(v);
 			filterContainer = (IPluginLoader<Tuple<string,string,Guid>>)pluginDomain.CreateInstanceAndUnwrap(
-					full.FullName, "Libraries.Filter.Initiator",
+					full.FullName, "Libraries.Filter.FilterInitiator",
 					true, 0, null, new object[] { paths.ToArray() }, CultureInfo.CurrentCulture, null);
 			LoadFilters();
 		}
