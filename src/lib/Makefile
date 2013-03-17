@@ -1,4 +1,14 @@
-SUBDIRS = Collections Extensions Imaging LexicalAnalysis Messaging Operation Parsing Starlight Tycho Plugin Filter FileFormat
+SUBDIRS = Extensions \
+			 Collections \
+			 LexicalAnalysis \
+			 Messaging \
+			 Starlight \
+			 Imaging \
+			 Tycho \
+			 Parsing \
+			 Plugin \
+			 Filter \
+			 FileFormat
 
 .PHONY: install install-debug clean subdirs $(SUBDIRS)
 
