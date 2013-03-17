@@ -12,12 +12,27 @@ using System.Drawing;
 
 namespace FileFormats.StarTrek
 {
-  [FileFormat("Star Trek JudgmentRites BND (*.BGD)")]
-    public class StarTrekJudgementRitesBNDConverter : FileFormatConverter
+  [FileFormat("Star Trek Judgment Rites Bitmap [Default Palette] (*.BMP)")]
+    public class StarTrekJudgementRitesBMPDefaultPaletteConverter : FileFormatConverter
   {
+    //let's create a standard palette RGB => 332 layout
+    static Color[] palette = new Color[256];
+    static StarTrekJudgementRitesBMPDefaultPaletteConverter()
+    {
+
+      palette[0] = Color.Black;
+      palette[255] = Color.White;
+      for(int i = 1; i < 255; i++)
+      {
+        int r = i >> 5; 
+        int g = ((byte)(i << 3)) >> 5;
+        int b = ((byte)(i << 6)) >> 6;
+        palette[i] = Color.FromArgb(255, r, g, b);
+      }
+    }
     public override bool SupportsSaving { get { return false; } }
     public override bool SupportsLoading { get { return true; } }
-    public override string FilterString { get { return "*.BGD"; } }
+    public override string FilterString { get { return "*.BMP"; } }
     public override string FormCode { get { return null; } }
     public StarTrekJudgementRitesBNDConverter(string name) : base(name)  { }
     public override void Save(Hashtable input) 
@@ -30,9 +45,7 @@ namespace FileFormats.StarTrek
       //translate the pallette setup to the color pallette
       using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read)) 
       {
-        byte[] buildp = new byte[1024];
         byte[][] rawImage;
-        Color[] palette = new Color[256];
 
         //translation code base came from
         //https://code.google.com/p/scummvm-startrek/source/browse/trunk/graphics.cpp
@@ -41,37 +54,6 @@ namespace FileFormats.StarTrek
         //C#
 
         //palette creation
-        for(int i = 0; i < 256; i++) 
-        {
-          //RGBA
-          int r = fs.ReadByte();
-          int g = fs.ReadByte();
-          int b = fs.ReadByte();
-          if(r == -1 || g == -1 || b == -1) 
-          {
-            throw new ArgumentException("ERROR: Target file is not a valid BND file");
-          }
-          buildp[i * 4] = (byte)r;
-          buildp[i * 4 + 1] = (byte)g;
-          buildp[i * 4 + 2] = (byte)b;
-          buildp[i * 4 + 3] = (byte)0;
-        }
-
-        for(int i = 0; i < 256; i++)
-        {
-          for(int j = 0; j < 3; j++)
-          {
-            buildp[i * 4 + j] = (byte)(buildp[i * 4 + j] << 2);
-          }
-        }
-        //update the palette
-        for(int i = 0, j = 0; i < 256; i++, j+=4) 
-        {
-            palette[i] = Color.FromArgb(buildp[j+3],
-                buildp[j],
-                buildp[j+1],
-                buildp[j+2]);
-        }
         int xoffset = ReadLittleEndianUShort(fs);
         int yoffset = ReadLittleEndianUShort(fs);
         int width = ReadLittleEndianUShort(fs);
@@ -79,7 +61,7 @@ namespace FileFormats.StarTrek
         //we can use some heuristics to prevent some really wierd resolutions
         if(width >= 1024 || height >= 1024)
         {
-          throw new ArgumentException("Given resolution is too large to be a stjr BGD file");
+          throw new ArgumentException("Given resolution is too large to be a stjr BMP file");
         }
         rawImage = new byte[width][];
         byte[] tmpLine = new byte[height];
