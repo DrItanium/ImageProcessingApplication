@@ -7,16 +7,16 @@ cmd_compiler := dmcs
 sources := *.cs Properties/*.cs
 def_mono := -d:MONO_NET
 bin_dir := ../../bin
-libs := -lib:../lib/Frameworks/Plugin/ \
-        -lib:../lib/Libraries/Collections/ \
-        -lib:../lib/Libraries/Extensions/ \
-        -lib:../lib/Libraries/Filter/ \
-        -lib:../lib/Libraries/Imaging/ \
-        -lib:../lib/Libraries/LexicalAnalysis/ \
-        -lib:../lib/Libraries/Messaging/ \
-        -lib:../lib/Libraries/Parsing/ \
-        -lib:../lib/Libraries/Starlight/ \
-        -lib:../lib/Libraries/Tycho/ 
+libs := -lib:../lib/Plugin/ \
+        -lib:../lib/Collections/ \
+        -lib:../lib/Extensions/ \
+        -lib:../lib/Filter/ \
+        -lib:../lib/Imaging/ \
+        -lib:../lib/LexicalAnalysis/ \
+        -lib:../lib/Messaging/ \
+        -lib:../lib/Parsing/ \
+        -lib:../lib/Starlight/ \
+        -lib:../lib/Tycho/ 
 cmd_libraries := -r:Libraries.Collections.dll\
 					  -r:Libraries.Extensions.dll\
 					  -r:Libraries.Filter.dll\
