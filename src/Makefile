@@ -1,19 +1,17 @@
-root := $(CURDIR)
-lib:=$(root)/lib
-main:=$(root)/main
-plugins:=$(root)/plugins
+SUBDIRS = lib main plugins formats
+
+.PHONY: install install-debug clean subdirs $(SUBDIRS)
 
 install:
-	cd $(lib) && $(MAKE) install
-	cd $(main) && $(MAKE) install
-	cd $(plugins) && $(MAKE) install
+	for d in $(SUBDIRS); do($(MAKE) -C $$d install); done
 
 install-debug:
-	cd $(lib) && $(MAKE) install-debug
-	cd $(main) && $(MAKE) install-debug
-	cd $(plugins) && $(MAKE) install-debug
+	for d in $(SUBDIRS); do($(MAKE) -C $$d install-debug); done
 
-clean: 
-	cd $(lib) && $(MAKE) clean
-	cd $(main) && $(MAKE) clean
-	cd $(plugins) && $(MAKE) clean
+clean:
+	for d in $(SUBDIRS); do($(MAKE) -C $$d clean ); done
+
+subdirs: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@
