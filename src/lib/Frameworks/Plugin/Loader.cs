@@ -11,7 +11,7 @@ namespace Frameworks.Plugin
 {
   public class PluginLoader<GenericPluginAttribute,
          GenericPluginAssemblyAttribute> : MarshalByRefObject 
-    where GenericPluginAttribute : PluginAssembly
+    where GenericPluginAttribute : PluginAttribute
     where GenericPluginAssemblyAttribute : PluginAssemblyAttribute
   {
     private Dictionary<Guid, Plugin> dict;
