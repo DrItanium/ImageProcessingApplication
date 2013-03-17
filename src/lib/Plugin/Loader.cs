@@ -25,7 +25,7 @@ namespace Frameworks.Plugin
       objectID = Guid.NewGuid();
       dict = new Dictionary<Guid, Plugin>();
       Assembly asm = Assembly.LoadFile(assembly);
-      if(asm.IsDefined(typeof(PluginAssemblyAttribute), false))
+      if(asm.IsDefined(typeof(GenericPluginAssemblyAttribute), false))
       {
         GenericPluginAssemblyAttribute paa = (GenericPluginAssemblyAttribute)asm.GetCustomAttributes(typeof(GenericPluginAssemblyAttribute), false)[0];
         Name = paa.Name;
@@ -34,7 +34,7 @@ namespace Frameworks.Plugin
         else
           Author = string.Empty;
         var query = from x in asm.GetTypes()
-          where x.IsDefined(typeof(PluginAttribute), false)
+          where x.IsDefined(typeof(GenericPluginAttribute), false)
           select new 
           {
             Header = x.GetCustomAttributes(typeof(GenericPluginAttribute), false)[0] as GenericPluginAttribute,
