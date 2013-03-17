@@ -12,10 +12,14 @@ using System.Drawing;
 
 namespace Formats.Binary
 {
-  [FileFormat("Visualize binary file [32-bit LE] (*.*)")]
-    public class LittleEndian32BitConverter : BinaryVisualConverter
+  public abstract class Base32BitConverter : BinaryVisualConverter
   {
-    public override int DivisorFactor { get { return 2; } }
+    public override int DivisorFactor { get { return 4; } }
+    protected Base32BitConverter(string name) : base(name) { }
+  }
+  [FileFormat("Visualize binary file [32-bit LE] (*.*)")]
+    public class LittleEndian32BitConverter : Base32BitConverter 
+  {
     public LittleEndian32BitConverter(string name) : base(name) { }
     protected override Color GetPixel(FileStream fs)
     {
@@ -58,9 +62,8 @@ namespace Formats.Binary
 
   }
   [FileFormat("Visualize binary file [32-bit BE] (*.*)")]
-    public class BigEndian32BitConverter : BinaryVisualConverter
+    public class BigEndian32BitConverter : Base32BitConverter 
   {
-    public override int DivisorFactor { get { return 2; } }
     public BigEndian32BitConverter(string name) : base(name) { }
     protected override Color GetPixel(FileStream fs)
     {
