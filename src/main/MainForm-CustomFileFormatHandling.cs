@@ -26,7 +26,7 @@ namespace ImageProcessingApplication
 	{
     private void LoadFileFormats() 
     {
-      StringBuilder filterString = new StringBuilder();
+      StringBuilder sb = new StringBuilder();
       foreach(var c in fileFormatContainer.DesiredPluginInformation)
       {
         string name = c.Item1;
@@ -36,10 +36,10 @@ namespace ImageProcessingApplication
 
         if(form != null && !form.Equals(string.Empty)) 
         {
-          dynamicForms.Add(targetGuid, dynamicConstructor.ConstructForm(form));
+          dynamicFileFormatForms.Add(targetGuid, dynamicConstructor.ConstructForm(form));
         }
         //build the filter for the target element 
-        filterString.Append(string.Format("{0}|{1}|", name, filter));
+        sb.Append(string.Format("{0}|{1}|", name, filter));
         fileFormatIndexConversion.Add(targetGuid);
       }
       //the all files is always the last item
@@ -48,7 +48,7 @@ namespace ImageProcessingApplication
       openFileDialog1.Filter = sb.ToString();
       saveFileDialog1.Filter = sb.ToString();
     }
-    private void SetupFileFilters() 
+    private void SetupFileFormats() 
     {
       fileFormatIndexConversion.Clear();
       Assembly full = Assembly.LoadFile(Path.GetFullPath("Libraries.FileFormat.dll"));
@@ -68,13 +68,13 @@ namespace ImageProcessingApplication
       LoadFileFormats();
 
     }
-    private void ReloadFileFilters() 
+    private void ReloadFileFormats() 
     {
-      UnloadFileFilters();
-      SetupFileFilters();
+      UnloadFileFormats();
+      SetupFileFormats();
 
     }
-    private void UnloadFileFilters() 
+    private void UnloadFileFormats() 
     {
       dynamicFileFormatForms = new Dictionary<Guid, DynamicForm>();
       fileFormatContainer = null; 

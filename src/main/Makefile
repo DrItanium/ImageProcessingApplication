@@ -16,7 +16,8 @@ libs := -lib:../lib/Plugin/ \
         -lib:../lib/Messaging/ \
         -lib:../lib/Parsing/ \
         -lib:../lib/Starlight/ \
-        -lib:../lib/Tycho/ 
+        -lib:../lib/Tycho/ \
+		  -lib:../lib/FileFormat/
 cmd_libraries := -r:Libraries.Collections.dll\
 					  -r:Libraries.Extensions.dll\
 					  -r:Libraries.Filter.dll\
@@ -27,6 +28,7 @@ cmd_libraries := -r:Libraries.Collections.dll\
 					  -r:Libraries.Parsing.dll\
 					  -r:Libraries.Starlight.dll\
 					  -r:Libraries.Tycho.dll\
+					  -r:Libraries.FileFormat.dll\
 					  -r:System.Windows.Forms.dll\
 					  -r:System.Drawing.dll\
 					  -r:System.Data.dll

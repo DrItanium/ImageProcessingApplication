@@ -24,12 +24,12 @@ namespace ImageProcessingApplication
 {
   public partial class MainForm 
   {
-    private Message QueryInfo(Guid target, string action) 
+    private msg.Message QueryInfo(Guid target, string action) 
     {
       Hashtable ht = new Hashtable();
-      ht["action"] = "load";
-      msg.Message m = new msg.Message(Guid. NewGuid(), id, target,
-          msg.MessageOperationType,Execute, ht);
+      ht["action"] = action;
+      msg.Message m = new msg.Message(Guid.NewGuid(), id, target,
+          msg.MessageOperationType.Execute, ht);
       return fileFormatContainer.Invoke(m);
     }
     private bool CanLoad(Guid target) 
@@ -59,12 +59,12 @@ namespace ImageProcessingApplication
         Hashtable resultant = new Hashtable();
         if(dynamicFileFormatForms.ContainsKey(target)) 
         {
-          dynamicForms[target].ShowDialog();
-          if(!dynamicForms[target].ShouldApply)
+          dynamicFileFormatForms[target].ShowDialog();
+          if(!dynamicFileFormatForms[target].ShouldApply)
           {
             return;
           }
-          resultant = dynamicForms[target].StorageCells;
+          resultant = dynamicFileFormatForms[target].StorageCells;
         }
         resultant["action"] = action;
         resultant["path"] = path;
@@ -85,7 +85,7 @@ namespace ImageProcessingApplication
                 srcImage.SetPixel(i, j, line[j]);
               }
             }
-            srcImage.Visible = true;
+            source.Visible = true;
           }
         }
         catch(Exception ex)

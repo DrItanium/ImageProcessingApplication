@@ -29,12 +29,12 @@ namespace ImageProcessingApplication
 			if (srcImage != null)
 			{
 				Hashtable resultant = new Hashtable(); 
-				if(dynamicForms.ContainsKey(target))
+				if(dynamicFilterForms.ContainsKey(target))
 				{
-					dynamicForms[target].ShowDialog();
-					if(!dynamicForms[target].ShouldApply)
+					dynamicFilterForms[target].ShowDialog();
+					if(!dynamicFilterForms[target].ShouldApply)
 						return; //get out of here if they hit cancel
-					resultant = dynamicForms[target].StorageCells;
+					resultant = dynamicFilterForms[target].StorageCells;
 				}
 				msg.Message m = new msg.Message(Guid.NewGuid(), id, target, 
 						msg.MessageOperationType.Execute, resultant);
