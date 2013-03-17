@@ -75,14 +75,15 @@ namespace ImageProcessingApplication
           var result = fileFormatContainer.Invoke(m);
           if(action.Equals("load")) 
           {
-            var array = (Color[][])result.Value;
-            srcImage = new Bitmap(array.Length, array[0].Length);
+            var array = (byte[][])result.Value;
+            //we could always just return the RGBA value across the boundaries
+            srcImage = new Bitmap(array.Length, array[0].Length / 4);
             for(int i = 0; i < array.Length; i++)
             {
               Color[] line = array[i];
-              for(int j = 0; j < line.Length; j++)
+              for(int j = 0; j < line.Length; j+=4)
               {
-                srcImage.SetPixel(i, j, line[j]);
+                srcImage.SetPixel(i, j / 4, Color.FromArgb(line[i+3], line[i], line[i+1], line[i+2]));
               }
             }
             source.Visible = true;
