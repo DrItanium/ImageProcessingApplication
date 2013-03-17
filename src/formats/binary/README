@@ -1,0 +1,13 @@
+This converter module is tasked with converting binary information into a
+visual representation. Each of the converters creates pixels from different
+data sizes.
+
+The supported pixel formats are
+1) each byte is a pixel
+2) each 16-bit LE value 
+3) each 16-bit BE value
+4) each 32-bit LE value
+5) each 32-bit BE value
+6) each 64-bit LE value
+7) each 64-bit BE value
+
