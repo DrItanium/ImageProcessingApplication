@@ -9,7 +9,10 @@ using Libraries.Messaging;
 
 namespace Frameworks.Plugin
 {
-  public class PluginLoader : MarshalByRefObject 
+  public class PluginLoader<GenericPluginAttribute,
+         GenericPluginAssemblyAttribute> : MarshalByRefObject 
+    where GenericPluginAttribute : PluginAssembly
+    where GenericPluginAssemblyAttribute : PluginAssemblyAttribute
   {
     private Dictionary<Guid, Plugin> dict;
     private Guid objectID;
@@ -24,7 +27,7 @@ namespace Frameworks.Plugin
       Assembly asm = Assembly.LoadFile(assembly);
       if(asm.IsDefined(typeof(PluginAssemblyAttribute), false))
       {
-        PluginAssemblyAttribute paa = (PluginAssemblyAttribute)asm.GetCustomAttributes(typeof(PluginAssemblyAttribute), false)[0];
+        GenericPluginAssemblyAttribute paa = (GenericPluginAssemblyAttribute)asm.GetCustomAttributes(typeof(GenericPluginAssemblyAttribute), false)[0];
         Name = paa.Name;
         if(paa.Author != null && !paa.Author.Equals(string.Empty))
           Author = paa.Author;
@@ -34,7 +37,7 @@ namespace Frameworks.Plugin
           where x.IsDefined(typeof(PluginAttribute), false)
           select new 
           {
-            Header = x.GetCustomAttributes(typeof(PluginAttribute), false)[0] as PluginAttribute,
+            Header = x.GetCustomAttributes(typeof(GenericPluginAttribute), false)[0] as GenericPluginAttribute,
                    Type = x,
           };
         foreach(var v in query)
