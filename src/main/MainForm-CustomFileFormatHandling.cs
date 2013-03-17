@@ -45,6 +45,8 @@ namespace ImageProcessingApplication
       //the all files is always the last item
       fileFormatIndexConversion.Add(id);
       sb.Append("All Files (*.*)|*.*");
+      openFileDialog1.Filter = sb.ToString();
+      saveFileDialog1.Filter = sb.ToString();
     }
     private void SetupFileFilters() 
     {

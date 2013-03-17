@@ -85,20 +85,20 @@ namespace ImageProcessingApplication
       //we need to define a new format to make it possible to define custom
       //file format parsers. Obviously, these file parsers have to be in a
       //separate application domain to make it all worthwhile
-      try
-      {
         //get the path of the item and send it over to the application domain
         //for processing. If possible, I would like to set it up so that we can
         //use the filter features of openFileDialog to make it seamless where
         //this should go. 
-
-        string path = openFileDialog1.FileName;
-        srcImage = new Bitmap(Image.FromFile(path));
-        source.Visible = true;
-      }
-      catch (Exception)
+      string path = openFileDialog1.FileName; 
+      int index = openFileDialog1.FilterIndex;
+      if(index == (fileFormatIndexConversion.Count - 1))
       {
-        MessageBox.Show("Error: Given file isn't valid");
+        LoadFile(path); 
+      }
+      else
+      {
+        ApplyToFileFormatOperation(sender, e, fileFormatIndexConversion[index],
+            "load", path);
       }
     }
 
@@ -133,6 +133,7 @@ namespace ImageProcessingApplication
     private void onReloadClicked(object sender, EventArgs e)
     {
       ReloadFilters(); ///Wheee!!!
+      ReloadFileFormats();
     }
     private void RedrawPictures(bool src, bool dest)
     {
@@ -147,24 +148,19 @@ namespace ImageProcessingApplication
     }
     private void SaveFile(object sender, CancelEventArgs e)
     {
-      try
-      {
         string path = saveFileDialog1.FileName;
-        if(result != null) {
-          result.TargetImage.Save(path);
-        } else {
-          MessageBox.Show("Error: Can't Save Resultant Image. None Exists!");
+        int index = saveFileDialog1.FilterIndex;
+        if(index == fileFormatIndexConversion.Count - 1)
+        {
+          SaveFile(path);
         }
-      }
-      catch (Exception)
-      {
-        MessageBox.Show("Error: There was a problem saving the file. Check your permissions");
-      } 
-      finally 
-      {
+        else
+        {
+          ApplyToFileFormatOperation(sender, e, fileFormatIndexConversion[index],
+              "save", path);
+        }
         //clear out the file name dialog
         saveFileDialog1.FileName = string.Empty;
-      }
     }
   }
 }

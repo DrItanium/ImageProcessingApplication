@@ -24,43 +24,79 @@ namespace ImageProcessingApplication
 {
   public partial class MainForm 
   {
+    private Message QueryInfo(Guid target, string action) 
+    {
+      Hashtable ht = new Hashtable();
+      ht["action"] = "load";
+      msg.Message m = new msg.Message(Guid. NewGuid(), id, target,
+          msg.MessageOperationType,Execute, ht);
+      return fileFormatContainer.Invoke(m);
+    }
+    private bool CanLoad(Guid target) 
+    {
+      return (bool)QueryInfo(target, "supports-load").Value;
+    }
+    private bool CanSave(Guid target)
+    {
+      return (bool)QueryInfo(target, "supports-save").Value;
+    }
+    private bool CanPerformOperation(Guid target, string action) 
+    {
+      switch(action.ToLower()) 
+      {
+        case "load":
+          return CanLoad(target);
+        case "save":
+          return CanSave(target);
+        default:
+          return false;
+      }
+    }
     private void ApplyToFileFormatOperation(object sender, EventArgs e, Guid target, string action, string path) 
     {
-      Hashtable resultant = new Hashtable();
-      if(dynamicFileFormatForms.ContainsKey(target)) 
+      if(CanPerformOperation(target, action)) 
       {
-        dynamicForms[target].ShowDialog();
-        if(!dynamicForms[target].ShouldApply)
+        Hashtable resultant = new Hashtable();
+        if(dynamicFileFormatForms.ContainsKey(target)) 
         {
-          return;
-        }
-        resultant = dynamicForms[target].StorageCells;
-      }
-      resultant["action"] = action;
-      resultant["path"] = path;
-      msg.Message m = new msg.Message(Guid.NewGuid(), id, target, 
-          msg.MessageOperationType.Execute, resultant);
-      try
-      {
-        var result = fileFormatContainer.Invoke(m);
-        if(action.Equals("load")) 
-        {
-          var array = (Color[][])result.Value;
-          srcImage = new Bitmap(array.Length, array[0].Length);
-          for(int i = 0; i < array.Length; i++)
+          dynamicForms[target].ShowDialog();
+          if(!dynamicForms[target].ShouldApply)
           {
-            Color[] line = array[i];
-            for(int j = 0; j < line.Length; j++)
+            return;
+          }
+          resultant = dynamicForms[target].StorageCells;
+        }
+        resultant["action"] = action;
+        resultant["path"] = path;
+        msg.Message m = new msg.Message(Guid.NewGuid(), id, target, 
+            msg.MessageOperationType.Execute, resultant);
+        try
+        {
+          var result = fileFormatContainer.Invoke(m);
+          if(action.Equals("load")) 
+          {
+            var array = (Color[][])result.Value;
+            srcImage = new Bitmap(array.Length, array[0].Length);
+            for(int i = 0; i < array.Length; i++)
             {
-              srcImage.SetPixel(i, j, line[j]);
+              Color[] line = array[i];
+              for(int j = 0; j < line.Length; j++)
+              {
+                srcImage.SetPixel(i, j, line[j]);
+              }
             }
+            srcImage.Visible = true;
           }
         }
+        catch(Exception ex)
+        {
+          Console.WriteLine(ex.StackTrace);
+          MessageBox.Show(string.Format("An error occured during a {0}-file operation.\n See console for stack dump", action));
+        }
       }
-      catch(Exception ex)
+      else
       {
-        Console.WriteLine(ex.StackTrace);
-        MessageBox.Show(string.Format("An error occured during a {0}-file operation.\n See console for stack dump", action));
+        MessageBox.Show(string.Format("Operation {0} is not supported", action));
       }
     }
   }
