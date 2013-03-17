@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using System.IO;
 using System.Linq;
+using System.Drawing;
 using Libraries.Messaging;
 using Frameworks.Plugin;
 
@@ -13,13 +14,17 @@ namespace Libraries.FileFormat
 {
   public abstract class FileFormatConverter : Plugin 
   {
+    public abstract string FilterString { get; }
     public abstract string FormCode { get; }
-    protected FileFormatConverter(string name, string filter) : base(string.Format("{0}|{1}", name,filter)) { }
-    public abstract byte[][][] Load(Hashtable input);
+    protected FileFormatConverter(string name) : base(name) { }
+    public abstract Color[][] Process(Hashtable input);
     public override Message Invoke(Message input) 
     {
-      return new Message(Guid.NewGuid(), ObjectID, input.Sender, MessageOperationType.Return,
-          Load((Hashtable)input.Value));
+      return new Message(Guid.NewGuid(), 
+          ObjectID, 
+          input.Sender, 
+          MessageOperationType.Return,
+          Process((Hashtable)input.Value));
     }
   }
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
