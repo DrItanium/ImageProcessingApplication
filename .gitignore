@@ -2,3 +2,4 @@ bin/
 *.mdb
 *.dll
 *.exe
+*.swp
