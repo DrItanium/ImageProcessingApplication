@@ -9,37 +9,35 @@ using Libraries.Messaging;
 
 namespace Libraries.Filter
 {
-  public class Initiator : MarshalByRefObject, IPluginLoader<Tuple<string,string,Guid>>
+  public class FilterInitiator : PluginInitiator<Tuple<string,string,Guid>>
   {
     private Tuple<string, string, Guid>[] boundaryTuples;
-    public Tuple<string, string, Guid>[] DesiredPluginInformation { get { return boundaryTuples; } }
-    private Dictionary<Guid, Guid> translationLayer;
-    public Initiator(string[] paths)
+    public override Tuple<string, string, Guid>[] DesiredPluginInformation { get { return boundaryTuples; } }
+    public Initiator(string[] paths) : base()
     {
-        translationLayer = new Dictionary<Guid, Guid>(); 
         List<Tuple<string, string, Guid>> r = new List<Tuple<string, string, Guid>>();
         foreach(string str in paths)
         {
-          var guids = FilterLoader.LoadPlugins(str);
+          var guids = FilterLoaderBackingStore.LoadPlugins(str);
           foreach(var guid in guids.Item2)
           {
-            translationLayer[guid] = guids.Item1;
-            r.Add(FilterLoader.GetPlugin(guids.Item1, guid));
+            this[guid] = guids.Item1;
+            r.Add(FilterLoaderBackingStore.GetPlugin(guids.Item1, guid));
           }
         }
         boundaryTuples = r.ToArray();
     }
     public Message Invoke(Message input)
     {
-      return FilterLoader.Invoke(translationLayer[input.Receiver], input);
+      return FilterLoaderBackingStore.Invoke(this[input.Receiver], input);
     }
   }
-  public static class FilterLoader
+  public static class FilterLoaderBackingStore
   {
-    private static Dictionary<Guid, PluginLoader> pluginEnvironments;
+    private static Dictionary<Guid, FilterLoader> pluginEnvironments;
     static FilterLoader()
     {
-      pluginEnvironments = new Dictionary<Guid, PluginLoader>();
+      pluginEnvironments = new Dictionary<Guid, FilterLoader>();
     }
     public static Message Invoke(Guid targetPluginGroup, Message input)
     {
@@ -52,9 +50,20 @@ namespace Libraries.Filter
     }
     public static Tuple<Guid, Guid[]> LoadPlugins(string path)
     {
-      PluginLoader pl = new PluginLoader(path);
+      FilterLoader pl = new FilterLoader(path);
       pluginEnvironments.Add(pl.ObjectID, pl); 
       return new Tuple<Guid,Guid[]>(pl.ObjectID, pl.Names.ToArray());
     }
+  }
+  public sealed class FilterAssemblyAttribute : PluginAssemblyAttribute 
+  {
+    public FilterAssemblyAttribute(string name) : base(name) 
+    {
+
+    }
+  }
+  public sealed class FilterLoader : PluginLoader<FilterAttribute, FilterAssemblyAttribute> 
+  {
+    public FilterLoader(string path) : base(path) { } 
   }
 }
