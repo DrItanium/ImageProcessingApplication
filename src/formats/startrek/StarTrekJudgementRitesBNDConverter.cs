@@ -24,14 +24,14 @@ namespace FileFormats.StarTrek
     {
       //do nothing
     }
-    public override Color[][] Load(Hashtable input) 
+    public override byte[][] Load(Hashtable input) 
     {
       string path = (string)input["path"];
       //translate the pallette setup to the color pallette
       using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read)) 
       {
         byte[] buildp = new byte[1024];
-        Color[][] rawImage;
+        byte[][] rawImage;
         Color[] palette = new Color[256];
 
         //translation code base came from
@@ -76,17 +76,21 @@ namespace FileFormats.StarTrek
         int yoffset = ReadLittleEndianUShort(fs);
         int width = ReadLittleEndianUShort(fs);
         int height = ReadLittleEndianUShort(fs);
-        rawImage = new Color[width][];
+        rawImage = new byte[width][];
         byte[] tmpLine = new byte[height];
         for(int i = 0; i < width; i++)
         {
           //reuse the tmpLine
-          Color[] line = new Color[height];
+          byte[] line = new Color[height * 4];
           fs.Read(tmpLine,0,height);
           //now we play the conversion game
-          for(int j = 0; j < height; j++)
+          for(int j = 0, k = 0; j < height; j++,k+=4)
           {
-            line[j] = palette[tmpLine[j]];
+            Color value = palette[tmpLine[j]];
+            line[k] = (byte)value.R;
+            line[k + 1] = (byte)value.G;
+            line[k + 2] = (byte)value.B;
+            line[k + 3] = (byte)value.A;
           }
           rawImage[i] = line;
         }
