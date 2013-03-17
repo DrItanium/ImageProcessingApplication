@@ -15,3 +15,7 @@ bug reports.
 
 I really cleaned up this program for public consumption to make it far less of
 a pain in the ass to compile and use. 
+
+Since 2013-03-16, this program also supports the dynamic declaration of custom
+file format loaders and savers. This feature is implemented as a second
+application domain. 
