@@ -16,7 +16,7 @@ namespace Formats.Binary
   [FileFormat("Visualize binary file [bytes] (*.*)")]
   public class ByteVisualizer : BinaryVisualConverter
   {
-    protected override int DivisorFactor { get { return 1; } }
+    public override int DivisorFactor { get { return 1; } }
     public ByteVisualizer(string name) : base(name) { }
     protected override Color GetPixel(FileStream fs)
     {
