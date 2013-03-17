@@ -18,11 +18,11 @@ debug:
 #	$(cmd_compiler) $(options) $(cmd_library) $(cmd_out) $(sources)
 
 install: build
-	cp $(name) ../../../../bin/
+	cp $(name) ../../../bin/
 
 install-debug: debug
-	cp $(name) ../../../../bin/
-	cp $(db_name) ../../../../bin/
+	cp $(name) ../../../bin/
+	cp $(db_name) ../../../bin/
 
 clean:
 	-rm -f $(name) $(db_name)

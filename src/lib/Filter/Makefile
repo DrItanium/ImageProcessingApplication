@@ -8,7 +8,7 @@ sources := *.cs
 lib_dir := -lib:../LexicalAnalysis/ \
            -lib:../Collections/ \
            -lib:../Extensions/ \
-			  -lib:../../Frameworks/Plugin/ \
+			  -lib:../Plugin/ \
 			  -lib:../Starlight/ \
 			  -lib:../Tycho/ \
 			  -lib:../LexicalAnalysis/ \
@@ -36,11 +36,11 @@ debug:
 	$(cmd_compiler) -debug $(options) $(lib_dir) $(cmd_library) $(cmd_out) $(sources)
 
 install: build
-	cp $(name) ../../../../bin/
+	cp $(name) ../../../bin/
 
 install-debug: debug
-	cp $(name) ../../../../bin/
-	cp $(db_name) ../../../../bin/
+	cp $(name) ../../../bin/
+	cp $(db_name) ../../../bin/
 
 clean:
 	-rm -f $(name) $(db_name)
