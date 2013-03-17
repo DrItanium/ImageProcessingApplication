@@ -8,6 +8,4 @@ The supported pixel formats are
 3) each 16-bit BE value
 4) each 32-bit LE value
 5) each 32-bit BE value
-6) each 64-bit LE value
-7) each 64-bit BE value
 
