@@ -8,7 +8,7 @@ using System.Collections;
 namespace Frameworks.Plugin
 {
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-  public sealed class PluginAssemblyAttribute : Attribute
+  public class PluginAssemblyAttribute : Attribute
   {
      public string Name { get; private set; }
      public string Author { get; set; }
