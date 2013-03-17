@@ -56,7 +56,13 @@ namespace Formats.Binary
       {
         byte[][] rawImage;
         int width = int.Parse((string)input["width"]);
-        int height = (int)Math.Floor((double)width / ((double)length / (double)DivisorFactor));
+        int height = (width < length) ? (int)Math.Floor(
+            ((double)length / (double)DivisorFactor) /
+            (double)width) : 
+          (int)Math.Floor((double)width / 
+              ((double)length / (double)DivisorFactor));
+        Console.WriteLine("{0}x{1}", width, height);
+        Console.WriteLine("Length = {0}", length);
         rawImage = new byte[height][];
         for(int i = 0; i < height; i++)
         {
