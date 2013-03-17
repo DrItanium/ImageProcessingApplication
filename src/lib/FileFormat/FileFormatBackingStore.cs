@@ -23,10 +23,10 @@ namespace Libraries.FileFormat
     {
       return pluginEnvironments[targetPluginGroup].Invoke(input);
     }
-    public static Tuple<string, string, Guid> GetPlugin(Guid targetGuid, Guid pluginGuid)
+    public static Tuple<string, string, string, Guid> GetPlugin(Guid targetGuid, Guid pluginGuid)
     {
       FileFormatConverter target = (FileFormatConverter)pluginEnvironments[targetGuid][pluginGuid];
-      return new Tuple<string, string, Guid>(target.Name, target.InputForm, target.ObjectID);
+      return new Tuple<string, string, string, Guid>(target.Name, target.FilterString, target.FormCode, target.ObjectID);
     }
     public static Tuple<Guid, Guid[]> LoadPlugins(string path)
     {

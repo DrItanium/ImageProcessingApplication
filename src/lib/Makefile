@@ -1,15 +1,19 @@
-root:=$(CURDIR)
-frameworks:=$(root)/Frameworks
-libraries:=$(root)/Libraries
+SUBDIRS = Collections Extensions Imaging LexicalAnalysis Messaging Operation Parsing Starlight Tycho Plugin Filter FileFormat
+
+.PHONY: install install-debug clean subdirs $(SUBDIRS)
+
+
 
 install:
-	cd $(libraries) && $(MAKE) install
-	cd $(frameworks) && $(MAKE) install
+	for d in $(SUBDIRS); do($(MAKE) -C $$d install ); done
 
 install-debug:
-	cd $(libraries) && $(MAKE) install-debug
-	cd $(frameworks) && $(MAKE) install-debug
+	for d in $(SUBDIRS); do($(MAKE) -C $$d install-debug ); done
 
 clean:
-	cd $(libraries) && $(MAKE) clean
-	cd $(frameworks) && $(MAKE) clean
+	for d in $(SUBDIRS); do($(MAKE) -C $$d clean ); done
+
+subdirs: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@
