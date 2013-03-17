@@ -27,6 +27,9 @@ namespace ImageProcessingApplication
     private void LoadFileFormats() 
     {
       StringBuilder sb = new StringBuilder();
+      //the all files is always the first item for usability sake
+      fileFormatIndexConversion.Add(id);
+      sb.Append("All Files (*.*)|*.*");
       foreach(var c in fileFormatContainer.DesiredPluginInformation)
       {
         string name = c.Item1;
@@ -42,9 +45,6 @@ namespace ImageProcessingApplication
         sb.Append(string.Format("{0}|{1}|", name, filter));
         fileFormatIndexConversion.Add(targetGuid);
       }
-      //the all files is always the last item
-      fileFormatIndexConversion.Add(id);
-      sb.Append("All Files (*.*)|*.*");
       openFileDialog1.Filter = sb.ToString();
       saveFileDialog1.Filter = sb.ToString();
     }

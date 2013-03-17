@@ -93,7 +93,7 @@ namespace ImageProcessingApplication
       //starts at 1....I'm used to that in CLIPS, not C#
       int index = openFileDialog1.FilterIndex - 1;
       
-      if(index == (fileFormatIndexConversion.Count - 1))
+      if(index == 0)
       {
         LoadFile(path); 
       }
@@ -153,7 +153,7 @@ namespace ImageProcessingApplication
         string path = saveFileDialog1.FileName;
       //starts at 1....I'm used to that in CLIPS, not C#
         int index = saveFileDialog1.FilterIndex - 1;
-        if(index == fileFormatIndexConversion.Count - 1)
+        if(index == 0)
         {
           SaveFile(path);
         }
