@@ -10,9 +10,9 @@ using Libraries.Messaging;
 
 namespace Frameworks.Plugin
 {
-  public interface IPluginLoader
+  public interface IPluginLoader<T> 
   {
-    Tuple<string, string, Guid>[] DesiredPluginInformation { get; }
+    T[] DesiredPluginInformation { get; }
     Message Invoke(Message input);
   }
 }
