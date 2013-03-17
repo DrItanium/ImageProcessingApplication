@@ -34,7 +34,7 @@ namespace FileFormats.StarTrek
     public override bool SupportsLoading { get { return true; } }
     public override string FilterString { get { return "*.BMP"; } }
     public override string FormCode { get { return null; } }
-    public StarTrekJudgementRitesBNDConverter(string name) : base(name)  { }
+    public StarTrekJudgementRitesBMPDefaultPaletteConverter(string name) : base(name)  { }
     public override void Save(Hashtable input) 
     {
       //do nothing
@@ -61,7 +61,7 @@ namespace FileFormats.StarTrek
         //we can use some heuristics to prevent some really wierd resolutions
         if(width >= 1024 || height >= 1024)
         {
-          throw new ArgumentException("Given resolution is too large to be a stjr BMP file");
+          throw new ArgumentException(string.Format("Given resolution is too large to be a stjr BMP file, {0}x{1}", width, height));
         }
         rawImage = new byte[width][];
         byte[] tmpLine = new byte[height];
