@@ -53,7 +53,7 @@ namespace ImageProcessingApplication
 				}
 				try 
 				{
-					var result = container.Invoke(m);
+					var result = filterContainer.Invoke(m);
 					var array = (byte[][])result.Value;
 					resultImage = new Bitmap(array.Length, array[0].Length);
 					Action<int,int,byte> setColorBase = (x,y,c) => resultImage.SetPixel(x,y,colorConversion[c]);

@@ -39,7 +39,7 @@ namespace ImageProcessingApplication
 		}
 		private void LoadFilters()
 		{
-			foreach(var c in container.DesiredPluginInformation)
+			foreach(var c in filterContainer.DesiredPluginInformation)
 			{
 				string name = c.Item1;
 				string form = c.Item2;
@@ -64,7 +64,7 @@ namespace ImageProcessingApplication
 			foreach(var v in assemblies)
 				if(!blackList.Exists((x) => v.Contains(x)))
 					paths.Add(v);
-			container = (IPluginLoader)pluginDomain.CreateInstanceAndUnwrap(
+			filterContainer = (IPluginLoader<Tuple<string,string,Guid>>)pluginDomain.CreateInstanceAndUnwrap(
 					full.FullName, "Libraries.Filter.Initiator",
 					true, 0, null, new object[] { paths.ToArray() }, CultureInfo.CurrentCulture, null);
 			LoadFilters();
@@ -77,7 +77,7 @@ namespace ImageProcessingApplication
 		private void UnloadFilters()
 		{
 			dynamicForms = new Dictionary<Guid, DynamicForm>();
-			container = null;
+			filterContainer = null;
 			menuStrip1.SuspendLayout();
 			foreach(var v in addedFilters)
 				filtersToolStripMenuItem.DropDownItems.Remove(v.Value);

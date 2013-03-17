@@ -31,7 +31,7 @@ namespace ImageProcessingApplication
     private Guid id;
     private System.Drawing.Bitmap srcImage, resultImage;
     private AppDomain pluginDomain, fileFormatDomain;
-    private IPluginLoader container;
+    private IPluginLoader<Tuple<string,string,Guid>> filterContainer;
     private List<string> blackList = new List<string>(new string[]
         {
         "Libraries.Messaging.dll",
