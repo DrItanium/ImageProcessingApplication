@@ -13,7 +13,7 @@ namespace Libraries.Filter
   {
     private Tuple<string, string, Guid>[] boundaryTuples;
     public override Tuple<string, string, Guid>[] DesiredPluginInformation { get { return boundaryTuples; } }
-    public Initiator(string[] paths) : base()
+    public FilterInitiator(string[] paths) : base()
     {
         List<Tuple<string, string, Guid>> r = new List<Tuple<string, string, Guid>>();
         foreach(string str in paths)
@@ -27,7 +27,7 @@ namespace Libraries.Filter
         }
         boundaryTuples = r.ToArray();
     }
-    public Message Invoke(Message input)
+    public override Message Invoke(Message input)
     {
       return FilterLoaderBackingStore.Invoke(this[input.Receiver], input);
     }
@@ -35,7 +35,7 @@ namespace Libraries.Filter
   public static class FilterLoaderBackingStore
   {
     private static Dictionary<Guid, FilterLoader> pluginEnvironments;
-    static FilterLoader()
+    static FilterLoaderBackingStore()
     {
       pluginEnvironments = new Dictionary<Guid, FilterLoader>();
     }
