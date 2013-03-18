@@ -42,7 +42,7 @@ namespace ImageProcessingApplication
           dynamicFileFormatForms.Add(targetGuid, dynamicConstructor.ConstructForm(form));
         }
         //build the filter for the target element 
-        sb.Append(string.Format("{0}|{1}|", name, filter));
+        sb.Append(string.Format("|{0}|{1}", name, filter));
         fileFormatIndexConversion.Add(targetGuid);
       }
       openFileDialog1.Filter = sb.ToString();
