@@ -40,7 +40,7 @@ namespace ImageProcessingApplication
     {
       try
       {
-        if(result != null) {
+        if(result.TargetImage != null) {
           result.TargetImage.Save(path);
         } else {
           MessageBox.Show("Error: Can't Save Resultant Image. None Exists!");
