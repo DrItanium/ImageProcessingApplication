@@ -7,32 +7,13 @@ cmd_compiler := dmcs
 sources := *.cs Properties/*.cs
 def_mono := -d:MONO_NET
 bin_dir := ../../bin
-libs := -lib:../lib/Plugin/ \
-        -lib:../lib/Collections/ \
-        -lib:../lib/Extensions/ \
-        -lib:../lib/Filter/ \
-        -lib:../lib/Imaging/ \
-        -lib:../lib/LexicalAnalysis/ \
-        -lib:../lib/Messaging/ \
-        -lib:../lib/Parsing/ \
-        -lib:../lib/Starlight/ \
-        -lib:../lib/Tycho/ \
-		  -lib:../lib/FileFormat/
-cmd_libraries := -r:Libraries.Collections.dll\
-					  -r:Libraries.Extensions.dll\
-					  -r:Libraries.Filter.dll\
-					  -r:Libraries.Imaging.dll\
-					  -r:Libraries.LexicalAnalysis.dll\
-					  -r:Frameworks.Plugin.dll\
-					  -r:Libraries.Messaging.dll\
-					  -r:Libraries.Parsing.dll\
-					  -r:Libraries.Starlight.dll\
-					  -r:Libraries.Tycho.dll\
-					  -r:Libraries.FileFormat.dll\
+libs := -lib:../lib/
+cmd_libraries := -r:Cortex.dll \
 					  -r:System.Windows.Forms.dll\
 					  -r:System.Drawing.dll\
 					  -r:System.Data.dll
-cmd_icons := -win32res:MainForm.resx -win32res:Properties/Resources.resx 
+cmd_icons := -win32res:MainForm.resx \
+             -win32res:Properties/Resources.resx 
 
 build: $(sources)
 	$(cmd_compiler) -optimize $(def_mono) $(cmd_out) $(libs) $(cmd_libraries) $(cmd_icons) $(sources)
