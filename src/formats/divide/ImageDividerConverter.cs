@@ -82,14 +82,14 @@ namespace Formats.Divide
 				throw new ArgumentException("Target image can't be cleanly broken up into tiles");
 			}
       int total = tileWidth * tileHeight;
-			int[][] block = new int[DivideWidth][];
 			string partial = string.Format(SaveFormatString, path, fileName, "{0}", extension);
 			//get the file name from the provided base name
 			for(int i = 0; i < tileWidth; i++) 
 			{
+				int offset = (i * tileWidth);
 				for(int j = 0; j < tileHeight; j++)
 				{
-				   SaveTile(string.Format(partial,i * j), CreateTile(image, i, j));
+				   SaveTile(string.Format(partial, offset + j), CreateTile(image, i, j));
 				}
 			}
 
