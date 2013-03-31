@@ -51,7 +51,7 @@ namespace ImageProcessingApplication
     private void SetupFileFormats() 
     {
       fileFormatIndexConversion.Clear();
-      Assembly full = Assembly.LoadFile(Path.GetFullPath("Libraries.FileFormat.dll"));
+      Assembly full = Assembly.LoadFile(Path.GetFullPath("Cortex.dll"));
       IEnumerable<string> assemblies = GetPathsOfOtherAssemblies();
       List<string> paths = new List<string>();
       foreach(var v in assemblies) 

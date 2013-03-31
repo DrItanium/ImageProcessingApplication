@@ -58,7 +58,7 @@ namespace ImageProcessingApplication
 		}
 		private void SetupFilters()
 		{
-			Assembly full = Assembly.LoadFile(Path.GetFullPath("Libraries.Filter.dll"));
+			Assembly full = Assembly.LoadFile(Path.GetFullPath("Cortex.dll"));
 			IEnumerable<string> assemblies = GetPathsOfOtherAssemblies();
 			List<string> paths = new List<string>(); 
 			foreach(var v in assemblies)
