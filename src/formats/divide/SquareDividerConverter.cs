@@ -13,7 +13,7 @@ using System.Drawing;
 namespace Formats.Divide 
 {
 	///<summary>
-	///Base class for all Image division format converters
+	///Base class for all square tile image division format converters
 	///</summary>
 	public abstract class SquareDividerConverter : ImageDividerConverter 
 	{
