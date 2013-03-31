@@ -9,19 +9,8 @@ sources := *.cs
 cmd_include := -r:
 bin_dir := ../../../bin
 lib_dir := ../../lib
-libs := -lib:$(lib_dir)/Filter/ \
-		  -lib:$(lib_dir)/Imaging/ \
-		  -lib:$(lib_dir)/Messaging/ \
-		  -lib:$(lib_dir)/Plugin/ \
-		  -lib:$(lib_dir)/Collections/ \
-		  -lib:$(lib_dir)/Extensions/
-
-cmd_libraries := -r:Libraries.Filter.dll\
-					  -r:Libraries.Imaging.dll\
-					  -r:Frameworks.Plugin.dll\
-					  -r:Libraries.Messaging.dll\
-					  -r:Libraries.Collections.dll\
-					  -r:Libraries.Extensions.dll\
+libs := -lib:$(lib_dir)
+cmd_libraries := -r:Cortex.dll \
 					  -r:System.Windows.Forms.dll\
 					  -r:System.Drawing.dll\
 					  -r:System.Data.dll
