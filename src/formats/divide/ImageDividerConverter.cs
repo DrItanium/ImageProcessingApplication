@@ -89,7 +89,7 @@ namespace Formats.Divide
 			{
 				for(int j = 0; j < tileHeight; j++)
 				{
-				   SaveTile(string.Format(partial,i), CreateTile(image, i, j));
+				   SaveTile(string.Format(partial,i * j), CreateTile(image, i, j));
 				}
 			}
 
