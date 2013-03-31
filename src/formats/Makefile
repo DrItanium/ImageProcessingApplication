@@ -1,4 +1,4 @@
-SUBDIRS = startrek binary
+SUBDIRS = startrek binary divide
 
 .PHONY: install install-debug clean subdirs $(SUBDIRS)
 
