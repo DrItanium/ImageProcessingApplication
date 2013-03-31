@@ -102,7 +102,7 @@ namespace Formats.Divide
 			Action<int,int,int> setColorBase = (x,y,c) => outTile.SetPixel(x,y, Color.FromArgb(c));
 			for(int i = 0; i < width; i++)
 			{
-			  Action<int,int> setColor = (y,c) => setColor(i,y,c); 
+			  Action<int,int> setColor = (y,c) => setColorBase(i,y,c); 
 				int[] line = tile[i];
 				for(int j = 0; j < height; j++)
 				{
