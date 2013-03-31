@@ -7,18 +7,12 @@ cmd_library := -t:library
 cmd_out := -out:$(name)
 cmd_compiler := dmcs
 sources := *.cs 
-cmd_include := -r:
-cmd_libraries := -r:Libraries.FileFormat.dll\
-					  -r:Libraries.Imaging.dll\
-					  -r:Frameworks.Plugin.dll\
-					  -r:Libraries.Messaging.dll\
+cmd_libraries := -r:Cortex.dll\
 					  -r:System.Windows.Forms.dll\
 					  -r:System.Drawing.dll\
 					  -r:System.Data.dll
-options := -lib:$(lib_dir)/FileFormat/ \
-			  -lib:$(lib_dir)/Imaging/ \
-			  -lib:$(lib_dir)/Messaging/ \
-			  -lib:$(lib_dir)/Plugin/ 
+options := -lib:$(lib_dir)
+
 build: 
 	dmcs -optimize $(cmd_library) $(cmd_out) $(options) $(cmd_libraries) $(sources)
 debug: 
