@@ -36,20 +36,7 @@ namespace ImageProcessingApplication
     private AppDomain fileFormatDomain;
     private IPluginLoader<Tuple<string,string,Guid>> filterContainer;
     private IPluginLoader<Tuple<string,string,string,Guid>> fileFormatContainer;
-    private List<string> blackList = new List<string>(new string[]
-        {
-        "Libraries.Messaging.dll",
-        "Libraries.Parsing.dll",
-        "Libraries.Starlight.dll",
-        "Libraries.Extensions.dll",
-        "Libraries.LexicalAnalysis.dll",
-        "Libraries.Tycho.dll",
-        "Libraries.Imaging.dll",
-        "Libraries.Filter.dll",
-        "Frameworks.Plugin.dll",
-        "Libraries.Collections.dll",
-        "Libraries.FileFormat.dll",
-        });
+    private List<string> blackList = new List<string>(new string[] { "Cortex.dll" });
     public MainForm()
     {
       //get list of files within the same directory
