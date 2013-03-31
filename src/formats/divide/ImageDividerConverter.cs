@@ -56,6 +56,7 @@ namespace Formats.Divide
 			}
 		}
 
+		protected ImageDividerConverter(string name) : base(name) { }
 		public override string FilterString { get { return "*.*"; } }
 		public override byte[][] Load(Hashtable input) 
 		{
