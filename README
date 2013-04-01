@@ -19,3 +19,12 @@ a pain in the ass to compile and use.
 Since 2013-03-16, this program also supports the dynamic declaration of custom
 file format loaders and savers. This feature is implemented as a second
 application domain. 
+
+I am in the process of rewriting large portions of this program to:
+1) Speed up the compilation process by merging all libraries in lib into a
+single Cortex.dll
+2) Support filter application on full-color images without loss of color.
+(Currently greyscale images are the only thing supported)
+
+
+These two changes are large enough to warrant version 2.
