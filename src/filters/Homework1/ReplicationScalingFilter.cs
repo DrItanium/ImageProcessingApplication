@@ -21,7 +21,7 @@ namespace CS555.Homework1
 				float wFac, float hFac)
 		{
 			//go back in time and grab the previous non-null x-pixel
-			byte? curr = null;
+			int? curr = null;
 			int width = elements.Length;
 			int height = elements[0].Length;
 			int[][] result = new int[width][];
