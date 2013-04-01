@@ -35,7 +35,7 @@ namespace ImageProcessingApplication
     private AppDomain pluginDomain;
     private AppDomain fileFormatDomain;
     private IPluginLoader<Tuple<string,string,Guid>> filterContainer;
-    private IPluginLoader<Tuple<string,string,string,Guid>> fileFormatContainer;
+    private IPluginLoader<Tuple<string,string,string,Guid,Tuple<bool,bool>>> fileFormatContainer;
     private List<string> blackList = new List<string>(new string[]
         {
         "Libraries.Messaging.dll",

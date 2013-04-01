@@ -30,7 +30,8 @@ namespace ImageProcessingApplication
       StringBuilder load = new StringBuilder();
       //the all files is always the first item for usability sake
       fileFormatIndexConversion.Add(id);
-      sb.Append("All Files (*.*)|*.*");
+      save.Append("All Files (*.*)|*.*");
+      load.Append("All Files (*.*)|*.*");
       foreach(var c in fileFormatContainer.DesiredPluginInformation)
       {
         string name = c.Item1;
@@ -72,7 +73,7 @@ namespace ImageProcessingApplication
           paths.Add(v);
         }
       }
-      fileFormatContainer = (IPluginLoader<Tuple<string,string,string,Guid>>)
+      fileFormatContainer = (IPluginLoader<Tuple<string,string,string,Guid,Tuple<bool,bool>>>)
         fileFormatDomain.CreateInstanceAndUnwrap(full.FullName, 
             "Libraries.FileFormat.FileFormatInitiator", true, 0, null,
             new object[] { paths.ToArray() }, CultureInfo.CurrentCulture, null);
