@@ -22,8 +22,11 @@ namespace Libraries.Imaging
 		public Histogram Blue { get { return blue; } }
 		public int Width { get { return width; } }
 		public int Height { get { return height; } }
+		public int[] this[int x] { get { return image[x]; } }
+		public int this[int x, int y] { get { return image[x][y]; } }
 		public ColorHistogram(int[][] image) 
 		{
+			this.image = image;
 			width = image.Length;
 			height = image[0].Length;
 			byte[][] r = new byte[width][];
@@ -34,13 +37,13 @@ namespace Libraries.Imaging
 				byte[] rLine = new byte[height];
 				byte[] gLine = new byte[height];
 				byte[] bLine = new byte[height];
-				byte[] line = image[i];
+				int[] line = image[i];
 				for(int j = 0; j < height; j++)
 				{
 					Color c = Color.FromArgb(line[j]);
-					rLine[j] = c.R;
-					gLine[j] = c.G;
-					bLine[j] = c.B;
+					rLine[j] = (byte)c.R;
+					gLine[j] = (byte)c.G;
+					bLine[j] = (byte)c.B;
 				}
 				r[i] = rLine;
 				g[i] = gLine;
