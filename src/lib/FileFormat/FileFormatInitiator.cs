@@ -12,10 +12,10 @@ using Frameworks.Plugin;
 
 namespace Libraries.FileFormat 
 {
-  public class FileFormatInitiator : PluginInitiator<Tuple<string,string,string,Guid>>
+  public class FileFormatInitiator : PluginInitiator<Tuple<string,string,string,Guid, Tuple<bool,bool>>>
   {
-    private Tuple<string,string,string,Guid>[] backingStore;
-    public override Tuple<string,string,string,Guid>[] DesiredPluginInformation 
+    private Tuple<string,string,string,Guid,Tuple<bool,bool>>[] backingStore;
+    public override Tuple<string,string,string,Guid,Tuple<bool,bool>>[] DesiredPluginInformation 
     {
       get 
       { 
@@ -24,7 +24,7 @@ namespace Libraries.FileFormat
     }
     public FileFormatInitiator(string[] paths) 
     {
-      List<Tuple<string,string,string,Guid>> l = new List<Tuple<string,string,string,Guid>>();
+      List<Tuple<string,string,string,Guid, Tuple<bool, bool>>> l = new List<Tuple<string,string,string,Guid, Tuple<bool,bool>>>();
       foreach(string str in paths) 
       {
         var guids = FileFormatLoaderBackingStore.LoadPlugins(str);
