@@ -38,8 +38,8 @@ namespace ImageProcessingApplication
         string filter = c.Item2;
         string form = c.Item3;
         Guid targetGuid = c.Item4;
-				bool supportsLoad = c.Item5.Item1;
-				bool supportsSave = c.Item5.Item2;
+				bool supportsSave = c.Item5.Item1;
+				bool supportsLoad = c.Item5.Item2;
 
 
         if(form != null && !form.Equals(string.Empty)) 
