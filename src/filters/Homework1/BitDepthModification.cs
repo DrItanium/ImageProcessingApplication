@@ -32,85 +32,89 @@ using System.Collections;
  */
 namespace CS555.Homework1
 {
-  [Filter("Change Bit Depth")]
-  public class BitDepthTransformation : Filter
-  {
-    private byte[,] translationMatrix;
-    public BitDepthTransformation(string name) : base(name) 
-    {
-      translationMatrix = new byte[8,256];
-      SetupMatrix();
-    }
-    public override string InputForm { get { return "form new \"Bit Depth Modification\" \"Text\" imbue label new \"bitDepthLabel\" \"Name\" imbue \"Bit Depth\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue textbox new \"depth\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return"; } }
-    private void SetupMatrix()
-    {
-      //I manually perform this for 1 bit because the formula I use doesn't
-      //handle 1-bit at all....it produces a pure black image.
-      SetSection(0, 0, 128, (byte)0);
-      SetSection(0, 128, 256, (byte)255);
-      for(int i = 1; i < 8; i++)
-      {
+	[Filter("Change Bit Depth")]
+		public class BitDepthTransformation : ImageFilter
+	{
+		private byte[,] translationMatrix;
+		public BitDepthTransformation(string name) : base(name) 
+		{
+			translationMatrix = new byte[8,256];
+			SetupMatrix();
+		}
+		public override string InputForm { get { return "form new \"Bit Depth Modification\" \"Text\" imbue label new \"bitDepthLabel\" \"Name\" imbue \"Bit Depth\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue textbox new \"depth\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return"; } }
+		private void SetupMatrix()
+		{
+			//I manually perform this for 1 bit because the formula I use doesn't
+			//handle 1-bit at all....it produces a pure black image.
+			SetSection(0, 0, 128, (byte)0);
+			SetSection(0, 128, 256, (byte)255);
+			for(int i = 1; i < 8; i++)
+			{
 				//compute the largest value at the corresponding bit depth +1
 				//So at seven bits we return 256 as that's the next largest bit depth
-        int power = (int)Math.Pow(2, i + 1);
+				int power = (int)Math.Pow(2, i + 1);
 				//figure out reduction factor by dividing 256.0 (largest for 8-bits)
 				//by the largest value expressible at the target bit depth (power - 1)
 				//The floor of this computation will be the conversion factor to use 
-        int sd = (int)Math.Floor((256.0f / (float)(power - 1)));
+				int sd = (int)Math.Floor((256.0f / (float)(power - 1)));
 				//figure out how many elements each intensity in the lower bit-depth
 				//will take up in 256 entries. At eight bits there is a one to one
 				//correspondence between values and entries. At seven bits, two eight
 				//bit intensities correspond to the same seven-bit intensity
-        int sep = 256 / power;
+				int sep = 256 / power;
 				//we populate wider sections with a distributed intensity in the target
 				//bit depth but represented as an 8 bit value.
 				//So at two bits the values are 0, 85, 170, 255 
-        for(int j = 0; j < power; j++) //separation areas
-          SetSection(i, j * sep, (j + 1) * sep, (byte)(sd * j));
-      }
-    }
-    private void SetSection(int depth, int from, int to, byte value)
-    {
-      for(int i = from; i < to; i++)
-      {
-        translationMatrix[depth, i] = value; 
-      }
-    }
-    //TODO: Make it so that the source coming in is already checked.
-    //      This will require another language
-    public override Hashtable TranslateData(Hashtable source)
-    {
-      Hashtable output = new Hashtable();
-      output["image"] = source["image"];
-      int target;
-      bool result = int.TryParse((string)source["depth"], out target);
-      if(!result || (target < 0 && target > 8))
-      {
-        MessageBox.Show("Invalid Bit Depth Provided");
-        return null;
-      }
-      else
-      {
-        output["depth"] = target;
-        return output;
-      }
-    }
-    public override byte[][] Transform(Hashtable source)
-    {
-      if(source == null)
-        return null;
-      byte[][] input = (byte[][])source["image"];
-      int depth = (int)source["depth"];
-      byte[][] clone = new byte[input.Length][];
-      for(int x = 0; x < input.Length; x++)
-      {
-        clone[x] = new byte[input[x].Length];
-        for(int y = 0; y < input[x].Length; y++)
-        {
-          clone[x][y] = translationMatrix[depth - 1, input[x][y]];
-        }
-      }
-      return clone;
-    }
-  }
+				for(int j = 0; j < power; j++) //separation areas
+					SetSection(i, j * sep, (j + 1) * sep, (byte)(sd * j));
+			}
+		}
+		private void SetSection(int depth, int from, int to, byte value)
+		{
+			for(int i = from; i < to; i++)
+			{
+				translationMatrix[depth, i] = value; 
+			}
+		}
+		//TODO: Make it so that the source coming in is already checked.
+		//      This will require another language
+		public override Hashtable TranslateData(Hashtable source)
+		{
+			Hashtable output = new Hashtable();
+			output["image"] = source["image"];
+			int target;
+			bool result = int.TryParse((string)source["depth"], out target);
+			if(!result || (target < 0 && target > 8))
+			{
+				MessageBox.Show("Invalid Bit Depth Provided");
+				return null;
+			}
+			else
+			{
+				output["depth"] = target;
+				return output;
+			}
+		}
+		public override int[][] TransformImage(Hashtable source)
+		{
+			if(source == null)
+				return null;
+			int[][] input = (int[][])source["image"];
+			int depth = (int)source["depth"];
+			int correctDepth = depth - 1;
+			for(int x = 0; x < input.Length; x++)
+			{
+				int[] line = input[x];
+				for(int y = 0; y < input[x].Length; y++)
+				{
+					Color c = Color.FromArgb(line[y]);
+					line[y] = Color.FromArgb(255, 
+							translationMatrix[correctDepth, c.R],
+							translationMatrix[correctDepth, c.G],
+							translationMatrix[correctDepth, c.B]).ToArgb();
+				}
+			}
+			return clone;
+		}
+	}
 }
