@@ -199,7 +199,6 @@ namespace Libraries.Filter
         default:
           throw new ArgumentException(
               string.Format("Unknown Data Element: {0}", name));
-          break;
       }
       dataStack.Push(target);
       return EmptyArray;

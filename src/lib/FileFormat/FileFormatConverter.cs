@@ -43,7 +43,7 @@ namespace Libraries.FileFormat
               string.Format("ERROR: Provided action {0} isn't valid", action));
       }
     }
-    public abstract byte[][] Load(Hashtable input);
+    public abstract int[][] Load(Hashtable input);
     public abstract void Save(Hashtable input);
     public override Message Invoke(Message input) 
     {

@@ -45,7 +45,7 @@ namespace Libraries.Filter
     }
     public static Tuple<string, string, Guid> GetPlugin(Guid targetGuid, Guid pluginGuid)
     {
-      Filter target = (Filter)pluginEnvironments[targetGuid][pluginGuid];
+      ImageFilter target = (ImageFilter)pluginEnvironments[targetGuid][pluginGuid];
       return new Tuple<string, string, Guid>(target.Name, target.InputForm, target.ObjectID);
     }
     public static Tuple<Guid, Guid[]> LoadPlugins(string path)

@@ -38,30 +38,32 @@ namespace ImageProcessingApplication
 				}
 				msg.Message m = new msg.Message(Guid.NewGuid(), id, target, 
 						msg.MessageOperationType.Execute, resultant);
-				byte[][] elements = new byte[srcImage.Width][];
+				int[][] elements = new int[srcImage.Width][];
 				resultant["image"] = elements;
-				Func<int,int,Color> getPixelBase = (x,y) => srcImage.GetPixel(x,y);
+				Func<int,int,int> getPixelBase = (x,y) => srcImage.GetPixel(x,y).ToArgb();
 				for(int i =0 ; i < srcImage.Width; i++)
 				{
-					Func<int,Color> getPixel = (x) => getPixelBase(i,x);
-					byte[] line = new byte[srcImage.Height];
+					Func<int,int> getPixel = (x) => getPixelBase(i,x);
+					int[] line = new int[srcImage.Height];
 					for(int j = 0; j < srcImage.Height; j++)
 					{
-						line[j] = getPixel(j).R; 
+						line[j] = getPixel(j);
 					}
 					elements[i] = line;
 				}
 				try 
 				{
 					var result = filterContainer.Invoke(m);
-					var array = (byte[][])result.Value;
-					resultImage = new Bitmap(array.Length, array[0].Length);
-					Action<int,int,byte> setColorBase = (x,y,c) => resultImage.SetPixel(x,y,colorConversion[c]);
-					for(int i =0 ; i < array.Length; i++)
+					var array = (int[][])result.Value;
+					int width = array.Length;
+					int height = array[0].Length;
+					resultImage = new Bitmap(width, height);
+					Action<int,int,int> setColorBase = (x,y,c) => resultImage.SetPixel(x,y,Color.FromArgb(c));
+					for(int i = 0; i < width; i++)
 					{
-						byte[] aX = array[i];
-						Action<int,byte> setColor = (y,c) => setColorBase(i,y,c);
-						for(int j=0; j < aX.Length; j++)
+						int[] aX = array[i];
+						Action<int,int> setColor = (y,c) => setColorBase(i,y,c);
+						for(int j=0; j < height; j++)
 						{
 							setColor(j, aX[j]);
 						}

@@ -48,30 +48,26 @@ namespace Formats.Binary
     {
       return File.ReadAllBytes(path).Length;
     }
-    public override byte[][] Load(Hashtable input) 
+    public override int[][] Load(Hashtable input) 
     {
       string path = (string)input["path"];
       int length = GetFileLength(path);
       using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read)) 
       {
-        byte[][] rawImage;
+        int[][] rawImage;
         int width = int.Parse((string)input["width"]);
         int height = (width < length) ? (int)Math.Floor(
             ((double)length / (double)DivisorFactor) /
             (double)width) : 
           (int)Math.Floor((double)width / 
               ((double)length / (double)DivisorFactor));
-        rawImage = new byte[width][];
+        rawImage = new int[width][];
         for(int i = 0; i < width; i++)
         {
-          byte[] line = new byte[height * 4];
-          for(int j = 0; j < height * 4; j+=4)
+          int[] line = new int[height];
+          for(int j = 0; j < height; j++)
           {
-            Color result = GetPixel(fs);
-            line[j] = result.R;
-            line[j+1] = result.G;
-            line[j+2] = result.B;
-            line[j+3] = result.A;
+						line[j] = GetPixel(fs).ToArgb();
           }
           rawImage[i] = line;
         }
