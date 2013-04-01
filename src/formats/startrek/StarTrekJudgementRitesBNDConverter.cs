@@ -20,18 +20,15 @@ namespace FileFormats.StarTrek
     public override string FilterString { get { return "*.BGD"; } }
     public override string FormCode { get { return null; } }
     public StarTrekJudgementRitesBNDConverter(string name) : base(name)  { }
-    public override void Save(Hashtable input) 
-    {
-      //do nothing
-    }
-    public override byte[][] Load(Hashtable input) 
+    public override void Save(Hashtable input) { }
+		public override int[][] Load(Hashtable input) 
     {
       string path = (string)input["path"];
       //translate the pallette setup to the color pallette
       using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read)) 
       {
         byte[] buildp = new byte[1024];
-        byte[][] rawImage;
+        int[][] rawImage;
         Color[] palette = new Color[256];
 
         //translation code base came from
@@ -81,21 +78,17 @@ namespace FileFormats.StarTrek
         {
           throw new ArgumentException("Given resolution is too large to be a stjr BGD file");
         }
-        rawImage = new byte[width][];
+        rawImage = new int[width][];
         byte[] tmpLine = new byte[height];
         for(int i = 0; i < width; i++)
         {
           //reuse the tmpLine
-          byte[] line = new byte[height * 4];
+          int[] line = new int[height];
           fs.Read(tmpLine,0,height);
           //now we play the conversion game
-          for(int j = 0, k = 0; j < height; j++,k+=4)
+          for(int j = 0, k = 0; j < height; j++,k++)
           {
-            Color value = palette[tmpLine[j]];
-            line[k] = (byte)value.R;
-            line[k + 1] = (byte)value.G;
-            line[k + 2] = (byte)value.B;
-            line[k + 3] = (byte)value.A;
+						line[k] = palette[tmpLine[j]].ToArgb();
           }
           rawImage[i] = line;
         }

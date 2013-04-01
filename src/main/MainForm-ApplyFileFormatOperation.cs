@@ -91,15 +91,19 @@ namespace ImageProcessingApplication
 					var result = fileFormatContainer.Invoke(m);
 					if(action.Equals("load")) 
 					{
-						var array = (byte[][])result.Value;
+						var array = (int[][])result.Value;
 						//we could always just return the RGBA value across the boundaries
-						srcImage = new Bitmap(array.Length, array[0].Length / 4);
-						for(int i = 0; i < array.Length; i++)
+						int width = array.Length;
+						int height = array[0].Length;
+						srcImage = new Bitmap(width, height);
+						Action<int,int,int> setColorBase = (x,y,c) => srcImage.SetPixel(x,y,Color.FromArgb(c));
+						for(int i = 0; i < width; i++)
 						{
-							byte[] line = array[i];
-							for(int j = 0; j < line.Length; j+=4)
+							int[] line = array[i];
+							Action<int,int> setColor = (y,c) => setColorBase(i,y,c);
+							for(int j = 0; j < height; j++)
 							{
-								srcImage.SetPixel(i, j / 4, Color.FromArgb(line[j+3], line[j], line[j+1], line[j+2]));
+								setColor(j,line[j]);
 							}
 						}
 					}

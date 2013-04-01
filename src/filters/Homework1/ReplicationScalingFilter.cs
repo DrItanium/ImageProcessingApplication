@@ -17,17 +17,19 @@ namespace CS555.Homework1
 	{
 		public ReplicationScalingFilter(string name) : base(name) { }
 
-		protected override byte[][] Interpolate(byte[][] srcImage, byte?[][] elements,
+		protected override int[][] Interpolate(int[][] srcImage, int?[][] elements,
 				float wFac, float hFac)
 		{
 			//go back in time and grab the previous non-null x-pixel
-			byte? curr = null;
+			int? curr = null;
 			int width = elements.Length;
 			int height = elements[0].Length;
-			byte[][] result = new byte[width][];
+			int[][] result = new int[width][];
 			int i = 0, j = 0;
 			for(i = 0; i < width; i++)
-				result[i] = new byte[height];
+			{
+				result[i] = new int[height];
+			}
 			for(j = 0; j < height; j++)
 			{
 				curr = null;
@@ -54,11 +56,11 @@ namespace CS555.Homework1
 			}	
 			for(i = 0; i < width; i++)
 			{
-				byte[] rsltRow = result[i];
-				byte?[] nRow = elements[i];
+				int[] rsltRow = result[i];
+				int?[] nRow = elements[i];
 				for(j = 0; j < height; j++)
 				{
-					rsltRow[j] = (byte)nRow[j];	
+					rsltRow[j] = (int)nRow[j];	
 				}
 			}
 			return result;

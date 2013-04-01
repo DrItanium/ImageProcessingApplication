@@ -12,7 +12,7 @@ using Libraries.Filter;
 
 namespace CS555.Homework1
 {
-	public abstract class BasicScalingFilter : Filter
+	public abstract class BasicScalingFilter : ImageFilter
 	{
 		public override string InputForm { get { return string.Format("form new \"{0} Filter\" \"Text\" imbue label new \"labelWidth\" \"Name\" imbue \"Width\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"labelHeight\" \"Name\" imbue \"Height\" \"Text\" imbue 63 13 size \"Size\" imbue 13 32 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"width\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"height\" \"Name\" imbue 80 32 point \"Location\" imbue \"Controls.Add\" imbue return", Name); } }
 		
@@ -49,17 +49,17 @@ namespace CS555.Homework1
 				return result;
 			}
 		}
-		protected abstract byte[][] Interpolate(byte[][] srcImage, byte?[][] result,
+		protected abstract int[][] Interpolate(int[][] srcImage, int?[][] result,
 				float wFac, float hFac);
-		public override byte[][] Transform(Hashtable source)
+		public override int[][] TransformImage(Hashtable source)
 		{
-			ByteImage image = new ByteImage((byte[][])source["image"]);
+			ArgbImage image = new ArgbImage((int[][])source["image"]);
 			int nWidth = (int)source["width"];
 			int nHeight = (int)source["height"];
 			ScaleInfo si = new ScaleInfo(image.Width, image.Height, nWidth, nHeight);
-			byte?[][] result = image.Distribute(si); //distribute it across the new image
+			int?[][] result = image.Distribute(si); //distribute it across the new image
 			if(si.IsShrinking)
-				return ByteImage.Convert(result);
+				return ArgbImage.Convert(result);
 			else if(si.IsZooming)
 				return Interpolate(image.Image, result, si.WidthScalingFactor, si.HeightScalingFactor); 
 			else

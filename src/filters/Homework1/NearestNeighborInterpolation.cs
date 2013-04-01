@@ -17,7 +17,7 @@ namespace CS555.Homework1
 	{
 		public NearestNeighborInterpolationFilter(string name) : base(name) { }
 
-		protected override byte[][] Interpolate(byte[][] srcImage, byte?[][] elements,
+		protected override int[][] Interpolate(int[][] srcImage, int?[][] elements,
 				float wFac, float hFac)
 		{
 			//TODO: Move this over to compression lists to save space
@@ -27,12 +27,12 @@ namespace CS555.Homework1
 			int height = elements[0].Length;
 			int[] iW = new int[width]; //precomputed width
 			int[] iH = new int[height]; //precomputed height
-			byte[][] output = new byte[width][];
+			int[][] output = new int[width][];
 			for(int i = 0; i < width; i++)
 			{
 				//multipurpose this!
 				iW[i] = (int)(Math.Min(sWidth, ((float)i) / wFac));
-				output[i] = new byte[height];
+				output[i] = new int[height];
 			}
 			for(int i = 0; i < height; i++)
 				iH[i] = (int)(Math.Min(sHeight, ((float)i) / hFac));
@@ -41,19 +41,19 @@ namespace CS555.Homework1
 			{
 				//this isn't going to change...why continually recompute it?
 				int x = iW[i];
-				byte?[] line = elements[i];
-				byte[] srcLine = srcImage[x];
-				byte[] outLine = output[i];
+				int?[] line = elements[i];
+				int[] srcLine = srcImage[x];
+				int[] outLine = output[i];
 				for(int j = 0; j < height; j++) //y
 				{
-					byte? val = line[j];
+					int? val = line[j];
 					if(val == null)
 					{
 						int y = iH[j];
 						outLine[j] = srcLine[y];
 					}
 					else
-						outLine[j] = (byte)val; 
+						outLine[j] = (int)val; 
 				}
 				elements[i] = null; //clean this out as we go along
 				line = null; //clean this out as we go along
