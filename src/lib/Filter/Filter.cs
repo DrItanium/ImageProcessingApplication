@@ -21,35 +21,52 @@ namespace Libraries.Filter
 		protected Filter(string name) : base(name) { }
 		public sealed override int[][] TransformImage(Hashtable source) 
 		{
-			//we are going to select the red channel for our byte image
+			//break image into component channels (red, green, and blue).
+			//Call the intensity filter three times (once for each color channel)
+			//This is super inefficient but it does maintain backwards compatibility
 			int[][] image = (int[][])source["image"];
 			int width = image.Length;
 			int height = image[0].Length;
-			byte[][] translatedImage = new byte[width][];
+			byte[][] translatedImageRed = new byte[width][];
+			byte[][] translatedImageGreen = new byte[width][];
+			byte[][] translatedImageBlue = new byte[width][];
 			for(int i = 0; i < width; i++)
 			{
 				int[] iLine = image[i];
-				byte[] line = new byte[height];
+				byte[] lineR = new byte[height];
+				byte[] lineG = new byte[height];
+				byte[] lineB = new byte[height];
 				for(int j = 0; j < height; j++)
 				{
-					line[j] = Color.FromArgb(iLine[j]).R;
+					lineR[j] = Color.FromArgb(iLine[j]).R;
+					lineG[j] = Color.FromArgb(iLine[j]).G;
+					lineB[j] = Color.FromArgb(iLine[j]).B;
 				}
-				translatedImage[i] = line;
+				translatedImageRed[i] = lineR;
+				translatedImageGreen[i] = lineG;
+				translatedImageBlue[i] = lineB;
 			}
-			source["image"] = translatedImage;
-			byte[][] result = Transform(source);
+			source["image"] = translatedImageRed;
+			byte[][] resultRed = Transform(source);
+			source["image"] = translatedImageGreen;
+			byte[][] resultGreen = Transform(source);
+			source["image"] = translatedImageBlue;
+			byte[][] resultBlue = Transform(source);
 			//may be a larger image
-			int newWidth = result.Length;
-			int newHeight = result[0].Length;
+			int newWidth = resultRed.Length;
+			int newHeight = resultRed[0].Length;
 			if(newWidth == width && newHeight == height) 
 			{
 				for(int i = 0; i < width; i++) 
 				{
-					byte[] rLine = result[i];
+					byte[] rLine = resultRed[i];
+					byte[] gLine = resultGreen[i];
+					byte[] bLine = resultBlue[i];
 					int[] line = image[i];
 					for(int j = 0; j < newHeight; j++)
 					{
-						line[j] = GreyScaleColors[rLine[j]].ToArgb();
+						line[j] = Color.FromArgb(255, rLine[j],
+							  gLine[j], bLine[j]).ToArgb();
 					}
 				}
 			}
@@ -58,11 +75,14 @@ namespace Libraries.Filter
 				image = new int[newWidth][];
 				for(int i = 0; i < newWidth; i++)
 				{
-					byte[] rLine = result[i];
+					byte[] rLine = resultRed[i];
+					byte[] gLine = resultGreen[i];
+					byte[] bLine = resultBlue[i];
 					int[] line = new int[newHeight];
 					for(int j = 0; j < newHeight; j++)
 					{
-						line[j] = GreyScaleColors[rLine[j]].ToArgb();
+						line[j] = Color.FromArgb(255, rLine[j],
+								gLine[j], bLine[j]).ToArgb();
 					}
 					image[i] = line;
 				}
