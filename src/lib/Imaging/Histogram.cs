@@ -11,6 +11,46 @@ using System.Threading;
 
 namespace Libraries.Imaging 
 {
+	public class ColorHistogram 
+	{
+		//take a blow up in space to have verified code
+		private int[][] image;
+		private int width, height;
+		private Histogram red, green, blue;
+		public Histogram Red { get { return red; } } 
+		public Histogram Green { get { return green; } } 
+		public Histogram Blue { get { return blue; } }
+		public int Width { get { return width; } }
+		public int Height { get { return height; } }
+		public ColorHistogram(int[][] image) 
+		{
+			width = image.Length;
+			height = image[0].Length;
+			byte[][] r = new byte[width][];
+			byte[][] g = new byte[width][];
+			byte[][] b = new byte[width][];
+			for(int i = 0; i < width; i++)
+			{
+				byte[] rLine = new byte[height];
+				byte[] gLine = new byte[height];
+				byte[] bLine = new byte[height];
+				byte[] line = image[i];
+				for(int j = 0; j < height; j++)
+				{
+					Color c = Color.FromArgb(line[j]);
+					rLine[j] = c.R;
+					gLine[j] = c.G;
+					bLine[j] = c.B;
+				}
+				r[i] = rLine;
+				g[i] = gLine;
+				b[i] = bLine;
+			}
+			red = new Histogram(r);
+			green = new Histogram(g);
+			blue = new Histogram(b);
+		}
+	}
   public class Histogram 
   {
     //8-bit histogram
