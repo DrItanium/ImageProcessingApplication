@@ -71,8 +71,12 @@ namespace CS555.Homework1
 				//if the x coordinate is equal to the width of the source image - 1
 				//then subtract by one again. This ensures that we have four pixels to 
 				//interpolate with 
-				if(rPx == sWidth)
-					rPx = sWidth - 1;
+				if(rPx == sWidth) 
+				{
+					//since rPx == sWidth we don't need to reference sWidth again
+					//Just -- rPx. This should save a register on some architectures
+					rPx--;
+				}
 				float x1 = rPx;
 				float x2 = rPx + 1;
 				//compute the divisor or the distance between the two points 
