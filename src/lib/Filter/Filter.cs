@@ -10,7 +10,7 @@ using Libraries.Messaging;
 namespace Libraries.Filter
 {
 	[Obsolete("The filter class is obsolete. Use ImageFilter instead")]
-		public abstract class Filter : ImageFilter 
+		public abstract class Filter : ImageFilter, IFilter
 	{
 		public static Color[] GreyScaleColors = new Color[256];
 		static Filter()
@@ -21,6 +21,7 @@ namespace Libraries.Filter
 		protected Filter(string name) : base(name) { }
 		public sealed override int[][] TransformImage(Hashtable source) 
 		{
+			//we are going to select the red channel for our byte image
 			int[][] image = (int[][])source["image"];
 			int width = image.Length;
 			int height = image[0].Length;
@@ -66,9 +67,7 @@ namespace Libraries.Filter
 					image[i] = line;
 				}
 			}
-			source["image"] = image;
-			//we are going to select the red channel for our byte image
-			return source;
+			return image;
 		}
 		public abstract byte[][] Transform(Hashtable source);
 	}

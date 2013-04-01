@@ -9,10 +9,10 @@ using Libraries.Messaging;
 
 namespace Libraries.Filter
 {
-	public abstract class ImageFilter : Plugin, IFilter
+	public abstract class ImageFilter : Plugin
 	{
 		public abstract string InputForm { get; }
-		protected Filter(string name) : base(name) { }
+		protected ImageFilter(string name) : base(name) { }
 		public abstract Hashtable TranslateData(Hashtable input);
 		public abstract int[][] TransformImage(Hashtable source);
 		public override Message Invoke(Message input)
