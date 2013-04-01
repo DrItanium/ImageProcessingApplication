@@ -15,7 +15,7 @@ using System.Collections;
 namespace CS555.Homework1
 {
   [Filter("Global Histogram Equalization")]
-    public class GlobalHistogramEqualization : Filter
+    public class GlobalHistogramEqualization : ImageFilter
   {
     public override string InputForm { get { return null; } }
     public GlobalHistogramEqualization(string name) : base(name) { }
@@ -24,33 +24,28 @@ namespace CS555.Homework1
     {
       return source;
     }
-    public override byte[][] Transform(Hashtable source)
+    public override int[][] TransformImage(Hashtable source)
     {
       if(source == null)
         return null; 
       else
       {
-        byte[][] input = (byte[][])source["image"];
+        int[][] input = (int[][])source["image"];
 				//the histogram object automatically creates a pixel intensity
 				//distribution upon creation. It also computes the global equalized
 				//intensity based upon it's frequency in the given image. 
         Histogram h = new Histogram(input);
         for(int x = 0; x < input.Length; x++)
         {
+					int[] line = input[x];
           for(int y = 0; y < input[y].Length; y++)
           {
 						//we just replace the previous pixels with the new ones 
-            input[x][y] = Translate(input[x][y], h);
+						line[y] = histogram.GlobalEqualizedIntensity[line[y]];
           }
         }
         return input;
       }
-    }
-    private static byte Translate(byte data, Histogram histogram)
-    {
-			//retrieve the proper value based on the stored global equalized
-			//intensity in the histogram object
-      return histogram.GlobalEqualizedIntensity[data];
     }
   }
 }
