@@ -135,7 +135,7 @@ namespace CS555.Homework1
 					}
 					else
 					{
-						outLine[j] = (byte)val; 
+						outLine[j] = (int)val; 
 					}
 				}
 			}
