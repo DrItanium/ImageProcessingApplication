@@ -17,7 +17,7 @@ namespace CS555.Homework1
 	{
 		public BilinearInterpolationFilter(string name) : base(name) { }
 
-		protected override byte[][] Interpolate(byte[][] srcImage, byte?[][] elements,
+		protected override int[][] Interpolate(int[][] srcImage, int?[][] elements,
 				float wFac, float hFac)
 		{
 			int sWidth = srcImage.Length - 1;
@@ -26,7 +26,7 @@ namespace CS555.Homework1
 			int height = elements[0].Length;
 			float[] iW = new float[width]; //precomputed width
 			float[] iH = new float[height]; //precomputed height
-			byte[][] output = new byte[width][];
+			int[][] output = new int[width][];
 			for(int i = 0; i < width; i++)
 			{
 				//iW contains a translation table that converts offsets in the larger
@@ -41,7 +41,7 @@ namespace CS555.Homework1
 				//Floats are used to make sure that we can get sub-pixel results
 				iW[i] = (Math.Min(sWidth, ((float)i) / wFac));
 				//Instatiate a line of pixels for the output image
-				output[i] = new byte[height];
+				output[i] = new int[height];
 			}
 			for(int i = 0; i < height; i++) 
 			{
@@ -91,14 +91,14 @@ namespace CS555.Homework1
 				float factor0 = num0 / divisor0;
 				//take advantage of the principle of locality since these are arrays of
 				//arrays instead of a flatarray with offsets
-				byte?[] line = elements[i];
-				byte[] srcLine1 = srcImage[(int)x1];
-				byte[] srcLine2 = srcImage[(int)x2];
-				byte[] outLine = output[i];
+				int?[] line = elements[i];
+				int[] srcLine1 = srcImage[(int)x1];
+				int[] srcLine2 = srcImage[(int)x2];
+				int[] outLine = output[i];
 				for(int j = 0; j < height; j++) //y
 				{
 					//a non null byte means that a pixel is already there
-					byte? val = line[j];
+					int? val = line[j];
 					if(val == null)
 					{
 						//get the offset value for the height component
@@ -107,18 +107,23 @@ namespace CS555.Homework1
 						int rPy = (int)Math.Floor(y);
 						//make sure that we have at least two pixels to interpolate off of.
 						if(rPy == sHeight)
-							rPy = sHeight - 1;
+						{
+							//Save a register, use -- instead of rPy = sHeight - 1;
+							rPy--;
+						}
 						//store those points
 						float y1 = rPy;
 						float y2 = rPy + 1;
 						//these are the bilinear interpolation points
 						//surrounding the target pixel
 						//Grab the values stored in our interpolation points
-						float q11 = srcLine1[(int)y1];
-						float q21 = srcLine2[(int)y1];
-						float q12 = srcLine1[(int)y2];
-						float q22 = srcLine2[(int)y2];
-						
+						//Since this is color, we need to decompose them into three sets of
+						//values for red, green , and blue
+						Color qc11 = Color.FromArgb(srcLine1[(int)y1]);
+						Color qc21 = Color.FromArgb(srcLine2[(int)y1]);
+						Color qc12 = Color.FromArgb(srcLine1[(int)y2]);
+						Color qc22 = Color.FromArgb(srcLine2[(int)y2]);
+
 						//get the distance between the y coordinates
 						float divisor1 = y2 - y1;
 						//take the distance from the current pixel to x1 
@@ -128,33 +133,51 @@ namespace CS555.Homework1
 						//four surrounding pixels in the source image
 						//to get R1 we multiply factor0 by q11 and add it to 
 						//factor1 multiplied by q21
-						float fR1a = factor0 * q11;
-						float fR1b = factor1 * q21;
-						float fR1 = fR1a + fR1b;
-						//to get R2 we multiply factor0 by q12 and add it to 
-						//factor1 multiplied by q22
-						float fR2a = factor0 * q12;
-						float fR2b = factor1 * q22;
-						float fR2 = fR2a + fR2b; 
-						//we then interpolate in the y-direction now that we've finished
-						//computing in the x direction
-						//
-						//Compute the two parts
-						float fPa = ((y2 - y) / divisor1) * fR1;
-						float fPb = ((y - y1) / divisor1) * fR2;
-						//add them together
-						float fP = fPa + fPb;
-						//if the value is less than zero then the value is zero
-						int rslt = (int)Math.Max(0, Math.Round(fP));
-						//if the value is greater than 255 (remember bytes)
-						//then set the value to 255
-						if(rslt > 255)
-							rslt = 255;
+						Func<float,float,float,float,int> conv = (q11,q21,q12,q22) => 
+						{
+							float fR1a = factor0 * q11;
+							float fR1b = factor1 * q21;
+							float fR1 = fR1a + fR1b;
+							//to get R2 we multiply factor0 by q12 and add it to 
+							//factor1 multiplied by q22
+							float fR2a = factor0 * q12;
+							float fR2b = factor1 * q22;
+							float fR2 = fR2a + fR2b; 
+							//we then interpolate in the y-direction now that we've finished
+							//computing in the x direction
+							//
+							//Compute the two parts
+							float fPa = ((y2 - y) / divisor1) * fR1;
+							float fPb = ((y - y1) / divisor1) * fR2;
+							//add them together
+							float fP = fPa + fPb;
+							//if the value is less than zero then the value is zero
+							int rslt = (int)Math.Max(0, Math.Round(fP));
+							//if the value is greater than 255 (remember bytes)
+							//then set the value to 255
+							if(rslt > 255)
+								rslt = 255;
+							return rslt;
+						};
+						int red = conv((float)qc11.R, 
+								(float)qc21.R,
+								(float)qc12.R,
+								(float)qc22.R);
+						int green = conv((float)qc11.G, 
+								(float)qc21.G,
+								(float)qc12.G,
+								(float)qc22.G);
+						int blue = conv((float)qc11.B, 
+								(float)qc21.B,
+								(float)qc12.B,
+								(float)qc22.B);
 						//store the result in our output line
-						outLine[j] = (byte)rslt;
+						outLine[j] = Color.FromArgb(255, red, green, blue).ToArgb();
 					}
 					else
+					{
 						outLine[j] = (byte)val; 
+					}
 				}
 			}
 			return output;
