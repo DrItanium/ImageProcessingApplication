@@ -27,7 +27,7 @@ namespace Libraries.FileFormat
 		{
 			FileFormatConverter target = (FileFormatConverter)pluginEnvironments[targetGuid][pluginGuid];
 			return new Tuple<string, string, string, Guid, Tuple<bool,bool>>(target.Name, target.FilterString, 
-					target.FormCode, target.ObjectID, new Tuple<bool, bool>(target.CanLoad, target.CanSave));
+					target.FormCode, target.ObjectID, new Tuple<bool, bool>(target.SupportsSaving, target.SupportsLoading));
 		}
 		public static Tuple<Guid, Guid[]> LoadPlugins(string path)
 		{
