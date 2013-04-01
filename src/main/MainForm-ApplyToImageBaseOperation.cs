@@ -62,7 +62,7 @@ namespace ImageProcessingApplication
 					for(int i = 0; i < width; i++)
 					{
 						int[] aX = array[i];
-						Action<int,byte> setColor = (y,c) => setColorBase(i,y,c);
+						Action<int,int> setColor = (y,c) => setColorBase(i,y,c);
 						for(int j=0; j < height; j++)
 						{
 							setColor(j, aX[j]);
