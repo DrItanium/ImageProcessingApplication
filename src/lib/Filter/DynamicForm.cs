@@ -11,7 +11,7 @@ namespace Libraries.Filter
   public class DynamicForm : FilterDialogForm
   {
     private OpenFileDialog openFile;
-    private SaveFileDialog saveFile;
+    //private SaveFileDialog saveFile;
     private Guid uid;
     private Hashtable storageCells;
     public Hashtable StorageCells { get { return storageCells; } }
