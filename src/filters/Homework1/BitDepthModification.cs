@@ -114,7 +114,7 @@ namespace CS555.Homework1
 							translationMatrix[correctDepth, c.B]).ToArgb();
 				}
 			}
-			return clone;
+			return input;
 		}
 	}
 }
