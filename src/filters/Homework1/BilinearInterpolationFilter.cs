@@ -114,6 +114,12 @@ namespace CS555.Homework1
 						//store those points
 						float y1 = rPy;
 						float y2 = rPy + 1;
+						//get the distance between the y coordinates
+						float divisor1 = y2 - y1;
+						//take the distance from the current pixel to x1 
+						//and divide it by the distance between y1 and y2
+						float factor1 = num1 / divisor1;
+
 						//these are the bilinear interpolation points
 						//surrounding the target pixel
 						//Grab the values stored in our interpolation points
@@ -124,55 +130,8 @@ namespace CS555.Homework1
 						Color qc12 = Color.FromArgb(srcLine1[(int)y2]);
 						Color qc22 = Color.FromArgb(srcLine2[(int)y2]);
 
-						//get the distance between the y coordinates
-						float divisor1 = y2 - y1;
-						//take the distance from the current pixel to x1 
-						//and divide it by the distance between y1 and y2
-						float factor1 = num1 / divisor1;
-						//we need to computer R1 and R2 which are points computed using the
-						//four surrounding pixels in the source image
-						//to get R1 we multiply factor0 by q11 and add it to 
-						//factor1 multiplied by q21
-						Func<float,float,float,float,int> conv = (q11,q21,q12,q22) => 
-						{
-							float fR1a = factor0 * q11;
-							float fR1b = factor1 * q21;
-							float fR1 = fR1a + fR1b;
-							//to get R2 we multiply factor0 by q12 and add it to 
-							//factor1 multiplied by q22
-							float fR2a = factor0 * q12;
-							float fR2b = factor1 * q22;
-							float fR2 = fR2a + fR2b; 
-							//we then interpolate in the y-direction now that we've finished
-							//computing in the x direction
-							//
-							//Compute the two parts
-							float fPa = ((y2 - y) / divisor1) * fR1;
-							float fPb = ((y - y1) / divisor1) * fR2;
-							//add them together
-							float fP = fPa + fPb;
-							//if the value is less than zero then the value is zero
-							int rslt = (int)Math.Max(0, Math.Round(fP));
-							//if the value is greater than 255 (remember bytes)
-							//then set the value to 255
-							if(rslt > 255)
-								rslt = 255;
-							return rslt;
-						};
-						int red = conv((float)qc11.R, 
-								(float)qc21.R,
-								(float)qc12.R,
-								(float)qc22.R);
-						int green = conv((float)qc11.G, 
-								(float)qc21.G,
-								(float)qc12.G,
-								(float)qc22.G);
-						int blue = conv((float)qc11.B, 
-								(float)qc21.B,
-								(float)qc12.B,
-								(float)qc22.B);
 						//store the result in our output line
-						outLine[j] = Color.FromArgb(255, red, green, blue).ToArgb();
+						outLine[j] = Conv(qc11, qc21, qc12, qc22, factor0, factor1, divisor1, y2, y1, y);
 					}
 					else
 					{
@@ -181,6 +140,51 @@ namespace CS555.Homework1
 				}
 			}
 			return output;
+		}
+		private static int Conv(Color qc11, Color qc21, Color qc12, Color qc22, 
+				float factor0, float factor1, float divisor1, float y2, float y1, float y)
+		{
+			//we need to computer R1 and R2 which are points computed using the
+			//four surrounding pixels in the source image
+			//to get R1 we multiply factor0 by q11 and add it to 
+			//factor1 multiplied by q21
+			return Color.FromArgb(255, 
+					Conv((float)qc11.R, (float)qc21.R,
+						(float)qc12.R, (float)qc22.R,
+						factor0, factor1, divisor1, y2, y1, y),
+					Conv((float)qc11.G, (float)qc21.G,
+						(float)qc12.G, (float)qc22.G,
+						factor0, factor1, divisor1, y2, y1, y),
+					Conv((float)qc11.B, (float)qc21.B,
+						(float)qc12.B, (float)qc22.B,
+						factor0, factor1, divisor1, y2, y1, y)).ToArgb();
+		}
+		private static int Conv(float q11, float q21, float q12, float q22, 
+				float factor0, float factor1, float divisor1, float y2, float y1, float y) 
+		{
+			float fR1a = factor0 * q11;
+			float fR1b = factor1 * q21;
+			float fR1 = fR1a + fR1b;
+			//to get R2 we multiply factor0 by q12 and add it to 
+			//factor1 multiplied by q22
+			float fR2a = factor0 * q12;
+			float fR2b = factor1 * q22;
+			float fR2 = fR2a + fR2b; 
+			//we then interpolate in the y-direction now that we've finished
+			//computing in the x direction
+			//
+			//Compute the two parts
+			float fPa = ((y2 - y) / divisor1) * fR1;
+			float fPb = ((y - y1) / divisor1) * fR2;
+			//add them together
+			float fP = fPa + fPb;
+			//if the value is less than zero then the value is zero
+			int rslt = (int)Math.Max(0, Math.Round(fP));
+			//if the value is greater than 255 (remember bytes)
+			//then set the value to 255
+			if(rslt > 255)
+				rslt = 255;
+			return rslt;
 		}
 	}
 }
