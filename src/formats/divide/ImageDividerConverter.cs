@@ -59,7 +59,7 @@ namespace Formats.Divide
 
 		protected ImageDividerConverter(string name) : base(name) { }
 		public override string FilterString { get { return "*.*"; } }
-		public override byte[][] Load(Hashtable input) 
+		public override int[][] Load(Hashtable input) 
 		{
 			throw new NotImplementedException("Load is not supported in this filter");
 		}
