@@ -12,7 +12,6 @@ namespace Frameworks.Plugin
   public abstract class PluginInitiator<T> : Initiator, IPluginLoader<T>
   {
     private Dictionary<Guid, Guid> translationLayer;
-    private T[] boundaryTuples;
     public abstract T[] DesiredPluginInformation { get; }
     protected PluginInitiator() 
     {
