@@ -26,7 +26,8 @@ namespace ImageProcessingApplication
 	{
     private void LoadFileFormats() 
     {
-      StringBuilder sb = new StringBuilder();
+      StringBuilder save = new StringBuilder();
+      StringBuilder load = new StringBuilder();
       //the all files is always the first item for usability sake
       fileFormatIndexConversion.Add(id);
       sb.Append("All Files (*.*)|*.*");
@@ -36,17 +37,27 @@ namespace ImageProcessingApplication
         string filter = c.Item2;
         string form = c.Item3;
         Guid targetGuid = c.Item4;
+				bool supportsLoad = c.Item5.Item1;
+				bool supportsSave = c.Item5.Item2;
+
 
         if(form != null && !form.Equals(string.Empty)) 
         {
           dynamicFileFormatForms.Add(targetGuid, dynamicConstructor.ConstructForm(form));
         }
         //build the filter for the target element 
-        sb.Append(string.Format("|{0}|{1}", name, filter));
+				if(supportsSave) 
+				{
+        	save.Append(string.Format("|{0}|{1}", name, filter));
+				}
+				if(supportsLoad)
+				{
+					load.Append(string.Format("|{0}|{1}", name, filter));
+				}
         fileFormatIndexConversion.Add(targetGuid);
       }
-      openFileDialog1.Filter = sb.ToString();
-      saveFileDialog1.Filter = sb.ToString();
+      openFileDialog1.Filter = load.ToString();
+      saveFileDialog1.Filter = save.ToString();
     }
     private void SetupFileFormats() 
     {
