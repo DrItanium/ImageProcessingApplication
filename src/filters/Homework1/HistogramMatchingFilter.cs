@@ -20,8 +20,9 @@ using System.Collections;
 namespace CS555.Homework1
 {
 	[Filter("Histogram Matching")]
-		public class HistogramMatching : Filter 
+		public class HistogramMatching : ImageFilter 
 	{
+		private byte[] glRed, glGreen, glBlue;
 		public override string InputForm
 		{
 			get
@@ -29,7 +30,12 @@ namespace CS555.Homework1
 				return "form new \"Histogram Matching\" \"Text\" imbue label new \"openLabel\" \"Name\" imbue \"Select Image\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue button new \"imageSelector\" \"Name\" imbue \"Open\" \"Text\" imbue 75 23 size \"Size\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return";
 			}
 		}
-		public HistogramMatching(string name) : base(name) { }
+		public HistogramMatching(string name) : base(name) 
+		{
+			glRed = new byte[256];
+			glBlue = new byte[256];
+			glGreen = new byte[256];
+		}
 		public override Hashtable TranslateData(Hashtable source)
 		{
 			//nothing to do
@@ -37,43 +43,61 @@ namespace CS555.Homework1
 			//    source["otherImage"].GetType());
 			return source;
 		}
-		public override byte[][] Transform(Hashtable source)
+		private static byte[] GenerateConversion(byte[] g, byte[] r, byte[] s)
 		{
-			byte[][] aImage = (byte[][])source["image"];
-			byte[][] oImage = (byte[][])source["otherImage"];
-			int aWidth = aImage.Length;
-			int aHeight = aImage[0].Length;
-			byte[][] cImage = new byte[aWidth][];
-			Histogram cloneHisto = new Histogram(aImage);
-			Histogram refHisto = new Histogram(oImage);
-			byte[] g = new byte[256];
-			for(int i = 0; i < 256; i++) 
-			{
-				g[i] = (byte)Math.Round(Compute(255, i, refHisto));
-			}
 			//bind s of cloneHisto to G which maps to z
-			byte[] s = cloneHisto.GlobalEqualizedIntensity;
 			byte[] result = new byte[256];
 			for(int j = 0; j < 256; j++)
 			{
-				//bind r0_k which returns s0_k which we map to r1_k which maps to s1_k
-				//thus it means that r0_k needs to return s1_k
-				//but to perform the binding we use g
-				byte curr = s[j];
-				int index = ClosestValue(curr, g);
-				//this ensures that each value will map to the proper element in the
-				//other image
-				result[j] = refHisto.GlobalEqualizedIntensity[ClosestValue(g[index], 
-						refHisto.GlobalEqualizedIntensity)];
+					//bind r0_k which returns s0_k which we map to r1_k which maps to s1_k
+					//thus it means that r0_k needs to return s1_k
+					//but to perform the binding we use g
+					byte curr = s[j];
+					int index = ClosestValue(curr, g);
+					//this ensures that each value will map to the proper element in the
+					//other image
+					result[j] = r[ClosestValue(g[index], r)];
 			}
+			return result;
+		}
+		public override int[][] TransformImage(Hashtable source)
+		{
+			int[][] aImage = (int[][])source["image"];
+			int[][] oImage = (int[][])source["otherImage"];
+			int aWidth = aImage.Length;
+			int aHeight = aImage[0].Length;
+			int[][] cImage = new int[aWidth][];
+			ColorHistogram cloneHisto = new ColorHistogram(aImage);
+			ColorHistogram refHisto = new ColorHistogram(oImage);
+			for(int i = 0; i < 256; i++) 
+			{
+				glRed[i] = (byte)Math.Round(Compute(i, refHisto.Red));
+				glGreen[i] = (byte)Math.Round(Compute(i, refHisto.Green));
+				glBlue[i] = (byte)Math.Round(Compute(i, refHisto.Blue));
+			}
+			byte[] resultRed = GenerateConversion(glRed,
+					refHisto.Red.GlobalEqualizedIntensity, 
+					cloneHisto.Red.GlobalEqualizedIntensity);
+			byte[] resultBlue = GenerateConversion(glBlue,
+					refHisto.Blue.GlobalEqualizedIntensity, 
+					cloneHisto.Blue.GlobalEqualizedIntensity);
+			byte[] resultGreen = GenerateConversion(glGreen, 
+					refHisto.Green.GlobalEqualizedIntensity, 
+					cloneHisto.Green.GlobalEqualizedIntensity);
 			//then apply result to the given image 
+			//TODO: See if we need to make a copy image.
+			//Is it safe to just overwrite the original image memory?
 			for(int i = 0; i < aWidth; i++)
 			{
-				byte[] aSlice = aImage[i];
-				byte[] q = new byte[aHeight];
+				int[] aSlice = aImage[i];
+				int[] q = new int[aHeight];
 				for(int j = 0; j < aHeight; j++)
 				{
-					q[j] = result[aSlice[j]];
+					Color c = Color.FromArgb(aSlice[j]);
+					q[j] = Color.FromArgb(255, 
+							resultRed[c.R],
+							resultGreen[c.G],
+							resultBlue[c.B]).ToArgb();
 				}
 				cImage[i] = q;
 			}
@@ -108,11 +132,16 @@ namespace CS555.Homework1
 			//so bind it to the largest small value there
 			return max; 
 		}
+		private static double Compute(int j, Histogram z)
+		{
+			return Compute(255, j, z);
+		}
 		private static double Compute(int largestValue, int j, Histogram z)
 		{
 			double total = 0.0;			
+			double[] pk = z.PK;
 			for(int i = 0; i < j; i++)
-				total += z.PK[i];
+				total += pk[i];
 			return total * largestValue;
 		}
 	}
