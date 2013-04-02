@@ -22,77 +22,76 @@ using System.Collections;
 namespace CS555.Homework1
 {
 	[Filter("Local Histogram Equalization")]
-		public class LocalHistogramEqualization : Filter
+		public class LocalHistogramEqualization : ImageFilter
 	{
 		public override string InputForm { get { return "form new \"Local Histogram Equalization\" \"Text\" imbue label new \"Mask Size\" \"Text\" imbue \"maskSizeLabel\" \"Name\" imbue 63 13 size \"Size\" imbue 13 35 point \"Location\" imbue \"Controls.Add\" imbue combobox new \"mask\" \"Name\" imbue 80 35 point \"Location\" imbue 75 21 size \"Size\" imbue \"3x3\" \"Items.Add\" imbue \"5x5\" \"Items.Add\" imbue \"7x7\" \"Items.Add\" imbue \"9x9\" \"Items.Add\" imbue \"11x11\" \"Items.Add\" imbue \"13x13\" \"Items.Add\" imbue \"15x15\" \"Items.Add\" imbue \"17x17\" \"Items.Add\" imbue \"19x19\" \"Items.Add\" imbue \"21x21\" \"Items.Add\" imbue \"Controls.Add\" imbue return"; } }
 		public LocalHistogramEqualization(string name) : base(name) { }
 
 		public override Hashtable TranslateData(Hashtable source)
 		{
-			Hashtable ht = new Hashtable();
-			ht["image"] = source["image"];
 			string maskSize = (string)source["mask"];
 			switch(maskSize)
 			{
 				case "3x3":
-					ht["mask"] = 3;
+					source["mask"] = 3;
 					break;
 				case "5x5":
-					ht["mask"] = 5;
+					source["mask"] = 5;
 					break;
 				case "7x7":
-					ht["mask"] = 7;
+					source["mask"] = 7;
 					break;
 				case "9x9":
-					ht["mask"] = 9;
+					source["mask"] = 9;
 					break;
 				case "11x11":
-					ht["mask"] = 11;
+					source["mask"] = 11;
 					break;
 				case "13x13":
-					ht["mask"] = 13;
+					source["mask"] = 13;
 					break;
 				case "15x15":
-					ht["mask"] = 15;
+					source["mask"] = 15;
 					break;
 				case "17x17":
-					ht["mask"] = 17;
+					source["mask"] = 17;
 					break;
 				case "19x19":
-					ht["mask"] = 19;
+					source["mask"] = 19;
 					break;
 				case "21x21":
-					ht["mask"] = 21;
+					source["mask"] = 21;
 					break;
 				default:
-					ht["mask"] = 3;
+					source["mask"] = 3;
 					break;
 			}
-			return ht;
+			return source;
 		}
-		public override byte[][] Transform(Hashtable source)
+		public override int[][] TransformImage(Hashtable source)
 		{
 			if(source == null)
 				return null; 
 			else
 			{
-				byte[][] input = (byte[][])source["image"];
+				int[][] input = (int[][])source["image"];
 				int mask = (int)source["mask"];
 				double count = (double)(255.0 / (mask * mask)); //square mask
-				Histogram h = new Histogram(mask, mask);
+        ColorHistogram h = new ColorHistogram(mask, mask);
 				int width = input.Length;
 				int height = input[0].Length;
+        Func<Histogram, int, byte> fn = (h,current) => (byte)(count * (double)h[0, current + 1]);
 				for(int x = 0; x < width; x++)
 				{
-					byte[] iX = input[x];
+					int[] iX = input[x];
 					//close over these values 
 					for(int y = 0; y < height; y++)
 					{
-						int current = (int)iX[y];
+            Color c = Color.FromArgb(iX[y]);
 						h.Repurpose(input.GrabNeighborhood(x, y, width, height, mask));
-						double amount = (double)h[0, current + 1];
-						double result = count * amount;
-						iX[y] = (byte)result;
+            iX[y] = Color.FromArgb(255, fn(h.Red, (int)c.R),
+                                        fn(h.Green, (int)c.G),
+                                        fn(h.Blue, (int)c.B)).ToArgb();
 					}
 				}
 				return input;
