@@ -80,7 +80,7 @@ namespace CS555.Homework1
         ColorHistogram h = new ColorHistogram(mask, mask);
 				int width = input.Length;
 				int height = input[0].Length;
-        Func<Histogram, int, byte> fn = (h,current) => (byte)(count * (double)h[0, current + 1]);
+        Func<Histogram, int, byte> fn = (hi,current) => (byte)(count * (double)hi[0, current + 1]);
 				for(int x = 0; x < width; x++)
 				{
 					int[] iX = input[x];
