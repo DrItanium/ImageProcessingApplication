@@ -113,8 +113,8 @@ namespace Libraries.Imaging
 				}
 			}
 		}
-		public static IEnumerable<byte> GrabNeighborhood(this byte[][] image, int centerX, int centerY, int width, int height, int squareSize)
-		{
+    public static IEnumerable<T> GrabNeighborhood<T>(this T[][] image, int centerX, int centerY, int width, int height, int squareSize)
+    {
 			//generate a starting location that would define this properly
 			//since we know centerX and centerY 
 			//compute startPoint, the factor that determines how to grab values from
@@ -132,7 +132,15 @@ namespace Libraries.Imaging
 					}
 				}
 			}
+    }
+		public static IEnumerable<byte> GrabNeighborhood(this byte[][] image, int centerX, int centerY, int width, int height, int squareSize)
+		{
+      return GrabNeighborhood<byte>(image, centerX, centerY, width, height, squareSize);
 		}
+    public static IEnumerable<int> GrabNeighborhood(this int[][] image, int centerX, int centerY, int width, int height, int squareSize)
+    {
+      return GrabNeighborhood<int>(image, centerX, centerY, width, height, squareSize);
+    }
 		public static unsafe byte[,] ToGreyScaleImage(byte* input, int width, int height)
 		{
 			byte[,] elements = new byte[width, height];
