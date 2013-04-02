@@ -11,49 +11,74 @@ using System.Threading;
 
 namespace Libraries.Imaging 
 {
-	public class ColorHistogram 
-	{
-		//take a blow up in space to have verified code
-		private int[][] image;
-		private int width, height;
-		private Histogram red, green, blue;
-		public Histogram Red { get { return red; } } 
-		public Histogram Green { get { return green; } } 
-		public Histogram Blue { get { return blue; } }
-		public int Width { get { return width; } }
-		public int Height { get { return height; } }
-		public int[] this[int x] { get { return image[x]; } }
-		public int this[int x, int y] { get { return image[x][y]; } }
-		public ColorHistogram(int[][] image) 
-		{
-			this.image = image;
-			width = image.Length;
-			height = image[0].Length;
-			byte[][] r = new byte[width][];
-			byte[][] g = new byte[width][];
-			byte[][] b = new byte[width][];
-			for(int i = 0; i < width; i++)
-			{
-				byte[] rLine = new byte[height];
-				byte[] gLine = new byte[height];
-				byte[] bLine = new byte[height];
-				int[] line = image[i];
-				for(int j = 0; j < height; j++)
-				{
-					Color c = Color.FromArgb(line[j]);
-					rLine[j] = (byte)c.R;
-					gLine[j] = (byte)c.G;
-					bLine[j] = (byte)c.B;
-				}
-				r[i] = rLine;
-				g[i] = gLine;
-				b[i] = bLine;
-			}
-			red = new Histogram(r);
-			green = new Histogram(g);
-			blue = new Histogram(b);
-		}
-	}
+  public class ColorHistogram 
+  {
+    //take a blow up in space to have verified code
+    private int width, height;
+    private Histogram red, green, blue;
+    public Histogram Red { get { return red; } } 
+    public Histogram Green { get { return green; } } 
+    public Histogram Blue { get { return blue; } }
+    public int Width { get { return width; } }
+    public int Height { get { return height; } }
+    public ColorHistogram(int[][] image) 
+    {
+      width = image.Length;
+      height = image[0].Length;
+      byte[][] r = new byte[width][];
+      byte[][] g = new byte[width][];
+      byte[][] b = new byte[width][];
+      for(int i = 0; i < width; i++)
+      {
+        byte[] rLine = new byte[height];
+        byte[] gLine = new byte[height];
+        byte[] bLine = new byte[height];
+        int[] line = image[i];
+        for(int j = 0; j < height; j++)
+        {
+          Color c = Color.FromArgb(line[j]);
+          rLine[j] = (byte)c.R;
+          gLine[j] = (byte)c.G;
+          bLine[j] = (byte)c.B;
+        }
+        r[i] = rLine;
+        g[i] = gLine;
+        b[i] = bLine;
+      }
+      red = new Histogram(r);
+      green = new Histogram(g);
+      blue = new Histogram(b);
+    }
+    public ColorHistogram(int width, int height)
+    {
+      this.width = width;
+      this.height = height;
+      red = new Histogram(width, height);
+      blue = new Histogram(width, height);
+      green = new Histogram(width, height);
+    }
+    public void Repurpose(IEnumerable<int> elements) 
+    {
+      var decomp = Decompose(elements);
+      red.Repurpose(decomp.Item1);
+      green.Repurpose(decomp.Item2);
+      blue.Repurpose(decomp.Item3);
+    }
+    private static Tuple<IEnumerable<byte>, IEnumerable<byte>, IEnumerable<byte>> Decompose(IEnumerable<int> elements) 
+    {
+      List<byte> r = new List<byte>();
+      List<byte> g = new List<byte>();
+      List<byte> b = new List<byte>();
+      foreach(var v in elements) 
+      {
+        Color c = Color.FromArgb(v);
+        r.Add((byte)c.R);
+        g.Add((byte)c.G);
+        b.Add((byte)c.B);
+      }
+      return new Tuple<IEnumerable<byte>, IEnumerable<byte>, IEnumerable<byte>>(r, g, b);
+    }
+  }
   public class Histogram 
   {
     //8-bit histogram
