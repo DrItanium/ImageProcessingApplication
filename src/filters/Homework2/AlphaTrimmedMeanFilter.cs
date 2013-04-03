@@ -18,7 +18,9 @@ namespace CS555.Homework2
 	[Filter("Alpha Trimmed Mean Filter")]
 		public class AlphaTrimmedMeanFilter : SpatialFilter
 	{
-		private List<byte> elements;
+		private List<byte> redElements;
+		private List<byte> blueElements;
+		private List<byte> greenElements;
 		private int removalFactor;
 		protected override string InputFormAddition
 		{
@@ -29,7 +31,9 @@ namespace CS555.Homework2
 		}
 		public AlphaTrimmedMeanFilter(string name) : base(name)
 		{
-			elements = new List<byte>();
+			redElements = new List<byte>();
+			blueElements = new List<byte>();
+			greenElements = new List<byte>();
 		}
 		protected override Hashtable TranslateData_Impl(Hashtable input)
 		{
@@ -39,42 +43,48 @@ namespace CS555.Homework2
 			input["d"] = val;
 			return input;
 		}
-		protected override byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable values)
+		protected override int Operation(int a, int b, int x, int y, int[][] input, Hashtable values)
 		{
 			//TODO: Add another stack language for type checking...
 			// or just extend off the one we currently have
 			int width = input.Length;
 			int height = input[0].Length;
-			elements.Clear();
+      redElements.Clear();
+      blueElements.Clear();
+      greenElements.Clear();
 			for(int s = -a; s < a; s++)
 			{
 				int wX = x + s;
 				if(wX < 0 || wX >= width)
 					continue;
-				byte[] iX = input[wX];
+				int[] iX = input[wX];
 				for(int t = -b; t < b; t++)
 				{
 					int wY = y + t;
 					if(wY < 0 || wY >= height)
 						continue;
-					elements.Add(iX[wY]);
+          Color c = Color.FromArgb(iX[wY]);
+          redElements.Add(c.R);
+          blueElements.Add(c.B);
+          greenElements.Add(c.G);
 				}
 			}
-			elements.Sort();
+      redElements.Sort();
+      blueElements.Sort();
+      greenElements.Sort();
 			try
 			{
-				return Average();
-			}
-			catch(DivideByZeroException)
-			{
-				return input[x][y];
+        return Color.FromArgb(255,
+            Average(redElements),
+            Average(greenElements),
+            Average(blueElements)).ToArgb();
 			}
 			catch(Exception)
 			{
 				return input[x][y];
 			}
 		}
-		private byte Average() 
+		private byte Average(List<byte> elements) 
 		{
 			int start = removalFactor;
 			int finish = elements.Count - removalFactor;
