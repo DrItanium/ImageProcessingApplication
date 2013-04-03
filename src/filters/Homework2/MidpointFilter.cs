@@ -19,30 +19,39 @@ namespace CS555.Homework2
     public class MidpointFilter : SpatialFilter
   {
     public MidpointFilter(string name) : base(name) { }
-    protected override byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable values)
+    protected override int Operation(int a, int b, int x, int y, int[][] input, Hashtable values)
     {
       int width = input.Length;
       int height = input[0].Length;
-      byte min = (byte)255;
-      byte max = (byte)0;
+      byte minRed = (byte)255,
+           minGreen = (byte)255,
+           minBlue = (byte)255,
+           maxRed = (byte)0,
+           maxGreen = (byte)0,
+           maxBlue = (byte)0;
       for(int s = -a; s < a; s++)
       {
         int wX = x + s;
         if(wX < 0 || wX >= width)
           continue;
-				byte[] iX = input[wX];
+				int[] iX = input[wX];
         for(int t = -b; t < b; t++)
         {
           int wY = y + t;
           if(wY < 0 || wY >= height)
             continue;
-					byte value = iX[wY];
-          max = Math.Max(max, value);
-          min = Math.Min(min, value);
+          Color c = Color.FromArgb(iX[wY]);
+          maxRed = Math.Max(maxRed, c.R); 
+          maxGreen = Math.Max(maxGreen, c.G); 
+          maxBlue = Math.Max(maxBlue, c.B); 
+          minRed = Math.Min(minRed, c.R); 
+          minGreen = Math.Min(minGreen, c.G); 
+          minBlue = Math.Min(minBlue, c.B); 
         }
       }
-
-      return (byte)((min + max) >> 1);
+      return Color.FromArgb(255, ((minRed + maxRed) >> 1),
+          ((minGreen + maxGreen) >> 1),
+          ((minBlue + maxBlue) >> 1)).ToArgb();
     }
   }
 }
