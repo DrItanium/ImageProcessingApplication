@@ -15,7 +15,7 @@ using System.Collections;
 
 namespace CS555.Homework2
 {
-	public abstract class SpatialFilter : Filter
+	public abstract class SpatialFilter : ImageFilter
 	{
 		public override string InputForm
 		{
@@ -71,18 +71,18 @@ namespace CS555.Homework2
 			}
 			return ht;
 		}
-		public override byte[][] Transform(Hashtable input)
+		public override int[][] TransformImage(Hashtable input)
 		{
-			byte[][] image = (byte[][])input["image"];
+			int [][] image = (int[][])input["image"];
 			int iWidth = image.Length;
 			int iHeight = image[0].Length;
 			int m = (int)input["mask"];
 			int a = (m - 1) >> 1;
 			int b = a;
-			byte[][] clone = new byte[iWidth][];
+			int[][] clone = new int[iWidth][];
 			for(int x = 0; x < iWidth; x++)
 			{
-				byte[] q = new byte[iHeight];
+				int[] q = new int[iHeight];
 				for(int y = 0; y < iHeight; y++)
 				{
 					q[y] = Operation(a, b, x, y, image, input);
@@ -91,7 +91,7 @@ namespace CS555.Homework2
 			}
 			return clone;
 		}
-		protected abstract byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable input);
+		protected abstract int Operation(int a, int b, int x, int y, int[][] input, Hashtable input);
 		protected virtual Hashtable TranslateData_Impl(Hashtable input) { return input; }
 	}
 }
