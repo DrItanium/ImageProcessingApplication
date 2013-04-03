@@ -13,34 +13,32 @@ using System.Collections;
 namespace CS555.Homework1
 {
   [Filter("Gamma Transformation")]
-  public class PowerTransformation : Filter 
+  public class PowerTransformation : ImageFilter 
   {
     public PowerTransformation(string name) : base(name) { }
     public override string InputForm { get { return "form new \"Gamma Transformation\" \"Text\" imbue label new \"xLabel\" \"Name\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Gamma\" \"Text\" imbue \"Controls.Add\" imbue label new \"yLabel\" \"Name\" imbue 13 32 point \"Location\" imbue 63 33 size \"Size\" imbue \"Constant\" \"Text\" imbue \"Controls.Add\" imbue textbox new \"gamma\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"constant\" \"Name\" imbue 80 32 point \"Location\" imbue \"Controls.Add\" imbue return"; } }
-    public override byte[][] Transform(Hashtable source)
+    public override int[][] TransformImage(Hashtable source)
     {
       if(source == null)
         return null;
-      byte[][] input = (byte[][])source["image"];
+      int[][] input = (int[][])source["image"];
 			byte[] conversion = (byte[])source["conversion-table"];
-      byte[][] clone = new byte[input.Length][];
-			int ixl = input[0].Length;
-      for(int x = 0; x < input.Length; x++)
+      int width = input.Length;
+      int height = input[0].Length;
+      for(int x = 0; x < width; x++)
       {
-				byte[] iX = input[x];
-				byte[] q = new byte[ixl];
-        for(int y = 0; y < ixl; y++)
+				int[] iX = input[x];
+        for(int y = 0; y < height; y++)
         {
-					q[y] = conversion[iX[y]];
+          Color c = Color.FromArgb(iX[y]);
+          iX[y] = Color.FromArgb(255, conversion[c.R],
+              conversion[c.G], conversion[c.B]).ToArgb();
         }
-				clone[x] = q;
       }
-      return clone;
+      return input;
     }
     public override Hashtable TranslateData(Hashtable source)
     {
-      Hashtable output = new Hashtable();
-      output["image"] = source["image"];
       double gamma, constant;
       bool result0 = double.TryParse(source["gamma"].ToString(), out gamma);
       bool result1 = double.TryParse(source["constant"].ToString(), out constant);
@@ -57,8 +55,8 @@ namespace CS555.Homework1
 					{
 						precomputeTable[i] = (byte)(i * factor);
 					}
-					output["conversion-table"] = precomputeTable;
-          return output;
+					source["conversion-table"] = precomputeTable;
+          return source;
         }
         else
         {
