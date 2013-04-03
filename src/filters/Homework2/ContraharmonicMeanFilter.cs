@@ -23,43 +23,56 @@ namespace CS555.Homework2
     protected override Hashtable TranslateData_Impl(Hashtable input)
     {
       double q = double.Parse((string)input["q"]);
-			double[] numerator = new double[256];
-			double[] denominator = new double[256];
-			for(int i = 0; i < 256; i++) 
-			{
-				denominator[i] = Math.Pow((double)i, q);
-				numerator[i] = Math.Pow((double)i, q + 1.0);
-			}
-			input["numerator"] = numerator;
-			input["denominator"] = denominator;
-			input["q"] = q;
+      double[] numerator = new double[256];
+      double[] denominator = new double[256];
+      for(int i = 0; i < 256; i++) 
+      {
+        denominator[i] = Math.Pow((double)i, q);
+        numerator[i] = Math.Pow((double)i, q + 1.0);
+      }
+      input["numerator"] = numerator;
+      input["denominator"] = denominator;
+      input["q"] = q;
       return input;
     }
-    protected override byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable values)
+    protected override int Operation(int a, int b, int x, int y, int[][] input, Hashtable values)
     {
-			double[] numerator = (double[])values["numerator"];
-			double[] denominator = (double[])values["denominator"];
+      double[] numerator = (double[])values["numerator"];
+      double[] denominator = (double[])values["denominator"];
       int width = input.Length;
       int height = input[0].Length;
-      double totalNumerator = 0.0;	
-      double totalDenominator = 0.0;
+      double totalNumeratorRed = 0.0, 
+             totalNumeratorGreen = 0.0, 
+             totalNumeratorBlue = 0.0, 
+             totalDenominatorRed = 0.0, 
+             totalDenominatorGreen = 0.0, 
+             totalDenominatorBlue = 0.0;
       for(int s = -a; s < a; s++)
       {
         int wX = x + s;
         if(wX < 0 || wX >= width)
           continue;
-				byte[] iX = input[wX];
+        int[] iX = input[wX];
         for(int t = -b; t < b; t++)
         {
           int wY = y + t;
           if(wY < 0 || wY >= height)
             continue;
-					byte index = iX[wY];
-					totalDenominator += denominator[index];
-					totalNumerator += numerator[index];
+          Color c = Color.FromArgb(iX[wY]);
+          byte red = c.R;
+          byte green = c.G;
+          byte blue = c.B;
+          totalDenominatorRed += denominator[red];
+          totalDenominatorGreen += denominator[green];
+          totalDenominatorBlue += denominator[blue];
+          totalNumeratorRed += numerator[red];
+          totalNumeratorGreen += numerator[green];
+          totalNumeratorBlue += numerator[blue];
         }
       }
-      return (byte)(totalNumerator / totalDenominator);
+      return Color.FromArgb(255, (byte)(totalNumeratorRed / totalDenominatorRed),
+          (byte)(totalNumeratorGreen / totalDenominatorGreen),
+          (byte)(totalNumeratorBlue / totalDenominatorBlue));
     }
   }
 }
