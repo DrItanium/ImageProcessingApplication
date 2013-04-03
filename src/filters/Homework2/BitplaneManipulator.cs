@@ -68,7 +68,6 @@ namespace CS555.Homework2
 			byte[] table = (byte[])input["translation-table"];
 			int iWidth = image.Length;
 			int iHeight = image[0].Length;
-			//byte[][] clone = new byte[iWidth][];
 			for(int i = 0; i < iWidth; i++)
 			{
 				int[] iX = image[i];
@@ -86,7 +85,7 @@ namespace CS555.Homework2
           }
 				}
 			}	
-			return clone;
+			return image;
 		}
 	}	
 }
