@@ -67,16 +67,16 @@ namespace CS555.Homework2
       int f4Green = (int)(f4.G << 2);
       int f4Blue = (int)(f4.B << 2);
       if(xP1 < width) {
-        f0Base = Color.FromArgb(b[xP1][y]);
+        f0 = Color.FromArgb(b[xP1][y]);
       }
       if(xM1 >= 0) {
-        f1Base = Color.FromArgb(b[xM1][y]);
+        f1 = Color.FromArgb(b[xM1][y]);
       }
       if(yP1 < height) {
-        f2Base = Color.FromArgb(bX[yP1]);
+        f2 = Color.FromArgb(bX[yP1]);
       }
       if(yM1 >= 0) {
-        f3Base = Color.FromArgb(bX[yM1]);
+        f3 = Color.FromArgb(bX[yM1]);
       }
       return Color.FromArgb(f0.R + f1.R + f2.R + f3.R - f4Red,
           f0.G + f1.G + f2.G + f3.G - f4Green,
