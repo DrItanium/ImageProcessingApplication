@@ -15,55 +15,72 @@ using System.Collections;
 
 namespace CS555.Homework2
 {
-	[Filter("Sharpening Laplacian Filter")]
-		public class SharpeningLaplacianFilter : Filter
-	{
-		public override string InputForm { get { return null; } }
-		public SharpeningLaplacianFilter(string name) : base(name) { }
+  [Filter("Sharpening Laplacian Filter")]
+    public class SharpeningLaplacianFilter : ImageFilter
+  {
+    public override string InputForm { get { return null; } }
+    public SharpeningLaplacianFilter(string name) : base(name) { }
 
-		public override Hashtable TranslateData(Hashtable input) { return input; }
-		public override byte[][] Transform(Hashtable input)
-		{
-			byte[][] image = (byte[][])input["image"];
-			int iWidth = image.Length;
-			int iHeight = image[0].Length;
-			byte[][] clone = new byte[iWidth][];      
-			for(int x = 0; x < iWidth; x++)
-			{
-				byte[] q = new byte[iHeight];
-				byte[] iX = image[x];
-				for(int y = 0; y < iHeight; y++)
-				{
-					int result = iX[y];
-					result += -1 * Laplacian(image, x, y, iWidth, iHeight);
-					q[y] = result < 0 ? (byte)0 : (byte)result;
-				}
-				clone[x] = q;
-			}
-			return clone;
-		}
-		private static int Laplacian(byte[][] b, int x, int y, int width, int height)
-		{
-			//fix this up...we don't need to do this every time
-			byte[] bX = b[x];
-			int xM1 = x - 1;
-			int xP1 = x + 1;
-			int yM1 = y - 1;
-			int yP1 = y + 1;
-			int f0 = 0; 
-			int f1 = 0;
-			int f2 = 0;
-			int f3 = 0;
-			int f4 = (int)(bX[y]) << 2; //times 4
-			if(xP1 < width)
-				f0 = b[xP1][y];
-			if(xM1 >= 0)
-				f1 = b[xM1][y];
-			if(yP1 < height)
-				f2 = bX[yP1];
-			if(yM1 >= 0)
-				f3 = bX[yM1];
-			return f0 + f1 + f2 + f3 - f4;
-		}
-	}
+    public override Hashtable TranslateData(Hashtable input) { return input; }
+    public override int[][] TransformImage(Hashtable input)
+    {
+      int[][] image = (int[][])input["image"];
+      int iWidth = image.Length;
+      int iHeight = image[0].Length;
+      int[][] clone = new int[iWidth][];      
+      for(int x = 0; x < iWidth; x++)
+      {
+        int[] q = new int[iHeight];
+        int[] iX = image[x];
+        for(int y = 0; y < iHeight; y++)
+        {
+          Color c = Color.FromArgb(iX[y]);
+          int red = c.R;
+          int green = c.G;
+          int blue = c.B;
+          Color result = Laplacian(image, x, y, iWidth, iHeight);
+          red += -1 * result.R;
+          green += -1 * result.G;
+          blue += -1 * result.B;
+          q[y] = Color.FromArgb(red < 0 ? 0 : red,
+              green < 0 ? 0 : green,
+              blue < 0 ? 0 : blue).ToArgb();
+        }
+        clone[x] = q;
+      }
+      return clone;
+    }
+    private static Color Laplacian(int[][] b, int x, int y, int width, int height)
+    {
+      //fix this up...we don't need to do this every time
+      int[] bX = b[x];
+      int xM1 = x - 1;
+      int xP1 = x + 1;
+      int yM1 = y - 1;
+      int yP1 = y + 1;
+      Color f0 = Color.Black;
+      Color f1 = Color.Black;
+      Color f2 = Color.Black;
+      Color f3 = Color.Black;
+      Color f4 = Color.FromArgb(bX[y]);
+      int f4Red = (int)(f4.R << 2);
+      int f4Green = (int)(f4.G << 2);
+      int f4Blue = (int)(f4.B << 2);
+      if(xP1 < width) {
+        f0Base = Color.FromArgb(b[xP1][y]);
+      }
+      if(xM1 >= 0) {
+        f1Base = Color.FromArgb(b[xM1][y]);
+      }
+      if(yP1 < height) {
+        f2Base = Color.FromArgb(bX[yP1]);
+      }
+      if(yM1 >= 0) {
+        f3Base = Color.FromArgb(bX[yM1]);
+      }
+      return Color.FromArgb(f0.R + f1.R + f2.R + f3.R - f4Red,
+          f0.G + f1.G + f2.G + f3.G - f4Green,
+          f0.B + f1.B + f2.B + f3.B - f4Blue);
+    }
+  }
 }
