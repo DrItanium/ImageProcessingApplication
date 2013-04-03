@@ -72,7 +72,7 @@ namespace CS555.Homework2
       }
       return Color.FromArgb((byte)(totalNumeratorRed / totalDenominatorRed),
           (byte)(totalNumeratorGreen / totalDenominatorGreen),
-          (byte)(totalNumeratorBlue / totalDenominatorBlue));
+          (byte)(totalNumeratorBlue / totalDenominatorBlue)).ToArgb();
     }
   }
 }
