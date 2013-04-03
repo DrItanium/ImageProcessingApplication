@@ -23,15 +23,15 @@ namespace CS555.Homework2
     {
       int width = input.Length;
       int height = input[0].Length;
-      byte maxR = (byte)0,
-           maxG = (byte)0,
-           maxB = (byte)0;
+      int  maxR = 0,
+           maxG = 0,
+           maxB = 0;
       for(int s = -a; s < a; s++)
       {
         int wX = x + s;
         if(wX < 0 || wX >= width)
           continue;
-        byte[] iX = input[wX];
+        int[] iX = input[wX];
         for(int t = -b; t < b; t++)
         {
           int wY = y + t;
