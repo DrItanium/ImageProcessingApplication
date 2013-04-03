@@ -15,10 +15,8 @@ using System.Collections;
 
 namespace CS555.Homework2
 {
-
-
 	[Filter("Manipulate Bitplanes")]
-		public class BitplaneManipulator : Filter
+		public class BitplaneManipulator : ImageFilter
 	{
 		private static byte[][] TranslationMatrix = new byte[256][];
 		static BitplaneManipulator() 
@@ -64,22 +62,29 @@ namespace CS555.Homework2
 			input["translation-table"] = TranslationMatrix[total];
 			return input;
 		}
-		public override byte[][] Transform(Hashtable input)
+		public override int[][] TransformImage(Hashtable input)
 		{
-			byte[][] image = (byte[][])input["image"];
+			int[][] image = (int[][])input["image"];
+			byte[] table = (byte[])input["translation-table"];
 			int iWidth = image.Length;
 			int iHeight = image[0].Length;
-			byte[][] clone = new byte[iWidth][];
-			byte[] table = (byte[])input["translation-table"];
+			//byte[][] clone = new byte[iWidth][];
 			for(int i = 0; i < iWidth; i++)
 			{
-				byte[] q = new byte[iHeight];
-				byte[] iX = image[i];
+				int[] iX = image[i];
 				for(int j = 0; j < iHeight; j++)
 				{
-					q[j] = table[iX[j]];
+          Color c = Color.FromArgb(iX[j]);
+          if(c.R == c.G && c.G == c.B) 
+          {
+            byte b = table[c.R];
+            iX[j] = Color.FromArgb(255, b, b, b).ToArgb();
+          }
+          else
+          {
+            iX[j] = Color.FromArgb(255, table[c.R], table[c.G], table[c.B]).ToArgb();
+          }
 				}
-				clone[i] = q;
 			}	
 			return clone;
 		}
