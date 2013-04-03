@@ -20,13 +20,14 @@ namespace CS555.Homework2
 		{
 			public ArithmeticMeanFilter(string name) : base(name) { }
       protected override string InputFormAddition { get { return string.Empty; } }
-      protected override Hashtable TranslateData_Impl(Hashtable input) { return input; }
-			protected override byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable values)
+			protected override int Operation(int a, int b, int x, int y, int[][] input, Hashtable values)
 			{
         int width = input.Length;
         int height = input[0].Length;
 				int count = 0;
-				int total = 0;
+        int totalRed = 0;
+        int totalGreen = 0;
+        int totalBlue = 0;
         int m = (a + 1) << 1;
         int n = (b + 1) << 1;
 				for(int s = -a; s < a; s++)
@@ -34,20 +35,27 @@ namespace CS555.Homework2
 					int wX = x + s;
 					if(wX < 0 || wX >= width)
 						continue;
-					byte[] iX = input[wX];
+					int[] iX = input[wX];
 					for(int t = -b; t < b; t++)
 					{
 						int wY = y + t;
 						if(wY < 0 || wY >= height)
 							continue;
-						total += iX[wY];
+            Color c = Color.FromArgb(iX[wY]);
+            totalRed += c.R;
+            totalGreen += c.G;
+            totalBlue += c.B;
 						count++; //this will probably brighten the image
 					}
 				}
         if(m == n && m == 1)
-          return (byte)total;
+        {
+          return Color.FromArgb(255, totalRed, totalGreen, totalBlue).ToArgb();
+        }
         else
-				  return (byte)(total / count);
+        {
+          return Color.FromArgb(255, (byte)(totalRed / count), (byte)(totalGreen / count), (byte)(totalBlue / count));
+        }
 			}
     }
 }
