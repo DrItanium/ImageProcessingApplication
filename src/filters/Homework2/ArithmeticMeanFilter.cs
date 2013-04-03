@@ -54,7 +54,7 @@ namespace CS555.Homework2
         }
         else
         {
-          return Color.FromArgb((byte)(totalRed / count), (byte)(totalGreen / count), (byte)(totalBlue / count));
+          return Color.FromArgb((byte)(totalRed / count), (byte)(totalGreen / count), (byte)(totalBlue / count)).ToArgb();
         }
 			}
     }
