@@ -17,16 +17,20 @@ namespace CS555.Homework2
 	[Filter("Median Filter")]
 		public class MedianFilter : SpatialFilter
 	{
-		private List<byte> elements;
+		private List<byte> elementsRed, elementsGreen, elementsBlue;
 		public MedianFilter(string name) : base(name) 
 		{
-			elements = new List<byte>();
+			elementsRed = new List<byte>();
+			elementsGreen = new List<byte>();
+      elementsBlue = new List<byte>();
 		}
-		protected override byte Operation(int a, int b, int x, int y, byte[][] input, Hashtable values)
+		protected override int Operation(int a, int b, int x, int y, int[][] input, Hashtable values)
 		{
 			int width = input.Length;
 			int height = input[0].Length;
-			elements.Clear();
+      elementsRed.Clear();
+      elementsGreen.Clear();
+      elementsBlue.Clear();
 			for(int s = -a; s < a; s++)
 			{
 				int wX = x + s;
@@ -38,11 +42,19 @@ namespace CS555.Homework2
 					int wY = y + t;
 					if(wY < 0 || wY >= height)
 						continue;
-					elements.Add(iX[wY]);
+          Color c = Color.FromArgb(iX[wY]);
+          elementsRed.Add(c.R);
+          elementsGreen.Add(c.G);
+          elementsBlue.Add(c.B);
 				}
 			}
-			elements.Sort();
-			return elements[elements.Count >> 1];
+      elementsRed.Sort();
+      elementsGreen.Sort();
+      elementsBlue.Sort();
+      return Color.FromArgb(255, 
+          elementsRed[elementsRed.Count >> 1],
+          elementsGreen[elementsGreen.Count >> 1],
+          elementsBlue[elementsBlue.Count >> 1]).ToArgb();
 		}
 	}
 }
