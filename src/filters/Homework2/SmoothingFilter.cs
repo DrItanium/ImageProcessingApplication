@@ -44,13 +44,12 @@ namespace CS555.Homework2
         int wY = y + t;
         if(wY < 0 || wY >= height)
           continue;
-        int[] iX = input[wX];
         for(int s = -a; s < a; s++)
         {
           int wX = x + s;
           if(wX < 0 || wX >= width)
             continue;
-          Color w = Color.FromArgb(iX[wY]);
+          Color w = Color.FromArgb(input[wX][wY]);
           if(w.R == w.G && w.G == w.B) 
           {
             int vN = square[w.R];
