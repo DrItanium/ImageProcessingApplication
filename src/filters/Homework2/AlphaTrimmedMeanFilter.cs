@@ -74,8 +74,7 @@ namespace CS555.Homework2
       greenElements.Sort();
 			try
 			{
-        return Color.FromArgb(255,
-            Average(redElements),
+        return Color.FromArgb(Average(redElements),
             Average(greenElements),
             Average(blueElements)).ToArgb();
 			}

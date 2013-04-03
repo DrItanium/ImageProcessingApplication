@@ -78,11 +78,11 @@ namespace CS555.Homework2
           if(c.R == c.G && c.G == c.B) 
           {
             byte b = table[c.R];
-            iX[j] = Color.FromArgb(255, b, b, b).ToArgb();
+            iX[j] = Color.FromArgb(b, b, b).ToArgb();
           }
           else
           {
-            iX[j] = Color.FromArgb(255, table[c.R], table[c.G], table[c.B]).ToArgb();
+            iX[j] = Color.FromArgb(table[c.R], table[c.G], table[c.B]).ToArgb();
           }
 				}
 			}	

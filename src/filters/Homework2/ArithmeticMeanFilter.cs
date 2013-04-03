@@ -50,11 +50,11 @@ namespace CS555.Homework2
 				}
         if(m == n && m == 1)
         {
-          return Color.FromArgb(255, totalRed, totalGreen, totalBlue).ToArgb();
+          return Color.FromArgb(totalRed, totalGreen, totalBlue).ToArgb();
         }
         else
         {
-          return Color.FromArgb(255, (byte)(totalRed / count), (byte)(totalGreen / count), (byte)(totalBlue / count));
+          return Color.FromArgb((byte)(totalRed / count), (byte)(totalGreen / count), (byte)(totalBlue / count));
         }
 			}
     }
