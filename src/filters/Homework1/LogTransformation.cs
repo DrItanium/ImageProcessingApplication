@@ -16,20 +16,19 @@ using System.Collections;
 namespace CS555.Homework1
 {
   [Filter("Log Transformation")]
-  public class LogarithmTransformation : Filter
+  public class LogarithmTransformation : ImageFilter
   {
     public override string InputForm { get { return "form new label new \"ConstantLabel\" \"Name\" imbue \"Constant\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue textbox new \"constant\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue return"; } }
     public LogarithmTransformation(string name) : base(name) { }
 
-    public override byte[][] Transform(Hashtable source)
+    public override int[][] TransformImage(Hashtable source)
     {
       if(source == null)
         return null;
       else
       {
-        byte[][] input = (byte[][])source["image"];
+        int[][] input = (int[][])source["image"];
         double constant = (double)source["constant"];
-        byte[][] clone = new byte[input.Length][];
 				byte[] valueTable = new byte[256];
 				int ixLength = input[0].Length;
 				for(int i = 0; i < 256; i++) 
@@ -38,16 +37,15 @@ namespace CS555.Homework1
 				}
         for(int x = 0; x < input.Length; x++)
         {
-					byte[] iX = input[x];
-					byte[] q = new byte[ixLength];
+					int[] iX = input[x];
           for(int y = 0; y < ixLength; y++) 
 					{
-						q[y] = valueTable[iX[y]];
+            Color c = Color.FromArgb(iX[y]);
+            iX[y] = Color.FromArgb(255, valueTable[c.R],
+                valueTable[c.G], valueTable[c.B]).ToArgb();
 					}
-					clone[x] = q;
-						
         }
-        return clone;
+        return input;
       }
     }
     protected static byte ComputeValue(double c, byte r)
@@ -56,8 +54,6 @@ namespace CS555.Homework1
     }
     public override Hashtable TranslateData(Hashtable source)
     {
-      Hashtable output = new Hashtable();
-      output["image"] = source["image"];
       double target;
       bool result = double.TryParse((string)source["constant"], out target);
       if(!result)
@@ -67,8 +63,8 @@ namespace CS555.Homework1
       }
       else
       {
-        output["constant"] = target;
-        return output;
+        source["constant"] = target;
+        return source;
       }
     }
   }
