@@ -16,7 +16,6 @@ namespace CS555.TermPaper
 	[Filter("Threaded Fractal Interpolation")]
 		public class ThreadedMidpointInterpolationFilter : Filter
 	{
-		private bool allowGauss, allowVariance;
 		public override string InputForm { get { return string.Format("form new \"{0} Filter\" \"Text\" imbue label new \"labelWidth\" \"Name\" imbue \"Width\" \"Text\" imbue 13 12 point \"Location\" imbue 63 13 size \"Size\" imbue \"Controls.Add\" imbue label new \"labelHeight\" \"Name\" imbue \"Height\" \"Text\" imbue 63 13 size \"Size\" imbue 13 32 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"width\" \"Name\" imbue 80 12 point \"Location\" imbue \"Controls.Add\" imbue textbox new \"height\" \"Name\" imbue 80 32 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"gauss\" \"Name\" imbue 85 82 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"No Gauss\" \"Text\" imbue 83 13 size \"Size\" imbue 13 82 point \"Location\" imbue \"Controls.Add\" imbue checkbox new \"variance\" \"Name\" imbue 85 102 point \"Location\" imbue 16 16 size \"Size\" imbue \"Controls.Add\" imbue label new \"No Variance\" \"Text\" imbue 83 13 size \"Size\" imbue 13 102 point \"Location\" imbue \"Controls.Add\" imbue return", Name); } }
 		public ThreadedMidpointInterpolationFilter(string name) : base(name) 
 		{
@@ -162,8 +161,8 @@ namespace CS555.TermPaper
 			int width = (int)input["width"];
 			int height = (int)input["height"];
 			//allowSawtooth = (bool)input["sawtooth"];
-			allowVariance = (bool)input["variance"];
-			allowGauss = (bool)input["gauss"];
+			bool allowVariance = (bool)input["variance"];
+			bool allowGauss = (bool)input["gauss"];
 			ScaleInfo si = new ScaleInfo(b.Length, b[0].Length, width, height);
 			if(si.IsZooming)
 			{
