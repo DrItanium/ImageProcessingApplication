@@ -51,7 +51,7 @@ namespace CS555.Homework2
       elementsRed.Sort();
       elementsGreen.Sort();
       elementsBlue.Sort();
-      return Color.FromArgb(255, 
+      return Color.FromArgb(
           elementsRed[elementsRed.Count >> 1],
           elementsGreen[elementsGreen.Count >> 1],
           elementsBlue[elementsBlue.Count >> 1]).ToArgb();

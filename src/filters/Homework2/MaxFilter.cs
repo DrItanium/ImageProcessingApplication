@@ -53,7 +53,7 @@ namespace CS555.Homework2
           }
         }
       }
-      return Color.FromArgb(255, maxR, maxG, maxB).ToArgb();
+      return Color.FromArgb(maxR, maxG, maxB).ToArgb();
     }
   }
 }

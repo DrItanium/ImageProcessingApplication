@@ -72,7 +72,7 @@ namespace CS555.Homework2
           int finalRed = Chop(originalValue.R + maskValueRed);
           int finalBlue = Chop(originalValue.B + maskValueBlue);
           int finalGreen = Chop(originalValue.G + maskValueGreen);
-          rX[y] = Color.FromArgb(255, finalRed, finalGreen, finalBlue).ToArgb();
+          rX[y] = Color.FromArgb(finalRed, finalGreen, finalBlue).ToArgb();
         }
         resultant[x] = rX;
       }
@@ -148,7 +148,7 @@ namespace CS555.Homework2
           }
         }
       }	
-      return Color.FromArgb(255, (int)(numeratorRed / denominatorRed),
+      return Color.FromArgb((int)(numeratorRed / denominatorRed),
           (int)(numeratorGreen / denominatorGreen),
           (int)(numeratorBlue / denominatorBlue)).ToArgb();
     }

@@ -49,7 +49,7 @@ namespace CS555.Homework2
           minBlue = Math.Min(minBlue, c.B); 
         }
       }
-      return Color.FromArgb(255, ((minRed + maxRed) >> 1),
+      return Color.FromArgb(((minRed + maxRed) >> 1),
           ((minGreen + maxGreen) >> 1),
           ((minBlue + maxBlue) >> 1)).ToArgb();
     }

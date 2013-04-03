@@ -49,12 +49,11 @@ namespace CS555.Homework2
       if(totalRed == totalBlue && totalBlue == totalGreen) 
       {
         int result = (int)Math.Pow(totalRed, power);
-        return Color.FromArgb(255, result, result, result).ToArgb();
+        return Color.FromArgb(result, result, result).ToArgb();
       }
       else
       {
-        return Color.FromArgb(255, 
-            (int)Math.Pow(totalRed, power),
+        return Color.FromArgb((int)Math.Pow(totalRed, power),
             (int)Math.Pow(totalGreen, power),
             (int)Math.Pow(totalBlue, power)).ToArgb();
       }
