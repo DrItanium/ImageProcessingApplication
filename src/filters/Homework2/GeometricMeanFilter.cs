@@ -32,7 +32,7 @@ namespace CS555.Homework2
         int wX = x + s;
         if(wX < 0 || wX >= width)
           continue;
-        byte[] iX = input[wX];
+        int[] iX = input[wX];
         for(int t = -b; t < b; t++)
         {
           int wY = y + t;
