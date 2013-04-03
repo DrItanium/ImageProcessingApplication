@@ -65,7 +65,7 @@ namespace CS555.Homework2
       }
       if(totalRed == totalBlue && totalBlue == totalGreen) 
       {
-        byte result = (byte)(((double)size) / total);
+        int result = (int) (((double)size) / totalRed);
         return Color.FromArgb(result, result, result).ToArgb();
       }
       else
