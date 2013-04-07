@@ -1,4 +1,4 @@
-SUBDIRS = Homework1 Homework2 TermPaper 
+SUBDIRS = Homework1 Homework2 TermPaper dither
 
 .PHONY: install install-debug clean subdirs $(SUBDIRS)
 
