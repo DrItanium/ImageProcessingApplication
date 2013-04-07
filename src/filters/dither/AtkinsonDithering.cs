@@ -53,7 +53,7 @@ namespace Filters.Dithering
       Func<int,int,bool> check = (a,b) => InRange(a,b,width,height);
       Action<int,int,byte> checkSet = (a,b,v) => {
         if(check(a,b)) {
-          image[a][b] = image[a][b] + v;
+          image[a][b] = (byte)(image[a][b] + v);
         }
       };
       for(int j = 0; j < height; j++)
@@ -64,7 +64,7 @@ namespace Filters.Dithering
         for(int i = 0; i < width; i++)
         {
           byte oldIntensity = image[i][j];
-          byte newIntensity = threshold[oldIntensity];
+          byte newIntensity = thresholdTable[oldIntensity];
           byte error = (byte)((oldIntensity - newIntensity) >> 3);
           Action<int,int> cs = (a,b) => checkSet(a,b,error);
           image[i][j] = newIntensity;
